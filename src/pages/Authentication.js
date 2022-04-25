@@ -1,17 +1,15 @@
 import {Container, Grid, Box} from '@mui/material'
 
 import React from 'react'
-import SvgLogo from '../components/SvgLogo'
 import LoginSignup from '../components/LoginSignup'
 export default function Authentication() {
   return (
     <Grid container>
-      {/* <Grid item xs={5}>  
+      <Grid item xs={5}>  
         <img style={{height: '100vh', width: '42%',position: 'fixed'}} src={require('../images/intro.png')} alt="intro" />
-      </Grid> */}
+      </Grid>
       <Grid item xs={7} sx={{background: '#FBFBFB ', height: '100vh', display: 'flex'}}>
-        <Box sx={{m: 'auto', display: 'flex',flexDirection: 'column', width: '50%',alignItems: 'center'}}>
-          {/* <SvgLogo/> */}
+        <Box sx={{m: 'auto', display: 'flex',flexDirection: 'column', width: '45%',alignItems: 'center'}}>
           <img className='intro-logo' src={require('../images/intro-logo.png')} alt="logo" />
           <LoginSignup/>
         </Box>

@@ -25,20 +25,22 @@ export default function LoginSignup() {
       }}
       >
         {({values, errors, handleSubmit, dirty, handleChange}) => (
-          <form onSubmit={handleSubmit} style={{width: '85%'}}>
+          <form onSubmit={handleSubmit} style={{width: '80%'}}>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
               <label htmlFor={values.email}>Email</label>
               <input type="email" id='email' value={values.email} onChange={handleChange} placeholder='Email@example.com' />
-              <p>{errors.email}</p>
               <label htmlFor={values.password}>Şifre</label>
               <input type="password" id='password' value={values.password} onChange={handleChange} />
-              <Button variant='contained' sx={{textTransform: 'none', color: '#fff', mt: 1.5, mb: 3.5, borderRadius: '8px'}}>Üye OI</Button>
+              <Button variant='contained' 
+              sx={
+                {textTransform: 'none', color: '#fff', mt: 1.5, mb: 4, py: 1 ,borderRadius: '8px', fontWeight: 'bold', fontSize: '18px'}
+                }>Üye OI</Button>
              
             </Box>
           </form>
         )}
       </Formik>
-      <Typography sx={{mb: 2}}>Hesabın var mı? <Typography sx={{display: 'inline', color: 'primary.main'}}>Giriş yap</Typography></Typography>
+      <Typography sx={{color: '#525252'}}>Hesabın var mı? <Typography sx={{display: 'inline', color: 'primary.main', fontWeight: '700'}}>Giriş yap</Typography></Typography>
     </Box>
   )
 }

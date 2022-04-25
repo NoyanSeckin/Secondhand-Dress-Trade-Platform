@@ -43,7 +43,9 @@ table {
 }
 
 /* My Css */
-
+body{
+	font-family: 'Nunito', 'sans-serif';
+}
 .form-container {
 	display: flex;
 	flex-direction: column;
@@ -60,16 +62,23 @@ table {
 	height: 73px;
 	margin-bottom: 3.5rem;
 }
-
+input{
+	font-size: 16px;
+}
 form input{
 	background-color: #F4F4F4;
 	border-radius: 8px;
-	padding: 0.8rem 0.3rem;
+	padding: 1rem 0.7rem;
 	border: 1px solid #fff;
 	margin-bottom: 1rem;
 	margin-top: 0.3rem;
+	
 }
 
+form input[type=password]{
+	font-size: 22px;
+	padding: 0.65rem 0.7rem;
+}
 form input:focus{
 	border: 1px solid #4B9CE2;
 	outline: none;
