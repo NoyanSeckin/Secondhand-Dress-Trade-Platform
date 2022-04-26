@@ -10,8 +10,8 @@ export default function Navbar() {
       <Container maxWidth='xl' sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}> 
           <SvgLogo/>
           <Box sx={{display: 'flex', gap: 1.5}}>
-            <Button  sx={{color: 'primary.main', background: '#F0F8FF', textTransform: 'none', fontWeight: '700', pr: 2}}><PlusIcon/>Ürün Ekle</Button>
-            <Button  sx={{color: 'primary.main', background: '#F0F8FF', textTransform: 'none', fontWeight: '700', pr: 2, pl: 2}}><PersonIcon/>Giriş Yap</Button>
+            <Button  sx={{color: 'primary.main', background: '#F0F8FF', textTransform: 'none', fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PlusIcon/>Ürün Ekle</Button>
+            <Button  sx={{color: 'primary.main', background: '#F0F8FF', textTransform: 'none', fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PersonIcon/>Giriş Yap</Button>
           </Box>
       </Container>
     </AppBar>
