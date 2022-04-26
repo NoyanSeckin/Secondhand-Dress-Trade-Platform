@@ -5,6 +5,7 @@ import {ThemeProvider} from '@mui/material/styles';
 
 import './styles.css'
 import  {globalTheme}  from './constants/globalTheme';
+import Home from './pages/Home'
 import Authentication from './pages/Authentication'
 function App() {
   async function fetchApi(){
@@ -18,7 +19,7 @@ function App() {
       <div className="App">
       <BrowserRouter>
         <div>
-          {/* <Route path="/" exact component={Home} /> */}
+          <Route path="/" exact component={Home} />
           <Route path="/authentication" component={Authentication} />
         </div>
       </BrowserRouter>

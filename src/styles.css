@@ -84,3 +84,13 @@ form input:focus{
 	outline: none;
 	background-color: #F0F8FF;
 }
+
+.auth-action-span{
+	display: inline;
+	color: #4B9CE2;
+	font-weight: 700;
+}
+
+.auth-action-span:hover{
+	cursor: pointer;
+}

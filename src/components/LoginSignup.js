@@ -57,15 +57,21 @@ export default function LoginSignup() {
                 {textTransform: 'none', color: '#fff', mt: 1.5, mb: 4, py: 1 ,borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', '&:hover': {
                   backgroundColor: '#4B9CE2'
                 }}
-                }>{returnEither(register.btnText, login.btnText)}</Button>
+                } 
+                onClick={()=> {
+                  if(errors.email || errors.password){
+                    setIsAlert(true);
+                    setTimeout(() => {
+                      setIsAlert(false);
+                    }, 3000);
+                  }
+                }}>{returnEither(register.btnText, login.btnText)}</Button>
              
             </Box>
           </form>
         )}
       </Formik>
-      <Typography sx={{color: '#525252'}}>{returnEither(register.accountInfo, login.accountInfo)} <Typography style={{marginLeft: `${loginStatus === true ? '0.3rem' : 0}`}} onClick={()=> setLoginStatus(!loginStatus)} sx={{display: 'inline', color: 'primary.main', fontWeight: '700', '&:hover': {
-        cursor: 'pointer'
-      }}}>{returnEither(register.action, login.action)}</Typography></Typography>
+      <Typography sx={{color: '#525252'}}>{returnEither(register.accountInfo, login.accountInfo)} <span className='auth-action-span' style={{marginLeft: `${loginStatus === true ? '0.3rem' : 0}`}} onClick={()=> setLoginStatus(!loginStatus)} >{returnEither(register.action, login.action)}</span></Typography>
     </Box>
   )
 }
