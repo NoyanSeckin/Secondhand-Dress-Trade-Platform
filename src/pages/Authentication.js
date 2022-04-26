@@ -2,9 +2,10 @@ import {Container, Grid, Box} from '@mui/material'
 
 import React from 'react'
 import LoginSignup from '../components/LoginSignup'
+import Alert from '../components/Alert'
 export default function Authentication() {
   return (
-    <Grid container>
+    <Grid container >
       <Grid item xs={5}>  
         <img style={{height: '100vh', width: '42%',position: 'fixed'}} src={require('../images/intro.png')} alt="intro" />
       </Grid>

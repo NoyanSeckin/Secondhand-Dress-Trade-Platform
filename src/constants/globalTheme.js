@@ -12,5 +12,10 @@ export const globalTheme = createTheme({
     h4: {
       fontSize: '2rem'
     }
+  },
+  Button: {
+    '&:hover': {
+      backgroundColor: 'primary.main'
+    }
   }
 })
