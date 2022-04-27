@@ -7,11 +7,27 @@ export const globalTheme = createTheme({
     orange: '#FAAD60',
     green: '#46AF32',
   },
+  components:{
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none'
+        }
+      }
+    }
+  },
   typography: {
     fontFamily: 'Nunito, sans-serif',
+    h3: {
+      fontSize: '2.125rem'
+    },
     h4: {
       fontSize: '2rem'
+    },
+    h6: {
+      fontSize: '1.125rem'
     }
+
   },
   Button: {
     '&:hover': {
