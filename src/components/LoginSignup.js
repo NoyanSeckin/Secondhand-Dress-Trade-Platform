@@ -1,14 +1,33 @@
 import {Box, Typography, Button} from '@mui/material'
 import { Formik} from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios'
 
-import {React, useState} from 'react'
+import {React, useState, useEffect, useContext} from 'react'
 import Alert from '../components/Alert'
-
 export default function LoginSignup() {
+  
   const [isAlert, setIsAlert] = useState(false)
-  // if login false show register page, else login page
-  const [loginStatus, setLoginStatus] = useState(false);
+  // if false show register page, else login page
+  const [isLogin, setIsLogin] = useState(false);
+  async function registerUser(username, email, password){
+    axios.post('https://bootcamp.akbolat.net/auth/local/register',{
+      username,
+      email,
+      password
+    })
+    .then((response)=> {
+      document.cookie = response.data.jwt
+    })
+    .catch((error)=> console.log(error.response))
+   }
+   async function loginUser(){
+     const {data} = await axios.post('https://bootcamp.akbolat.net/auth/local', {
+       identifier: 'kibariye@hotmail.com',
+       password: '123456789'
+     })
+     console.log(data.jwt)
+   }
   const register = {
     header: 'Üye OI',
     intro: 'Fırsatlardan yararlanmak için üye ol!',
@@ -24,7 +43,7 @@ export default function LoginSignup() {
     action: 'Üye Ol'
   }
   function returnEither(register, login){
-    return loginStatus ? login : register;
+    return isLogin ? login : register;
   }
   return (
     <Box className='form-container'>
@@ -41,8 +60,14 @@ export default function LoginSignup() {
           password: Yup.string().min(8, 'Şifreniz en az 8 karaterden oluşmalı.').max(20, 'Şifreniz en fazla 20 karakterden oluşmalı.').required('Lütfen bir şifre giriniz'),
         })
       }
-      onSubmit={(values, errors, {resetForm}) => {
-        console.log(errors)
+      onSubmit={(values, errors) => {
+        if(!isLogin){
+          registerUser(values.email ,values.email, values.password)
+          
+          
+        } else if(isLogin){
+
+        }
       }}
       >
         {({values, errors, handleSubmit, dirty, handleChange}) => (
@@ -71,7 +96,7 @@ export default function LoginSignup() {
           </form>
         )}
       </Formik>
-      <Typography sx={{color: '#525252'}}>{returnEither(register.accountInfo, login.accountInfo)} <span className='auth-action-span' style={{marginLeft: `${loginStatus === true ? '0.3rem' : 0}`}} onClick={()=> setLoginStatus(!loginStatus)} >{returnEither(register.action, login.action)}</span></Typography>
+      <Typography sx={{color: '#525252'}}>{returnEither(register.accountInfo, login.accountInfo)} <span className='auth-action-span' style={{marginLeft: `${isLogin === true ? '0.3rem' : 0}`}} onClick={()=> setIsLogin(!isLogin)} >{returnEither(register.action, login.action)}</span></Typography>
     </Box>
   )
 }

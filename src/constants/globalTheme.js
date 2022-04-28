@@ -14,6 +14,14 @@ export const globalTheme = createTheme({
           textTransform: 'none'
         }
       }
+    },
+    MuiBackdrop: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#4B9CE2',
+          opacity: 0.7,
+        }
+      }
     }
   },
   typography: {

@@ -1,9 +1,14 @@
 import {Container, Grid, Box} from '@mui/material'
+import axios from 'axios'
 
-import React from 'react'
+import {React, useEffect} from 'react'
 import LoginSignup from '../components/LoginSignup'
 import Alert from '../components/Alert'
 export default function Authentication() {
+
+  useEffect(()=>{
+    // loginUser();
+  }, [])
   return (
     <Grid container >
       <Grid item xs={5}>  

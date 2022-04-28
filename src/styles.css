@@ -42,6 +42,9 @@ table {
 	border-spacing: 0;
 }
 
+a{
+	text-decoration: none;
+}
 /* My Css */
 body{
 	font-family: 'Nunito', 'sans-serif';
