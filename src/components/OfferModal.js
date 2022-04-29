@@ -66,6 +66,38 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
     </Box>
     )
   }
+  function renderImgAndPrice(){
+    return(
+      <Box sx={{background: '#f0f8ff', display: 'flex', justifyContent: 'space-between', borderRadius: '10px', p: 1}}>
+      <Box sx={{display: 'flex', width: '50%'}}>
+        <img src={require('../images/detail-image-0.png')} alt=""
+        style={{width: '50px', height: '50px', borderRadius: '8px'}} />
+        <Typography sx={{ml: 1, color: '#555555', lineHeight: '20px'}}>Beli Uzun Trenckot Kareli</Typography>
+      </Box>
+      <Typography sx={{color: '#525252', fontWeight: '700', alignSelf: 'center'}} variant='h6'>319,90 TL</Typography>
+    </Box>
+    )
+  }
+  function renderOfferInput(){
+    return(
+      <div className='offer-wrapper'>
+       <input type="number" placeholder='Teklif Belirle' className='offer-input' />
+    </div>
+    )
+  }
+  function renderConfirmBtn(){
+    return(
+      <Box sx={{mx: 'auto'}}>
+        <Button variant='contained' 
+        sx={{
+          color: '#fff', 
+          borderRadius: '8px',
+          fontSize: '18px',
+          px: 15
+          }}>Onayla</Button>
+     </Box>
+    )
+  }
   return (
     <div>
       <Modal
@@ -83,27 +115,10 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
         <Fade in={isOfferModal}>
           <Container sx={style}>
             {renderHeaderAndCloseIcon()}
-            <Box sx={{background: '#f0f8ff', display: 'flex', justifyContent: 'space-between', borderRadius: '10px', p: 1}}>
-              <Box sx={{display: 'flex', width: '50%'}}>
-                <img src={require('../images/detail-image-0.png')} alt=""
-                style={{width: '50px', height: '50px', borderRadius: '8px'}} />
-                <Typography sx={{ml: 1, color: '#555555', lineHeight: '20px'}}>Beli Uzun Trenckot Kareli</Typography>
-              </Box>
-              <Typography sx={{color: '#525252', fontWeight: '700', alignSelf: 'center'}} variant='h6'>319,90 TL</Typography>
-            </Box>
+            {renderImgAndPrice()}
             {renderCheckboxes()}
-            <div className='offer-wrapper'>
-              <input type="number" placeholder='Teklif Belirle' className='offer-input' />
-            </div>
-            <Box sx={{mx: 'auto'}}>
-              <Button variant='contained' 
-              sx={{
-                color: '#fff', 
-                borderRadius: '8px',
-                fontSize: '18px',
-                px: 15
-                }}>Onayla</Button>
-            </Box>
+            {renderOfferInput()}
+            {renderConfirmBtn()}
           </Container>
         </Fade>
       </Modal>
