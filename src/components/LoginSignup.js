@@ -2,11 +2,21 @@ import {Box, Typography, Button} from '@mui/material'
 import { Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
+import {useNavigate} from 'react-router-dom'
+
 
 import {React, useState, useEffect, useContext} from 'react'
+import UserToken from '../contexts/UserToken';
 import Alert from '../components/Alert'
-export default function LoginSignup() {
-  
+
+ export default function LoginSignup(props) {
+   const userToken = useContext(UserToken);
+  //  useEffect(()=> {
+  //    if(userToken){
+  //      navigate('/');
+  //    }
+  //  }, [userToken])
+  let navigate = useNavigate();
   const [isAlert, setIsAlert] = useState(false)
   // if false show register page, else login page
   const [isLogin, setIsLogin] = useState(false);
@@ -17,14 +27,16 @@ export default function LoginSignup() {
       password
     })
     .then((response)=> {
-      document.cookie = response.data.jwt
+      document.cookie = response.data.jwt;
+      console.log(document.cookie);
+      directHome();
     })
     .catch((error)=> console.log(error.response))
    }
-   async function loginUser(){
+   async function loginUser(email, password){
      const {data} = await axios.post('https://bootcamp.akbolat.net/auth/local', {
-       identifier: 'kibariye@hotmail.com',
-       password: '123456789'
+       identifier: email,
+       password: password
      })
      console.log(data.jwt)
    }
@@ -45,6 +57,31 @@ export default function LoginSignup() {
   function returnEither(register, login){
     return isLogin ? login : register;
   }
+
+  function directHome(){
+    navigate('/home');
+  }
+  
+  function sendAlert(){
+    setIsAlert(true);
+    setTimeout(() => {
+      setIsAlert(false);
+    }, 3000);
+  }
+
+      // Send them back to the page they tried to visit when they were
+      // redirected to the login page. Use { replace: true } so we don't create
+      // another entry in the history stack for the login page.  This means that
+      // when they get to the protected page and click the back button, they
+      // won't end up back on the login page, which is also really nice for the
+      // user experience.
+      // navigate(from, { replace: true });
+
+       // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    // return <Navigate to="/login" state={{ from: location }} replace />;
   return (
     <Box className='form-container'>
       <Alert isAlert={isAlert}/>
@@ -61,36 +98,28 @@ export default function LoginSignup() {
         })
       }
       onSubmit={(values, errors) => {
-        if(!isLogin){
+        if(errors.email || errors.password){
+         sendAlert();
+        }else if(!isLogin){
           registerUser(values.email ,values.email, values.password)
-          
-          
-        } else if(isLogin){
-
+        }else if(isLogin){
+          loginUser(values.email, values.password);
         }
       }}
       >
         {({values, errors, handleSubmit, dirty, handleChange}) => (
           <form onSubmit={handleSubmit} style={{width: '80%'}}>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
-              <label htmlFor={values.email}>Email</label>
+              <label htmlFor='email'>Email</label>
               <input type="email" id='email' value={values.email} onChange={handleChange} placeholder='Email@example.com' />
-              <label htmlFor={values.password}>Şifre</label>
+              <label htmlFor='password'>Şifre</label>
               <input type="password" id='password' value={values.password} onChange={handleChange} />
               <Button type='submit' variant='contained' 
               sx={
                 {textTransform: 'none', color: '#fff', mt: 1.5, mb: 4, py: 1 ,borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', '&:hover': {
                   backgroundColor: '#4B9CE2'
                 }}
-                } 
-                onClick={()=> {
-                  if(errors.email || errors.password){
-                    setIsAlert(true);
-                    setTimeout(() => {
-                      setIsAlert(false);
-                    }, 3000);
-                  }
-                }}>{returnEither(register.btnText, login.btnText)}</Button>
+                }>{returnEither(register.btnText, login.btnText)}</Button>
              
             </Box>
           </form>

@@ -3,6 +3,7 @@ import {Box, Container, Button, Typography, Grid} from '@mui/material'
 import React from 'react'
 import Navbar from '../components/Navbar'
 import BuyModal from '../components/BuyModal'
+import OfferModal from '../components/OfferModal'
 export default function Detail() {
   function renderDetailPage(title, brand, color, condition, price, detail, image){
     return(
@@ -60,6 +61,7 @@ export default function Detail() {
         {renderDetailPage('Beli Uzun Trençkot Kareli', 'Luis Viton', 'Bej Rengi', 'Az Kullanılmış', '319,90',undefined, `${require("../images/detail-image-0.png")}`)}
       </Container>
       <BuyModal/>
+      <OfferModal/>
     </Box>
   )
 }

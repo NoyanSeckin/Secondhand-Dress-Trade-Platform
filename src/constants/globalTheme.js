@@ -15,14 +15,6 @@ export const globalTheme = createTheme({
         }
       }
     },
-    MuiBackdrop: {
-      styleOverrides: {
-        root: {
-          backgroundColor: '#4B9CE2',
-          opacity: 0.7,
-        }
-      }
-    }
   },
   typography: {
     fontFamily: 'Nunito, sans-serif',

@@ -1,6 +1,6 @@
 import {AppBar, Container, Button, Box} from '@mui/material'
 
-import { NavLink } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import {React, useContext, useState, useEffect} from 'react'
 import UserToken from '../contexts/UserToken'
 import SvgLogo from '../constants/icons/SvgLogo'
@@ -17,27 +17,34 @@ export default function Navbar() {
     text: 'Hesabım',
     path: '/account'
   }
-  const [path, setPath] = useState(signIn.path);
-  const [buttonLabel, setButtonLabel] = useState(signIn.text); 
-  useEffect(()=> {
+  function renderButton(){
+    let buttonLabel;
+    let path;
     if(userToken){
-      setPath(account.path);
-      setButtonLabel(account.text);
-    } else if(!userToken){
-      setPath(signIn.path);
-      setButtonLabel(signIn.text);
+      buttonLabel = account.text;
+      path = account.path;
+    }else{
+      buttonLabel = signIn.text;
+      path = signIn.path;
     }
-  }, [account.path, account.text, signIn.text, signIn.path, path, setPath, userToken])
-
+    return (
+      <Link to={path}>
+        <Button sx={{color: 'primary.main', background: '#F0F8FF',  fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PersonIcon/>{buttonLabel}</Button>
+      </Link>
+    )
+    // if(userToken){
+    //   return <Button sx={{color: 'primary.main', background: '#F0F8FF',  fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PersonIcon/>Hesabim</Button>
+    // } else{
+    //   return <Button sx={{color: 'primary.main', background: '#F0F8FF',  fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PersonIcon/>Giris Yap</Button>
+    // }
+  }
   return (
     <AppBar elevation={0} sx={{background: '#fff', py: 2}}>
       <Container maxWidth='xl' sx={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}> 
           <SvgLogo/>
           <Box sx={{display: 'flex', gap: 1.5}}>
             <Button  sx={{color: 'primary.main', background: '#F0F8FF', fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PlusIcon/>Ürün Ekle</Button>
-            <NavLink to={path}> 
-              <Button sx={{color: 'primary.main', background: '#F0F8FF',  fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PersonIcon/>{buttonLabel}</Button>
-            </NavLink>
+            {renderButton()}
           </Box>
       </Container>
     </AppBar>
