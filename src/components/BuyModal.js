@@ -22,18 +22,17 @@ const style = {
   
 };
 
-export default function BuyModal() {
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+export default function BuyModal({isBuyModal, setIsBuyModal}) {
+  // const [open, setOpen] = React.useState(false);
+  // const handleOpen = () => setIsBuyModal(true);
+  const handleClose = () => setIsBuyModal(false);
 
   return (
     <Box>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={open}
+        open={isBuyModal}
         onClose={handleClose}
         closeAfterTransition
         disableAutoFocus
@@ -43,7 +42,7 @@ export default function BuyModal() {
           style:{opacity: 0.7, background: '#4B9CE2'}
         }}
       >
-        <Fade in={open}>
+        <Fade in={isBuyModal}>
           <Box sx={style}>
             <Typography id="transition-modal-title" variant="h5" sx={{fontWeight: '700', fontSize: '25px', mt: 2.5}}>
               Satın AI
@@ -51,7 +50,7 @@ export default function BuyModal() {
             <Typography id="transition-modal-description" sx={{ my: 1.7, color: '#555555' }}>
              Satın AImak istiyor musunuz?
             </Typography>
-            <Button sx={{color: 'primary', background: '#f0f8ff', fontSize: '18px', fontWeight: '700', borderRadius: '8px', px: 5, mr: 1}}>Vazgeç</Button>
+            <Button sx={{color: 'primary', background: '#f0f8ff', fontSize: '18px', fontWeight: '700', borderRadius: '8px', px: 5, mr: 1}}onClick={handleClose}>Vazgeç</Button>
             <Button sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', borderRadius: '8px', px: 5,'&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
           </Box> 
         </Fade>

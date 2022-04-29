@@ -1,6 +1,6 @@
 import {Box, Container, Button, Typography, Grid} from '@mui/material'
 
-import React from 'react'
+import React, {useState} from 'react'
 import Navbar from '../components/Navbar'
 import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
@@ -42,10 +42,12 @@ export default function Detail() {
           <Typography sx={{fontWeight: '700', fontSize: '25px', my: 2.5}}>
             {price} TL
           </Typography>
-          <Button sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', px: 10.5, mr: 1,borderRadius: '8px','&:hover': {background: '#4B9CE2'}}}>
+          <Button sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', px: 10.5, mr: 1,borderRadius: '8px','&:hover': {background: '#4B9CE2'}}}
+          onClick={()=> setIsBuyModal(true)}>
             Satın AI
           </Button>
-          <Button sx={{color: 'primary.main', background: '#F0F8FF', fontSize: '18px', px: 10.5, borderRadius: '8px'}}>
+          <Button sx={{color: 'primary.main', background: '#F0F8FF', fontSize: '18px', px: 10.5, borderRadius: '8px'}} 
+          onClick={() => setIsOfferModal(true)}>
             Teklif Ver
           </Button>
           <Typography variant='h6' sx={{fontWeight: '700', mt: 2.5, mb: 0.5}}>Açıklama</Typography>
@@ -54,14 +56,17 @@ export default function Detail() {
       </Grid>
     )
   }
+  const [isBuyModal, setIsBuyModal] = useState(false);
+  const [isOfferModal, setIsOfferModal] = useState(false);
+
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
       <Container sx={{pt: 12}} maxWidth='xl'>
         {renderDetailPage('Beli Uzun Trençkot Kareli', 'Luis Viton', 'Bej Rengi', 'Az Kullanılmış', '319,90',undefined, `${require("../images/detail-image-0.png")}`)}
       </Container>
-      <BuyModal/>
-      <OfferModal/>
+      <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal}/>
+      <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal}/>
     </Box>
   )
 }

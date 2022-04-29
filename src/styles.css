@@ -45,6 +45,17 @@ table {
 a{
 	text-decoration: none;
 }
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
 /* My Css */
 body{
 	font-family: 'Nunito', 'sans-serif';
@@ -119,3 +130,31 @@ form input:focus{
 	padding-bottom: 10px;
 	z-index: 3;
 }
+
+.offer-wrapper{
+	position: relative;
+}
+
+.offer-wrapper::after{
+	content: "TL";
+	color: #99A0A7;
+	position: absolute;
+	right: 10px;
+	top: 15px;
+}
+.offer-input{
+	height: 45px;
+	border-radius: 8px;
+	background: #F4F4F4;
+	color: #99A0A7;
+	border: none;
+	font-family: 'Nunito', 'sans-serif';
+	padding-left: 1rem;
+	width: 96%;
+	outline: none;
+}
+
+
+
+
+
