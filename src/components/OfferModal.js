@@ -1,11 +1,6 @@
 import React, { useState } from 'react';
-import Backdrop from '@mui/material/Backdrop';
-import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
-import Fade from '@mui/material/Fade';
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-import {Container, Paper} from '@mui/material'
+import {Backdrop, Box, Button, Container, Fade, Modal, Typography} from '@mui/material'
+
 import CloseIcon  from '../constants/icons/CloseIcon';
 import ConfirmIcon from '../constants/icons/ConfirmIcon';
 const style = {
@@ -23,11 +18,10 @@ const style = {
   gap: '1rem'
 };
 export default function OfferModal({isOfferModal, setIsOfferModal}) {
-  // const [open, setOpen] = React.useState(true);
-  const handleOpen = () => setIsOfferModal(true);
   const handleClose = () => setIsOfferModal(false);
-
+  
   const [activeCheckbox, setActiveCheckbox] = useState(null);
+
   function renderCheckboxes(){
     const ratios = [20, 30, 40];
     const ratioLetters = {
