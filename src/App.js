@@ -7,6 +7,7 @@ import  {globalTheme}  from './constants/globalTheme';
 import Home from './pages/Home'
 import Authentication from './pages/Authentication'
 import Detail from './pages/Detail'
+import Account from './pages/Account'
 import ErrorPage from './pages/ErrorPage'
 function App(props) {
   const userToken = document.cookie;
@@ -25,6 +26,7 @@ function App(props) {
               </Route>
              <Route index path="/home" element={<Home/>} />
              <Route path="/detail" element={<Detail/>}/>
+             <Route path="/account" element={<Account/>}/>
              <Route path="*" element={<ErrorPage/>}/>
             </Routes>
         </BrowserRouter>

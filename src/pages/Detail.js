@@ -4,6 +4,7 @@ import React, {useState} from 'react'
 import Navbar from '../components/Navbar'
 import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
+
 export default function Detail() {
   const [isBuyModal, setIsBuyModal] = useState(false);
   const [isOfferModal, setIsOfferModal] = useState(false);

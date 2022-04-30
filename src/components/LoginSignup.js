@@ -10,16 +10,26 @@ import UserToken from '../contexts/UserToken';
 import Alert from '../components/Alert'
 
  export default function LoginSignup(props) {
+         // Send them back to the page they tried to visit when they were
+      // redirected to the login page. Use { replace: true } so we don't create
+      // another entry in the history stack for the login page.  This means that
+      // when they get to the protected page and click the back button, they
+      // won't end up back on the login page, which is also really nice for the
+      // user experience.
+      // navigate(from, { replace: true });
+
+       // Redirect them to the /login page, but save the current location they were
+    // trying to go to when they were redirected. This allows us to send them
+    // along to that page after they login, which is a nicer user experience
+    // than dropping them off on the home page.
+    // return <Navigate to="/login" state={{ from: location }} replace />;
    const userToken = useContext(UserToken);
-  //  useEffect(()=> {
-  //    if(userToken){
-  //      navigate('/');
-  //    }
-  //  }, [userToken])
+
   let navigate = useNavigate();
   const [isAlert, setIsAlert] = useState(false)
   // if false show register page, else login page
   const [isLogin, setIsLogin] = useState(false);
+
   async function registerUser(username, email, password){
     axios.post('https://bootcamp.akbolat.net/auth/local/register',{
       username,
@@ -31,14 +41,19 @@ import Alert from '../components/Alert'
       console.log(document.cookie);
       directHome();
     })
-    .catch((error)=> console.log(error.response))
+    .catch((error)=> {console.log(error); sendAlert(); })
    }
+
    async function loginUser(email, password){
-     const {data} = await axios.post('https://bootcamp.akbolat.net/auth/local', {
+     axios.post('https://bootcamp.akbolat.net/auth/local', {
        identifier: email,
        password: password
-     })
-     console.log(data.jwt)
+     }).then(data => {
+       console.log(data.jwt)
+      document.cookie = data.jwt;
+      directHome() 
+     }).catch(err => {sendAlert(); console.log(err)})
+
    }
   const register = {
     header: 'Üye OI',
@@ -52,7 +67,7 @@ import Alert from '../components/Alert'
     intro: 'Fırsatlardan yararlanmak için giriş yap!',
     btnText: 'Giriş',
     accountInfo: 'Hesabın yok mu?',
-    action: 'Üye Ol'
+    action: 'Üye Ol',
   }
   function returnEither(register, login){
     return isLogin ? login : register;
@@ -69,19 +84,6 @@ import Alert from '../components/Alert'
     }, 3000);
   }
 
-      // Send them back to the page they tried to visit when they were
-      // redirected to the login page. Use { replace: true } so we don't create
-      // another entry in the history stack for the login page.  This means that
-      // when they get to the protected page and click the back button, they
-      // won't end up back on the login page, which is also really nice for the
-      // user experience.
-      // navigate(from, { replace: true });
-
-       // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    // return <Navigate to="/login" state={{ from: location }} replace />;
   return (
     <Box className='form-container'>
       <Alert isAlert={isAlert}/>
@@ -97,10 +99,9 @@ import Alert from '../components/Alert'
           password: Yup.string().min(8, 'Şifreniz en az 8 karaterden oluşmalı.').max(20, 'Şifreniz en fazla 20 karakterden oluşmalı.').required('Lütfen bir şifre giriniz'),
         })
       }
-      onSubmit={(values, errors) => {
-        if(errors.email || errors.password){
-         sendAlert();
-        }else if(!isLogin){
+      onSubmit={(values, {setErrors}) => {
+        console.log()
+        if(!isLogin){
           registerUser(values.email ,values.email, values.password)
         }else if(isLogin){
           loginUser(values.email, values.password);
@@ -111,16 +112,17 @@ import Alert from '../components/Alert'
           <form onSubmit={handleSubmit} style={{width: '80%'}}>
             <Box sx={{display: 'flex', flexDirection: 'column'}}>
               <label htmlFor='email'>Email</label>
-              <input type="email" id='email' value={values.email} onChange={handleChange} placeholder='Email@example.com' />
+              <input className={errors.email && 'form-error'} type="email" id='email' value={values.email} onChange={handleChange} placeholder='Email@example.com' />
               <label htmlFor='password'>Şifre</label>
-              <input type="password" id='password' value={values.password} onChange={handleChange} />
+              <input className={(errors.password) && 'form-error'} type="password" id='password' value={values.password} onChange={handleChange} />
+              {!isLogin && <Typography sx={{alignSelf: 'end', fontSize: '12px', color: '#B1B1B1', mb: 1.5}}>Şifremi Unuttum</Typography>}
               <Button type='submit' variant='contained' 
               sx={
                 {textTransform: 'none', color: '#fff', mt: 1.5, mb: 4, py: 1 ,borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', '&:hover': {
                   backgroundColor: '#4B9CE2'
                 }}
-                }>{returnEither(register.btnText, login.btnText)}</Button>
-             
+                }
+                onClick={()=> {(errors.email || errors.password) && sendAlert()}}>{returnEither(register.btnText, login.btnText)}</Button> 
             </Box>
           </form>
         )}

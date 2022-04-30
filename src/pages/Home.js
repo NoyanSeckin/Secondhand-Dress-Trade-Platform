@@ -14,7 +14,7 @@ export default function Home() {
         <Box sx={{ flexGrow: 1}}>
            <Box sx={{display: 'flex'}}>
            <Typography className={`${activeNav === link && 'active-nav'}`} sx={{
-             fontWeight: 600,color: '#525252','&:hover':{cursor: 'pointer'}}} 
+             fontWeight: 600, color: '#525252','&:hover':{cursor: 'pointer'}}} 
            onClick={()=> setActiveNav(link)}>{link}</Typography>
            </Box>
         </Box>
