@@ -6,8 +6,9 @@ import {useNavigate} from 'react-router-dom'
 
 
 import {React, useState, useEffect, useContext} from 'react'
-import UserToken from '../contexts/UserToken';
+import UserContext from '../contexts/UserContext';
 import Alert from '../components/Alert'
+import { Email } from '@mui/icons-material';
 
  export default function LoginSignup(props) {
          // Send them back to the page they tried to visit when they were
@@ -23,7 +24,7 @@ import Alert from '../components/Alert'
     // along to that page after they login, which is a nicer user experience
     // than dropping them off on the home page.
     // return <Navigate to="/login" state={{ from: location }} replace />;
-   const userToken = useContext(UserToken);
+   const {userAuth, setUserAuth} = useContext(UserContext);
 
   let navigate = useNavigate();
   const [isAlert, setIsAlert] = useState(false)
@@ -37,8 +38,7 @@ import Alert from '../components/Alert'
       password
     })
     .then((response)=> {
-      document.cookie = response.data.jwt;
-      console.log(document.cookie);
+      setAuthCookieAndState(email, response.data.jwt);
       directHome();
     })
     .catch((error)=> {console.log(error); sendAlert(); })
@@ -48,12 +48,19 @@ import Alert from '../components/Alert'
      axios.post('https://bootcamp.akbolat.net/auth/local', {
        identifier: email,
        password: password
-     }).then(data => {
-       console.log(data.jwt)
-      document.cookie = data.jwt;
-      directHome() 
-     }).catch(err => {sendAlert(); console.log(err)})
+     }).then(response => {
+       setAuthCookieAndState(email, response.data.jwt);
+       directHome();
+     }).catch(err => sendAlert())
 
+   }
+   function setAuthCookieAndState(email, token){
+      document.cookie = `email = ${email}`; 
+      document.cookie = `token = ${token}`;
+      const initialValue = {};
+      const userInfo = document.cookie.split(';').map(cookie => cookie.split('=')).reduce((accumulator, [key, value]) => ({...accumulator, [key.trim()]: value}), initialValue);
+      setUserAuth({email: userInfo.email, token: userInfo.token});
+      // console.log(document.cookie)
    }
   const register = {
     header: 'Üye OI',
@@ -100,7 +107,6 @@ import Alert from '../components/Alert'
         })
       }
       onSubmit={(values, {setErrors}) => {
-        console.log()
         if(!isLogin){
           registerUser(values.email ,values.email, values.password)
         }else if(isLogin){

@@ -1,16 +1,20 @@
 import {Container, Box, Typography, Button} from '@mui/material'
 
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import UserContext from '../contexts/UserContext'
 import Navbar from '../components/Navbar'
 import AccountIcon from '../constants/icons/AccountIcon'
 export default function Account() {
+  const {userAuth} = useContext(UserContext);
+
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
 
-  function renderAccountCard(){
+
+  function renderAccountCard(email){
     return(
       <Box sx={{background: '#fff', display: 'flex', gap: 1, pl: 3, py: 2, borderRadius: '8px'}}>
         <AccountIcon/>
-        <Typography sx={{alignSelf: 'center',fontWeight: '700', color: '#525252', fontSize: '15px'}}>aysegul@example.com</Typography>
+        <Typography sx={{alignSelf: 'center',fontWeight: '700', color: '#525252', fontSize: '15px'}}>{email}</Typography>
       </Box>
     )
   }
@@ -79,7 +83,7 @@ export default function Account() {
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
       <Container sx={{pt: 12}} maxWidth="xl">
-        {renderAccountCard()}
+        {renderAccountCard(userAuth.email)}
         <Box sx={{background: '#fff', mt: 1.5, borderRadius: '8px', px: 3, pb: 18}}>
           {renderOfferNavs()}
           {renderItemCard()}
