@@ -9,40 +9,71 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 export default function Home() {
   const [activeNav, setActiveNav] = useState('Hepsi')
   const [allCategories, setAllCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(0);
+  const [selectedCategoryItems, setSelectedCategoryItems] = useState([]);
+  const [categoryStartCounter, setCategoryStartCounter] = useState(0);
+  const lastCategory = 'Etek';
 
   async function getCategories(){
-    const response = await axios.get('https://bootcamp.akbolat.net/categories?_limit=1');
-    setAllCategories(allCategories?.concat(response.data) )
+
+    // Fetch new items with different start points in api
+    const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
+    // hepsi 0 olsun
+    if(selectedCategory === 0){
+      setAllCategories(allCategories?.concat(response.data))
+      setCategoryStartCounter(categoryStartCounter + 1);
+      // console.log(categoryStartCounter)
+    }
+    // others 
+    else if(selectedCategory > 12){
+      // const existingData = allCategories?.filter(category => category.id > 12);
+      
+    } else{
+      setCategoryStartCounter(selectedCategory);
+      const existingData = allCategories.filter(category => category.id === selectedCategory);
+      console.log(existingData)
+    }
   }
   useEffect(() => {
     getCategories();
-
-  
+  }, [selectedCategory]);
+  useEffect(() => {
+    getCategories();
   }, []);
+
+  function setNavbar(link, index){
+    setActiveNav(link);
+    if(index > 12){
+      // get
+    }
+  }
 
   function renderMiddleNavbar(){
     const navbarItems = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
-    return navbarItems.map(link => {
+    return navbarItems.map((link, index) => {
       return(
         <Box sx={{ flexGrow: 1}}>
            <Box sx={{display: 'flex'}}>
            <Typography className={`${activeNav === link && 'active-nav'}`} sx={{
              fontWeight: 600, color: '#525252','&:hover':{cursor: 'pointer'}}} 
-           onClick={()=> setActiveNav(link)}>{link}</Typography>
+           onClick={()=> {setActiveNav(link); setSelectedCategory(index)}}>{link}</Typography>
            </Box>
         </Box>
       )
     }) 
   }
-  function renderCards(){
+  function renderCards(category){
     return allCategories.map((category) => {
+      // console.log(category.name,category.id)
       return(
-        category.products.map(product => {
-          console.log('fetch calisti')
-          return(
-            <CardComp key={category.id} brand={product.brand} color={product.color} price={product.price} image={'/uploads/medium_pantolon_21df8b1db8.jpeg'}/>
-          )
+        category.products.map((product, index) => {
+          // console.log('card map calisti')
+          // console.log(product)
+          if(product.image !== null){
+            return(
+              <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+            )
+          }
         })
       )
     })
@@ -61,32 +92,22 @@ export default function Home() {
           </Box>
         <hr className='home-hr'/>
         </Box>
-      <Box sx={{display: 'flex', flexWrap: 'wrap', gap: 3.5, mt: 4, width: '103.5%'}}>
+     
       <InfiniteScroll
-        dataLength={renderCards.length} //This is important field to render the next data
+        className="infinite-scroll"
+        dataLength={allCategories.length} 
         next={getCategories}
         hasMore={true}
-        loader={<h4>Loading...</h4>}
+        // loader={<h4>Loading...</h4>}
         endMessage={
           <p style={{ textAlign: 'center' }}>
             <b>Yay! You have seen it all</b>
           </p>
         }
-        // below props only if you need pull down functionality
-        // refreshFunction={getCategories}
-        // pullDownToRefresh
-        // pullDownToRefreshThreshold={50}
-        // pullDownToRefreshContent={
-        //   <h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>
-        // }
-        // releaseToRefreshContent={
-        //   <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-        // }
+        // scrollThreshold={0.90}
       >
-        {renderCards()}
+       {renderCards()}
       </InfiniteScroll>
-         
-      </Box>
       </Container>
     </Box>
   )

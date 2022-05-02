@@ -139,6 +139,17 @@ form input:focus{
 	z-index: 3;
 }
 
+.infinite-scroll{
+	display: flex;
+	flex-wrap: wrap; 
+	gap: 1.8rem; 
+	margin-top: 2rem;
+	padding-bottom: 7rem;
+	width: 103.5%;
+}
+
+/* Account Page */
+
 .offer-wrapper{
 	position: relative;
 }

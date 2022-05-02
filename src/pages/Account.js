@@ -61,7 +61,7 @@ export default function Account() {
     )
   }
 
-  function renderSentOrderBtnAndStatus(){
+  function renderSentOffersBtnAndStatus(){
     return(
       <Box sx={{alignSelf: 'center', display: 'flex'}}>
         <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 3.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
@@ -75,7 +75,7 @@ export default function Account() {
       <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
       {renderCardImageandOffer()}  
       {activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtns()
-      : renderSentOrderBtnAndStatus()}
+      : renderSentOffersBtnAndStatus()}
     </Box>
     )
   }
