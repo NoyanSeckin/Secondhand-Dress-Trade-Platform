@@ -8,30 +8,38 @@ import dummyData from '../constants/dummyData.json'
 import InfiniteScroll from 'react-infinite-scroll-component';
 export default function Home() {
   const [activeNav, setActiveNav] = useState('Hepsi')
-  const [allCategories, setAllCategories] = useState([]);
-  const [selectedCategory, setSelectedCategory] = useState(0);
+  // const [allCategories, setAllCategories] = useState([]);
+  const [selectedCategory, setSelectedCategory] = useState(-1);
   const [selectedCategoryItems, setSelectedCategoryItems] = useState([]);
+  const [displayedCategory, setDisplayedCategory] = useState([]);
   const [categoryStartCounter, setCategoryStartCounter] = useState(0);
   const lastCategory = 'Etek';
+  let allCategories = [];
 
   async function getCategories(){
+    
+    if(selectedCategory === -1){
 
-    // Fetch new items with different start points in api
-    const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
-    // hepsi 0 olsun
-    if(selectedCategory === 0){
-      setAllCategories(allCategories?.concat(response.data))
+      if(categoryStartCounter > 0){
+        setCategoryStartCounter(0);
+      }
+      const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
+     
+      setDisplayedCategory(displayedCategory.concat(response.data));
       setCategoryStartCounter(categoryStartCounter + 1);
-      // console.log(categoryStartCounter)
+      // setAllCategories(allCategories?.concat(response.data))
     }
     // others 
     else if(selectedCategory > 12){
       // const existingData = allCategories?.filter(category => category.id > 12);
+      const response = await axios.get(`https://bootcamp.akbolat.net/categories?&_start=13`);
+      setDisplayedCategory(response.data);
       
-    } else{
+    } else if(selectedCategory <= 12){
       setCategoryStartCounter(selectedCategory);
-      const existingData = allCategories.filter(category => category.id === selectedCategory);
-      console.log(existingData)
+      console.log(selectedCategory);
+      const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${selectedCategory}`);
+      setDisplayedCategory(response.data)
     }
   }
   useEffect(() => {
@@ -56,15 +64,16 @@ export default function Home() {
            <Box sx={{display: 'flex'}}>
            <Typography className={`${activeNav === link && 'active-nav'}`} sx={{
              fontWeight: 600, color: '#525252','&:hover':{cursor: 'pointer'}}} 
-           onClick={()=> {setActiveNav(link); setSelectedCategory(index)}}>{link}</Typography>
+           onClick={()=> {setActiveNav(link); setSelectedCategory(index - 1)}}>{link}</Typography>
            </Box>
         </Box>
       )
     }) 
   }
-  function renderCards(category){
-    return allCategories.map((category) => {
-      // console.log(category.name,category.id)
+  function renderCards(displayedCategory){
+    // const displayedCategory = selectedCategoryItems.length > 0 ? selectedCategoryItems : allCategories;
+    return displayedCategory?.map((category) => {
+      console.log(category.name)
       return(
         category.products.map((product, index) => {
           // console.log('card map calisti')
@@ -92,10 +101,9 @@ export default function Home() {
           </Box>
         <hr className='home-hr'/>
         </Box>
-     
       <InfiniteScroll
         className="infinite-scroll"
-        dataLength={allCategories.length} 
+        dataLength={displayedCategory.length} 
         next={getCategories}
         hasMore={true}
         // loader={<h4>Loading...</h4>}
@@ -106,7 +114,7 @@ export default function Home() {
         }
         // scrollThreshold={0.90}
       >
-       {renderCards()}
+       {renderCards(displayedCategory)}
       </InfiniteScroll>
       </Container>
     </Box>
