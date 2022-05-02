@@ -19,7 +19,11 @@ export default function Home() {
   async function getCategories(){
     
     if(selectedCategory === -1){
+      // let localCategories = sessionStorage.getItem('localCategories');
+      // if(localCategories !== 'undefined'){
 
+      // }
+      // setDisplayedCategory([]);
       if(categoryStartCounter > 0){
         setCategoryStartCounter(0);
       }
