@@ -6,6 +6,7 @@ export const globalTheme = createTheme({
     danger: '#F77474',
     orange: '#FAAD60',
     green: '#46AF32',
+    textColor: '#525252',
   },
   components:{
     MuiButton: {

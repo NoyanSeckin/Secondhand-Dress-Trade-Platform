@@ -1,11 +1,12 @@
 import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
 
-import {React, useState, useEffect} from 'react'
+import {React, useState, useEffect, useCallback} from 'react'
 import Navbar from '../components/Navbar'
 import CardComp from '../components/CardComp'
 import dummyData from '../constants/dummyData.json'
 import InfiniteScroll from 'react-infinite-scroll-component';
+
 export default function Home() {
   const [activeNav, setActiveNav] = useState('Hepsi')
   // const [allCategories, setAllCategories] = useState([]);
@@ -16,42 +17,41 @@ export default function Home() {
   const lastCategory = 'Etek';
   let allCategories = [];
 
-  async function getCategories(){
-    
+  const getCategories =  useCallback(async (count) => {
+    console.log(displayedCategory)
     if(selectedCategory === -1){
-      // let localCategories = sessionStorage.getItem('localCategories');
-      // if(localCategories !== 'undefined'){
-
-      // }
-      // setDisplayedCategory([]);
-      if(categoryStartCounter > 0){
-        setCategoryStartCounter(0);
-      }
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
      
-      setDisplayedCategory(displayedCategory.concat(response.data));
+      setDisplayedCategory(displayedCategory?.concat(response.data));
       setCategoryStartCounter(categoryStartCounter + 1);
-      // setAllCategories(allCategories?.concat(response.data))
-    }
-    // others 
-    else if(selectedCategory > 12){
+      setCategoryStartCounter(categoryStartCounter + 1);
+      console.log(categoryStartCounter)
+      }
+    
+     else if(selectedCategory > 12){
       // const existingData = allCategories?.filter(category => category.id > 12);
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?&_start=13`);
       setDisplayedCategory(response.data);
       
     } else if(selectedCategory <= 12){
-      setCategoryStartCounter(selectedCategory);
-      console.log(selectedCategory);
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${selectedCategory}`);
+
       setDisplayedCategory(response.data)
+      setCategoryStartCounter(0);
     }
-  }
+  }, [selectedCategory, categoryStartCounter, displayedCategory] )
+  
   useEffect(() => {
+    if(selectedCategory === -1){
+      setDisplayedCategory([]);
+    }
+    console.log('effect calisti')
     getCategories();
   }, [selectedCategory]);
-  useEffect(() => {
-    getCategories();
-  }, []);
+
+  // useEffect(() => {
+  //   getCategories();
+  // }, []);
 
   function setNavbar(link, index){
     setActiveNav(link);
@@ -77,7 +77,6 @@ export default function Home() {
   function renderCards(displayedCategory){
     // const displayedCategory = selectedCategoryItems.length > 0 ? selectedCategoryItems : allCategories;
     return displayedCategory?.map((category) => {
-      console.log(category.name)
       return(
         category.products.map((product, index) => {
           // console.log('card map calisti')
@@ -107,7 +106,7 @@ export default function Home() {
         </Box>
       <InfiniteScroll
         className="infinite-scroll"
-        dataLength={displayedCategory.length} 
+        dataLength={displayedCategory?.length} 
         next={getCategories}
         hasMore={true}
         // loader={<h4>Loading...</h4>}

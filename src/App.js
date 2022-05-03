@@ -8,6 +8,7 @@ import Home from './pages/Home'
 import Authentication from './pages/Authentication'
 import Detail from './pages/Detail'
 import Account from './pages/Account'
+import AddProduct from "./pages/AddProduct";
 import ErrorPage from './pages/ErrorPage'
 import ProtectedRoutes from './constants/ProtectedRoutes'
 function App(props) {
@@ -33,14 +34,15 @@ function App(props) {
         <BrowserRouter >
           {/*if user signed in  */}
             <Routes>
-            {/* userAuth.token ? <Home/> :  */}
-              <Route  path="/" element={<Authentication/>} >
+            {/* */}
+              <Route  path="/" element={ userAuth.token ? <Home/> :  <Authentication/>} >
               </Route>
               <Route index path="/home" element={<Home/>} />
               <Route path="/detail" element={<Detail/>}/>
               <Route path="*" element={<ErrorPage/>}/>
               <Route element={<ProtectedRoutes/>}>
                 <Route path="/account" element={<Account/>}/>
+                <Route path="/addproduct" element={<AddProduct/>}/>
               </Route>  
             </Routes>
         </BrowserRouter>

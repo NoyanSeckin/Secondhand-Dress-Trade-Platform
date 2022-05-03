@@ -43,7 +43,9 @@ export default function Navbar() {
             <SvgLogo/>
           </Link>
           <Box sx={{display: 'flex', gap: 1.5}}>
-            <Button  sx={{color: 'primary.main', background: '#F0F8FF', fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PlusIcon/>Ürün Ekle</Button>
+            <Link to="/addproduct">
+              <Button  sx={{color: 'primary.main', background: '#F0F8FF', fontWeight: '700',pl: 1.5, pr: 2, borderRadius: '8px'}}><PlusIcon/>Ürün Ekle</Button>
+            </Link>
             {renderButton()}
           </Box>
       </Container>
