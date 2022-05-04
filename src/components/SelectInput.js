@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import {Field} from 'formik'
 import React, { useState, useEffect, useRef } from 'react';
 import DropdownIcon from '../constants/icons/DropdownIcon';
-export default function SelectInput({values, placeholder, handleChange, id, label}) {
+export default function SelectInput({values, placeholder, handleChange, id, label, error}) {
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -52,7 +52,7 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
 
   const renderSelectInput = ()=> {
     return(
-      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'}`}onClick={handleOpen}>
+      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'} ${error && 'form-error'}`}onClick={handleOpen}>
         <Typography variant='h6' 
         sx={{
           zIndex: `${isOpen && '7'}`, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}

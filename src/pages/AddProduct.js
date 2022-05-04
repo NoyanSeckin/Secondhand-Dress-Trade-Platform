@@ -5,7 +5,8 @@ import axios from 'axios'
 import React, {useState, useEffect} from 'react'
 import Navbar from '../components/Navbar'
 import SelectInput from '../components/SelectInput';
-import MuiSelectComp from '../components/MuiSelectComp'
+import Switch from '../components/Switch'
+
 export default function AddProduct() {
   const [apiColors, setApiColors] = useState([]);
   const [brands, setBrands] = useState([]);
@@ -48,16 +49,16 @@ export default function AddProduct() {
         <label htmlFor={valueName}> 
           {inputInfos[valueName].label}
         </label>
-        <textarea id={valueName} type='text' value={value} onChange={handleChange} rows={`${valueName === 'description' ? '3' : '1'}`}
+        <textarea className={error && 'form-error'} id={valueName} type='text' value={value} onChange={handleChange} rows={`${valueName === 'description' ? '3' : '1'}`}
         />
       </Box>
     )
   }
 
-  function renderSelectOption(values, placeholder, id, label,handleChange){
+  function renderSelectOption(values, placeholder, id, label,handleChange, error){
     return(
       <Box sx={{width: '46%'}}>
-        <SelectInput values={values} placeholder={placeholder} handleChange={handleChange} id={id} label={label}/>
+        <SelectInput error={error} values={values} placeholder={placeholder} handleChange={handleChange} id={id} label={label}/>
       </Box>
     )
   }
@@ -77,8 +78,8 @@ export default function AddProduct() {
             // brand: '',
             // color: '',
             // condition: '',
-            // price: '',
-            // isOfferOption: false,
+            price: '',
+            isOfferOption: false,
           }}
           validationSchema={
             Yup.object({
@@ -88,7 +89,8 @@ export default function AddProduct() {
               color: Yup.string().required(),
               status: Yup.string().required(),
               price: Yup.number().required(),
-              isOfferOption: Yup.bool().oneOf([true], false)
+              isOfferOption: Yup.boolean()
+              // oneOf([true], false)
             })
           }
           onSubmit={(values) => {
@@ -103,15 +105,24 @@ export default function AddProduct() {
                   {renderInput(values.description, errors.description, handleChange, 'description')}
                   
                   <Box sx={{display: 'flex', justifyContent: 'space-between', width: '95.5%', flexWrap: 'wrap'}}>
-                    {renderSelectOption(categories, inputInfos.category.placeholder, 'category', 'Kategori', handleChange)}
-                    {renderSelectOption(brands, inputInfos.brand.placeholder, 'brand', 'Marka', handleChange)}
-                    {renderSelectOption(apiColors, inputInfos.color.placeholder, 'color', 'Renk', handleChange)}
-                    {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'status', 'Kullanım Durumu', handleChange)}
+                    {renderSelectOption(categories, inputInfos.category.placeholder, 'category', 'Kategori', handleChange, errors.category)}
+                    {renderSelectOption(brands, inputInfos.brand.placeholder, 'brand', 'Marka', handleChange, errors.brand)}
+                    {renderSelectOption(apiColors, inputInfos.color.placeholder, 'color', 'Renk', handleChange, errors.color)}
+                    {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'status', 'Kullanım Durumu', handleChange, errors.status)}
                   </Box>
-                  <label htmlFor="price">{inputInfos.price.label}</label>
-                  <div className='price-wrapper'>
-                    <input type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}/>
-                  </div>
+
+                  <Box sx={{width: '36%'}}>
+                    <label htmlFor="price">{inputInfos.price.label}</label>
+                    <div className='price-wrapper'>
+                      <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}/>
+                    </div>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                      <label style={{color: '#B1B1B1', fontSize: '1.125rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferOption">Teklif Opsiyonu</label>
+                      <Switch handleChange={handleChange} id='isOfferOption'/>
+                    </Box>
+                  </Box>
+
+                  <Button type="submit">Submit</Button>
                 </Box>
               </form>
             )}
