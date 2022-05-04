@@ -30,10 +30,10 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
     
   }
 
-  const renderValues = () => (
+  const renderOptionValues = () => (
       values.map(value => {
       return(
-        <Typography key={value} variant='h6' sx={{mb: 0.8}}
+        <Typography key={value} variant='h6' className={`option-value ${selectedValue === value && 'active-option-value'}`}
         onClick={()=> handleClose(value)}>{value}</Typography>
       )
      }
@@ -43,22 +43,32 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
   const renderDropdown = () => {
     if(isOpen){
       return(
-        <div className='options-wrapper'>
-          {renderValues()}
+       <div className='options-wrapper'>
+          {renderOptionValues()}
       </div>
       )
     }
   }
+
+  const renderSelectInput = ()=> {
+    return(
+      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'}`}onClick={handleOpen}>
+        <Typography variant='h6' 
+        sx={{
+          zIndex: `${isOpen && '7'}`, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}
+          </Typography>
+        <DropdownIcon 
+        style={{alignSelf: 'center', transform: `${isOpen ? 'rotate(180deg) '  : 'rotate(0deg)'}`, marginRight: '-12px' }}/>
+      </div>
+    )
+  }
   return (
-    <Box sx={{position: 'relative'}} >
+    <Box sx={{position: 'relative', mb: 3}} >
       <label htmlFor='category'>{label}</label>
       <input style={{display: 'none'}} id={id} type="text" onChange={handleChange} ref={inputRef}/>
-      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'}`}onClick={handleOpen}>
-        <Typography 
-        variant='h6' sx={{zIndex: 7, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}</Typography>
-        <DropdownIcon style={{alignSelf: 'center', transform: `${isOpen ? 'rotate(180deg) '  : 'rotate(0deg)'}`, marginRight: '-12px' }}/>
-      </div>
-     {renderDropdown()}
+      {/* when isOpen active, dropdown and selectinput are nested to achive scrollbar design*/}
+      {renderSelectInput()}
+      {renderDropdown()}
     </Box>
   )
 }
