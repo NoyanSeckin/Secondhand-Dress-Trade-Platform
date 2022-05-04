@@ -1,17 +1,33 @@
 import { Box, Typography } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import {Field} from 'formik'
+import React, { useState, useEffect, useRef } from 'react';
 import DropdownIcon from '../constants/icons/DropdownIcon';
-export default function SelectInput({values, placeholder}) {
+export default function SelectInput({values, placeholder, handleChange}) {
+
+
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(placeholder);
-  
   const handleOpen = ()=> {
     setIsOpen(true);
   }
+  
+  const inputRef = useRef();
+  // set input value
+  const setNativeInput = ()=> {
+    Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')
+      .set.call(inputRef.current, selectedValue);
+
+    inputRef.current.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+
+  useEffect(()=> {
+    setNativeInput();
+  }, [selectedValue])
 
   const handleClose = (value) => {
     setIsOpen(false);
     setSelectedValue(value);
+    
   }
 
   const renderValues = () => (
@@ -22,7 +38,7 @@ export default function SelectInput({values, placeholder}) {
       )
      }
     )
-  )
+  ) 
   
   const renderDropdown = () => {
     if(isOpen){
@@ -39,10 +55,15 @@ export default function SelectInput({values, placeholder}) {
       )
     }
   }
+
+  
+
   return (
     <Box sx={{position: 'relative'}} >
+     
+      <input style={{display: 'none'}} id='category' type="text" onChange={handleChange} ref={inputRef}/>
       <div className="select-wrapper" onClick={handleOpen}>
-        {selectedValue}
+        <p >{selectedValue}</p>
         <DropdownIcon style={{alignSelf: 'center'}}/>
       </div>
      {renderDropdown()}

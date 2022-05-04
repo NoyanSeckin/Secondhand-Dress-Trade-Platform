@@ -7,17 +7,32 @@ import Navbar from '../components/Navbar'
 import SelectInput from '../components/SelectInput';
 import MuiSelectComp from '../components/MuiSelectComp'
 export default function AddProduct() {
-  const placeholders = {
-    productName: 'Örnek: Iphone 12 Pro Max',
-    description: 'Ürün açıkIaması girin',
-    category: 'Kategori seç',
-    brand: 'Marka seç',
-    color: 'Renk seç',
-    condition: 'Kullanım durumu seç',
 
+  const requiredText = 'Bu alan zorunludur.'
+
+  const inputInfos = {
+    productName: {label: 'Ürün Adı', placeholder: 'Örnek: Iphone 12 Pro Max'},
+    description: {label: 'Açıklama', placeholder: 'Ürün açıkIaması girin',},
+    category: {label: 'Kategori', placeholder: 'Kategori seç'},
+    brand: {label: 'Marka', placeholder: 'Marka seç'},
+    color: {label: 'Renk', placeholder: 'Renk seç'},
+    condition: {label: 'Kullanım Durumu', placeholder: 'Kullanım durumu seç'},
   }
+
   const categories = ['Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
 
+  function renderInput(value, error, handleChange, valueName){
+    return(
+      <Box sx={{display: 'flex', flexDirection: 'column', mt: 2}}>
+        <label htmlFor={valueName}> 
+          {inputInfos[valueName].label}
+        </label>
+        <input id={valueName} type='text' value={value} onChange={handleChange} 
+        />
+        <Typography sx={{mt: 0}}>{error}</Typography>
+      </Box>
+    )
+  }
 
   return (
     <Box sx={{background: '#F2F2F2'}}>
@@ -28,9 +43,9 @@ export default function AddProduct() {
           <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün DetayIarı</Typography>
           <Formik 
           initialValues={{
-            productName: '12',
-            description: '11',
-            // category: '22',
+            productName: '',
+            description: '',
+            category: '',
             // brand: '',
             // color: '',
             // condition: '',
@@ -39,9 +54,9 @@ export default function AddProduct() {
           }}
           validationSchema={
             Yup.object({
-              productName: Yup.string().max(100, '').required(''),
-              description: Yup.string().max(500, '').required(""),
-              // category: Yup.string().required(),
+              productName: Yup.string().max(100, 'Maksimum 100 karakter giriniz.').required(requiredText),
+              description: Yup.string().max(500, 'Maksimum 500 karakter giriniz').required(requiredText),
+              category: Yup.string()
             })
           }
           onSubmit={(values) => {
@@ -52,16 +67,16 @@ export default function AddProduct() {
               <form onSubmit={handleSubmit}>
                 <Box sx={{display: 'flex', flexDirection: 'column'}}>
                   
-                  <label htmlFor={values.productName}>Ürün Adı</label>
-                  <input type="text" onChange={handleChange} value={values.productName} id={1}/>
+                  {renderInput(values.productName, errors.productName, handleChange, 'productName')}
+                  {renderInput(values.description, errors.description, handleChange, 'description')}
 
-                  <label htmlFor={values.description}>Açıklama</label>
-                  <input type="text" onChange={handleChange} value={values.description} id={2}/>
+                  
                   <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <Box sx={{width: '48%'}}>
-                      <label htmlFor={values.category}>Kategori</label>
-                      <SelectInput values={categories} placeholder={placeholders.category}/>
-                      {/* <MuiSelectComp/> */}
+                      <label htmlFor='category'>Kategori</label>
+                      {/* <input type="text" value={} /> */}
+                      <SelectInput values={categories} placeholder={inputInfos.category.placeholder} value={values.category} handleChange={handleChange}/>
+                      {/* <MuiSelectComp values={categories} handleChange={handleChange}/> */}
                     </Box>
                   
                   </Box>

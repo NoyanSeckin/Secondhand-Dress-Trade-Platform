@@ -4,27 +4,41 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 
-export default function SelectLabels() {
-  const [age, setAge] = React.useState('');
+export default function SelectLabels({handleChange, values}) {
+  const [selectedValue, setSelectedValue] = React.useState('');
 
-  const handleChange = (event) => {
-    setAge(event.target.value);
+  // const handleChange = (event) => {
+  //   setAge(event.target.value);
+  // };
+
+  const renderValues = () => (
+    values.map(value => {
+    return(
+      <MenuItem key={value} className='select-item' 
+      onClick={()=> setSelectedValue(value)}>{value}</MenuItem>
+    )
+   }
+  )
+) 
+  const handleChangeNative = (event) => {
+    setSelectedValue(event.target.value);
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }}>
+    <FormControl 
+      name='category'
+      id='category'
+       sx={{ m: 1, minWidth: 120 }}>
       <Select
-        value={age}
-        onChange={handleChange}
+        value={selectedValue}
+        onChange={handleChangeNative}
         displayEmpty
         inputProps={{ 'aria-label': 'Without label' }}
       >
         <MenuItem value="">
           Kategori Seç
         </MenuItem>
-        <MenuItem value={10}>Ten</MenuItem>
-        <MenuItem value={20}>Twenty</MenuItem>
-        <MenuItem value={30}>Thirty</MenuItem>
+        {renderValues()}
       </Select>
     </FormControl>
   );
