@@ -176,6 +176,24 @@ form input:focus{
 
 /* Add Product */
 
+textarea{
+	font-size: 16px;
+	resize: none;
+	background-color: #F4F4F4;
+	border-radius: 8px;
+	padding: 1rem 0.7rem;
+	border: 1px solid #fff;
+	margin-bottom: 1rem;
+	margin-top: 0.3rem;
+}
+
+form textarea:focus{
+	border: 1px solid #4B9CE2;
+	outline: none;
+	background-color: #F0F8FF;
+	color: #3E3E3E;
+}
+
 .select-wrapper{
 	background-color: #F4F4F4;
 	border-radius: 8px;
@@ -236,16 +254,12 @@ form input:focus{
 	color: #4B9CE2;
 }
 
-/* Scroll bar */
-
-
 .options-wrapper::-webkit-scrollbar {
 	width: 30px;
 	outline: none;
 	display: block;
 }
 
-/* Track */
 .options-wrapper::-webkit-scrollbar-track {
 	height: 200px;
 	margin-top: 1.3rem;
@@ -258,7 +272,6 @@ form input:focus{
 
 }
 
-/* Handle */
 .options-wrapper::-webkit-scrollbar-thumb {
 	background: #B1B1B1;
 	height: 3px;
@@ -271,3 +284,26 @@ form input:focus{
 	border-right: 12px #fff solid;
 }
 
+.price-wrapper{
+	position: relative;
+	width: 100%;
+}
+
+.price-wrapper::after{
+	content: "TL";
+	color: #99A0A7;
+	position: absolute;
+	left: 185px;
+	top: 23px;
+}
+.price-input{
+	border-radius: 8px;
+	background: #F4F4F4;
+	border: none;
+	color: #99A0A7;
+	font-family: 'Nunito', 'sans-serif';
+	height: 45px;
+	outline: none;
+	padding-left: 1rem;
+	width: 96%;
+}

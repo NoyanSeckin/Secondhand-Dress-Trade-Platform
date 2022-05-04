@@ -76,7 +76,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
     return(
       <div className='offer-wrapper'>
        <input type="number" placeholder='Teklif Belirle' className='offer-input' />
-    </div>
+      </div>
     )
   }
   function renderConfirmBtn(){

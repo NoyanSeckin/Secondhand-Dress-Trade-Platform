@@ -37,6 +37,7 @@ export default function AddProduct() {
     brand: {label: 'Marka', placeholder: 'Marka seç'},
     color: {label: 'Renk', placeholder: 'Renk seç'},
     status: {label: 'Kullanım Durumu', placeholder: 'Kullanım durumu seç'},
+    price: {label: 'Fiyat', placeholder: 'Bir fiyat girin'}
   }
 
 
@@ -47,9 +48,8 @@ export default function AddProduct() {
         <label htmlFor={valueName}> 
           {inputInfos[valueName].label}
         </label>
-        <input id={valueName} type='text' value={value} onChange={handleChange} 
+        <textarea id={valueName} type='text' value={value} onChange={handleChange} rows={`${valueName === 'description' ? '3' : '1'}`}
         />
-        <Typography sx={{mt: 0}}>{error}</Typography>
       </Box>
     )
   }
@@ -67,7 +67,7 @@ export default function AddProduct() {
       <Navbar/>
       <Container maxWidth="xl" sx={{pt: 12}}>
         <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 2, pb: 10}}>
-          <Grid item xs='7' sx={{ px: 2}}>
+          <Grid item xs={7} sx={{ px: 2}}>
           <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor', mb: 3}}>Ürün DetayIarı</Typography>
           <Formik 
           initialValues={{
@@ -87,8 +87,8 @@ export default function AddProduct() {
               category: Yup.string().required(),
               color: Yup.string().required(),
               status: Yup.string().required(),
-              // price: Yup.string().required(),
-              // isOfferOption: Yup.bool().oneOf([true], false)
+              price: Yup.number().required(),
+              isOfferOption: Yup.bool().oneOf([true], false)
             })
           }
           onSubmit={(values) => {
@@ -102,22 +102,23 @@ export default function AddProduct() {
                   {renderInput(values.productName, errors.productName, handleChange, 'productName')}
                   {renderInput(values.description, errors.description, handleChange, 'description')}
                   
-                  <Box sx={{display: 'flex', justifyContent: 'space-between', width: '96%', flexWrap: 'wrap'}}>
+                  <Box sx={{display: 'flex', justifyContent: 'space-between', width: '95.5%', flexWrap: 'wrap'}}>
                     {renderSelectOption(categories, inputInfos.category.placeholder, 'category', 'Kategori', handleChange)}
                     {renderSelectOption(brands, inputInfos.brand.placeholder, 'brand', 'Marka', handleChange)}
                     {renderSelectOption(apiColors, inputInfos.color.placeholder, 'color', 'Renk', handleChange)}
                     {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'status', 'Kullanım Durumu', handleChange)}
                   </Box>
+                  <label htmlFor="price">{inputInfos.price.label}</label>
+                  <div className='price-wrapper'>
+                    <input type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}/>
+                  </div>
                 </Box>
-                <Button type='submit'>Submit</Button>
               </form>
             )}
           </Formik>
-          
-
           </Grid>
 
-          <Grid item xs='5'>
+          <Grid item xs={5}>
             <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün GörseIi</Typography>
           </Grid>
         </Grid>
