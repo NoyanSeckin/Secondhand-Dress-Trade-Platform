@@ -73,9 +73,8 @@ export default function AddProduct() {
                   
                   <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
                     <Box sx={{width: '48%'}}>
-                      <label htmlFor='category'>Kategori</label>
                       {/* <input type="text" value={} /> */}
-                      <SelectInput values={categories} placeholder={inputInfos.category.placeholder} value={values.category} handleChange={handleChange}/>
+                      <SelectInput values={categories} placeholder={inputInfos.category.placeholder} handleChange={handleChange} id='category' label='Kategori'/>
                       {/* <MuiSelectComp values={categories} handleChange={handleChange}/> */}
                     </Box>
                   

@@ -2,7 +2,7 @@ import { Box, Typography } from '@mui/material';
 import {Field} from 'formik'
 import React, { useState, useEffect, useRef } from 'react';
 import DropdownIcon from '../constants/icons/DropdownIcon';
-export default function SelectInput({values, placeholder, handleChange}) {
+export default function SelectInput({values, placeholder, handleChange, id, label}) {
 
 
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +33,7 @@ export default function SelectInput({values, placeholder, handleChange}) {
   const renderValues = () => (
       values.map(value => {
       return(
-        <Typography key={value} className='select-item' variant='h6'
+        <Typography key={value} variant='h6' sx={{mb: 0.8}}
         onClick={()=> handleClose(value)}>{value}</Typography>
       )
      }
@@ -44,30 +44,21 @@ export default function SelectInput({values, placeholder, handleChange}) {
     if(isOpen){
       return(
         <div className='options-wrapper'>
-        <div>
-          <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-            <Typography variant='h6'>{placeholder}</Typography>
-            <DropdownIcon/>
-          </Box>
           {renderValues()}
-        </div>
       </div>
       )
     }
   }
-
-  
-
   return (
     <Box sx={{position: 'relative'}} >
-     
-      <input style={{display: 'none'}} id='category' type="text" onChange={handleChange} ref={inputRef}/>
-      <div className="select-wrapper" onClick={handleOpen}>
-        <p >{selectedValue}</p>
-        <DropdownIcon style={{alignSelf: 'center'}}/>
+      <label htmlFor='category'>{label}</label>
+      <input style={{display: 'none'}} id={id} type="text" onChange={handleChange} ref={inputRef}/>
+      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'}`}onClick={handleOpen}>
+        <Typography 
+        variant='h6' sx={{zIndex: 7, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}</Typography>
+        <DropdownIcon style={{alignSelf: 'center', transform: `${isOpen ? 'rotate(180deg) '  : 'rotate(0deg)'}`, marginRight: '-12px' }}/>
       </div>
      {renderDropdown()}
-     
     </Box>
   )
 }

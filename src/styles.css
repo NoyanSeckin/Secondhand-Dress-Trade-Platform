@@ -184,33 +184,69 @@ form input:focus{
 	justify-content: space-between;
 	margin-top: 0.5rem;
 	padding: 0.7rem 1rem;
+	padding-left: 0.8rem;
+	padding-right: 1.38rem;
 	width: 100%;
 }
 
 .select-wrapper:hover{
 	cursor: pointer;
 }
+
+.active-select-wrapper{
+	background-color: #fff;
+	box-shadow: 0px 0px 12px #1E36482E;
+}
+
 .options-wrapper{
 	height: 228px;
-	background-color: blueviolet;
-	box-shadow: 0px 3px 12px #1E36482E;
-	border-radius: 8px;
+	background-color: #fff;
+	box-shadow: 0px 6px 6px #1E36482E;
+	border-bottom-right-radius: 8px;
+	border-bottom-left-radius: 8px;
 	position: absolute;
-	padding: 0.5rem 0.3rem;
-	top: 0;
+	padding: 0.5rem 1rem;
+	padding-left: 1.2rem;
 	overflow: scroll;
 	overflow-x: hidden;
 	width: 100%;
 	z-index: 3;
+	top: 55px;
+	/* top: 22px; */
 }
 
+/* Scroll bar */
 
-.select-input{
+
+.options-wrapper::-webkit-scrollbar {
+	width: 30px;
+	outline: none;
 	display: block;
-	width: 100%;
+}
+
+/* Track */
+.options-wrapper::-webkit-scrollbar-track {
+	height: 200px;
+	margin-top: 1.3rem;
+	margin-bottom: 2rem;
+	border-radius: 15px;
+	background-color: #F2F2F2;
+	padding: 5rem 0;
+
+	border: 12px solid #fff;
 
 }
 
-.select-item{
-	cursor: pointer;
+/* Handle */
+.options-wrapper::-webkit-scrollbar-thumb {
+	background: #B1B1B1;
+	height: 3px;
+
+
+  background-clip: padding-box;
+
+
+	border-left: 12px #fff solid;
+	border-right: 12px #fff solid;
 }
+
