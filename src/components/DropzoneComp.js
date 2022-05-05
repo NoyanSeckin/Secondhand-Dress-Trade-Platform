@@ -5,19 +5,29 @@ import {useDropzone} from 'react-dropzone';
 import React, {useEffect, useState} from 'react';
 import CloudIcon from '../constants/icons/CloudIcon'
 
-export default function DropzoneComp({setSelectedFile}) {
+export default function DropzoneComp({setSelectedFile, setSelectedFileError}) {
   const [files, setFiles] = useState([]);
-
+  const validImgTypes = ['image/png', 'image/jpg', 'image/jpeg']
   const {getRootProps, getInputProps} = useDropzone({
     accept: {
       'image/*': []
     },
-    onDrop: acceptedFiles => {
-      setFiles(acceptedFiles.map(file => Object.assign(file, {
-        preview: URL.createObjectURL(file)
-      })));
-      setSelectedFile(files);
-      console.log(files)
+    onDrop: (acceptedFiles) => {
+      // size check
+      if(acceptedFiles[0].size > 400000){
+        setSelectedFileError("Fotoğraf boyutu 400kb'den büyük")
+      }else if(validImgTypes.includes(acceptedFiles[0].type)){
+        // set image preview
+        setFiles(acceptedFiles.map(file => Object.assign(file, {
+          preview: URL.createObjectURL(file)
+        })));
+        // get the uploaded image
+        setSelectedFile(acceptedFiles[0])
+        setSelectedFileError('')
+        console.log(acceptedFiles[0])
+      } else if(!validImgTypes.includes(acceptedFiles[0])){
+        setSelectedFileError('Lütfen yalnızca jpg veya png formatı yükleyin')
+      }
     }
   });
   
@@ -39,6 +49,12 @@ export default function DropzoneComp({setSelectedFile}) {
     return () => files.forEach(file => URL.revokeObjectURL(file.preview));
   }, []);
 
+
+  function handleRemove(){
+    setFiles([]);
+    setSelectedFile({});
+  }
+
   return (
     <section className="container">
      { files?.length === 0 ? 
@@ -55,7 +71,7 @@ export default function DropzoneComp({setSelectedFile}) {
       :
       <aside style={{position: 'relative'}} >
         {thumbs}
-        <CloseIcon onClick={()=> setFiles([])} 
+        <CloseIcon onClick={handleRemove} 
         sx={{position: 'absolute', zIndex: 3, top: '17px', left: '105px', fontSize: '12px', color: '#fff', background: '#3E3E3E', borderRadius: '50%', '&:hover': {cursor: 'pointer'}}}/>
       </aside>}
     </section>

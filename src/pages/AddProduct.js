@@ -10,11 +10,11 @@ import UserContext from '../contexts/UserContext'
 import DropzoneComp from '../components/DropzoneComp';
 export default function AddProduct() {
   const {userAuth} = useContext(UserContext);
-  const submitBtn = useRef();
   const [apiColors, setApiColors] = useState([]);
   const [brands, setBrands] = useState([]);
   const [usingStatuses, setUsingStatuses] = useState([]);
-  // let apiColors = [];
+  const [selectedFile, setSelectedFile] = useState({});
+  const [selectedFileError, setSelectedFileError] = useState('')
 
   async function getApiValue(extension, setState){
     const response = await axios.get(`https://bootcamp.akbolat.net/${extension}`);
@@ -64,70 +64,36 @@ export default function AddProduct() {
     )
   }
 
-  const [selectedFile, setSelectedFile] = useState();
 
-  const fileChangeHandler = (event)=>{
-    setSelectedFile(event.target.files[0])
-    console.log(selectedFile)
-    console.log(event.target.value);
-  }
 
   function categoryToNumber(category){
     return categories.indexOf(category) + 1;
   }
   const postProduct = async (userData) =>{
-    const userImage = new FormData();
-    userImage.append('File', selectedFile);
-    console.log(userAuth.token)
-    // upload file
-    await axios.post('https://bootcamp.akbolat.net/upload/', userImage, {
-      headers: {Authorization: `Bearer ${userAuth.token}`},
-      'Content-Type': 'multipart/form-data'
-    }).then(res => console.log(res)).catch(err=> console.log(err))
+    const form = new FormData();
+ 
+    const postObject = { ...userData, category: categoryToNumber(userData.category), isSold: false, users_permissions_user: 1} 
 
-    // dene
-  //   axios.post('upload_file', formData, {
-  //     headers: {
-  //       'Content-Type': 'multipart/form-data'
-  //     }
-  // })
 
-  // users_permissions_user: {
-  //   username: userAuth.email,
-  //   email: userAuth.email,
-  //   password: '12345678',
-  //   confirmationToken: userAuth.token
-  // }
+    form.append('data', JSON.stringify(postObject));
+    form.append('files.image', selectedFile)
     
-    const postObject = { data: {...userData, category: 15, price: 120, isSold: false, users_permissions_user: 1, "files.image": 'abiye'} }
-    const jsonData = JSON.stringify(postObject);
-
-
-    const testObject = {
-     data: { "name": "Gomlek",
-      "description": "Lorem opsum",
-      "category": "15",
-      "brand": 'Mavi',
-      "color": "Lacivert",
-      "status": "Az kullanldi",
-      "price": 45,
-      "isOfferable": true,
-      "isSold": false,
-      "users_permissions_user": "1"
-     },
-    "files.image": userImage 
-    }
-    // console.log(testObject)
-
-    // 
-    // await axios.post('https://bootcamp.akbolat.net/products', testObject,  {
-    //   headers: {
-    //     Authorization: `Bearer ${userAuth.token}`
-    //   }, 
-    // }).then((response)=> console.log(response)).catch((err)=> console.log(err.message))
+    await axios.post('https://bootcamp.akbolat.net/products', form, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`
+      }, 
+    }).then((response)=> console.log(response)).catch((err)=> console.log(err.message))
   }
 
-  
+  function renderSelectedFileError(){
+    if(selectedFileError){
+      return(
+      <Typography sx={{color: '#F77474'}}>
+        {selectedFileError}
+      </Typography>
+      )
+    }
+}
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
@@ -155,14 +121,9 @@ export default function AddProduct() {
             })
           }
           onSubmit={(values) => {
-
-
-            // categoryToNumber('Triko')
-
-            console.log(values)
-            // postProduct(values);
-            // if(selectedFile){
-            // }
+            if(selectedFile.path){
+                postProduct(values);
+              }
           }}
           >
             {({values, errors, handleSubmit, dirty, handleChange}) => (
@@ -189,7 +150,21 @@ export default function AddProduct() {
                       <Switch handleChange={handleChange} id='isOfferable'/>
                     </Box>
                   </Box>
-                  <button style={{display: 'none'}} onClick={()=> console.log('clicked')} type='submit' ref={submitBtn}></button>
+
+                  <Button type='submit' variant='contained' 
+                      sx={{
+                        color: '#fff',
+                        fontSize: '18px',
+                        borderRadius: '8px',
+                        position: 'absolute', 
+                        bottom: '0',  
+                        right: 0,
+                        px: 17,
+                        '&:hover': {
+                          cursor: 'pointer'
+                        }
+                        }}>Kaydet</Button>
+                  
                 </Box>
               </form>
             )}
@@ -198,20 +173,8 @@ export default function AddProduct() {
 
           <Grid item xs={5} sx={{mx: 'auto', position: 'relative'}}>
             <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün GörseIi</Typography>
-            <DropzoneComp  setSelectedFile={setSelectedFile}/>
-            <Button variant='contained' 
-            sx={{
-              color: '#fff',
-              fontSize: '18px',
-              borderRadius: '8px',
-              position: 'absolute', 
-              bottom: '-140px',  
-              right: 0,
-              px: 17,
-              '&:hover': {
-                cursor: 'pointer'
-              }
-              }} onClick={()=> {submitBtn.current.click(); postProduct() }}>Kaydet</Button>
+            <DropzoneComp selectedFile={selectedFile}  setSelectedFile={setSelectedFile} setSelectedFileError={setSelectedFileError}/>
+            {renderSelectedFileError()}
           </Grid>
         </Grid>
       </Container>

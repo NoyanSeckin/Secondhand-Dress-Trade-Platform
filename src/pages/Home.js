@@ -18,18 +18,17 @@ export default function Home() {
   let allCategories = [];
 
   const getCategories =  useCallback(async (count) => {
-    console.log(displayedCategory)
+    // -1 equals to all categories
     if(selectedCategory === -1){
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
      
       setDisplayedCategory(displayedCategory?.concat(response.data));
       setCategoryStartCounter(categoryStartCounter + 1);
       setCategoryStartCounter(categoryStartCounter + 1);
-      console.log(categoryStartCounter)
       }
     
      else if(selectedCategory > 12){
-      // const existingData = allCategories?.filter(category => category.id > 12);
+     
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?&_start=13`);
       setDisplayedCategory(response.data);
       
@@ -45,7 +44,6 @@ export default function Home() {
     if(selectedCategory === -1){
       setDisplayedCategory([]);
     }
-    console.log('effect calisti')
     getCategories();
   }, [selectedCategory]);
 
