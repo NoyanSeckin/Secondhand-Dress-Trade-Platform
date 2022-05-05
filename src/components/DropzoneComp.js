@@ -1,45 +1,14 @@
 import {Typography} from '@mui/material'
+import CloseIcon from '@mui/icons-material/Close';
 import {useDropzone} from 'react-dropzone';
 
 import React, {useEffect, useState} from 'react';
 import CloudIcon from '../constants/icons/CloudIcon'
-const thumbsContainer = {
-  display: 'flex',
-  flexDirection: 'row',
-  flexWrap: 'wrap',
-  marginTop: 16
-};
-
-const thumb = {
-  display: 'inline-flex',
-  borderRadius: 2,
-  border: '1px solid #eaeaea',
-  marginBottom: 8,
-  marginRight: 8,
-  width: 100,
-  height: 100,
-  padding: 4,
-  boxSizing: 'border-box'
-};
-
-const thumbInner = {
-  display: 'flex',
-  minWidth: 0,
-  overflow: 'hidden'
-};
-
-const img = {
-  display: 'block',
-  width: '100px',
-};
-
 
 export default function DropzoneComp({setSelectedFile}) {
   const [files, setFiles] = useState([]);
-  useEffect(()=> {
-    console.log(files)
-  }, [files])
-  const {getRootProps, getInputProps, open} = useDropzone({
+
+  const {getRootProps, getInputProps} = useDropzone({
     accept: {
       'image/*': []
     },
@@ -47,15 +16,16 @@ export default function DropzoneComp({setSelectedFile}) {
       setFiles(acceptedFiles.map(file => Object.assign(file, {
         preview: URL.createObjectURL(file)
       })));
+      setSelectedFile(files);
     }
   });
   
   const thumbs = files.map(file => (
-    <div style={thumb} key={file.name}>
-      <div style={thumbInner}>
+    <div  key={file.name}>
+      <div>
         <img
           src={file.preview}
-          style={img}
+          className='dropzone-image'
           alt=''
           // Revoke data uri after image is loaded
           onLoad={() => { URL.revokeObjectURL(file.preview) }}
@@ -76,14 +46,15 @@ export default function DropzoneComp({setSelectedFile}) {
         <CloudIcon/>
         <Typography sx={{color: '#525252', fontWeight: '600'}}>Sürükleyip bırakarak yükle</Typography>
         <span>veya</span>
-        <button type="button" className='dropzone-button' onClick={open}>Görsel Seçin</button>
+        <button type="button" className='dropzone-button'>Görsel Seçin</button>
         <Typography sx={{color: '#B1B1B1', fontSize: '14px'}}>
           PNG ve JPEG Dosya boyutu: max. 400kb
         </Typography>
       </div>
       :
-      <aside style={thumbsContainer}>
+      <aside style={{position: 'relative'}} >
         {thumbs}
+        <CloseIcon sx={{position: 'absolute', zIndex: 3, top: '17px', left: '105px', fontSize: '12px', color: '#fff', background: '#3E3E3E', borderRadius: '50%', '&:hover': {cursor: 'pointer'}}}/>
       </aside>}
     </section>
   );

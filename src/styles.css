@@ -313,6 +313,8 @@ form textarea:focus{
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	padding: 1.5rem 0;
+	width: 100%;
 }
 
 .dropzone-button{
@@ -327,4 +329,11 @@ form textarea:focus{
 
 .dropzone-button:hover{
 	cursor: pointer;
+}
+
+.dropzone-image{
+	height: 113px;
+	width: 113px;
+	border-radius: 8px;
+	margin-top: 1.2rem;
 }

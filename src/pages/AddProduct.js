@@ -2,7 +2,7 @@ import {Box, Container, Typography, Grid, Button} from '@mui/material'
 import { Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useState, useEffect, useContext, useRef} from 'react'
 import Navbar from '../components/Navbar'
 import SelectInput from '../components/SelectInput';
 import Switch from '../components/Switch'
@@ -10,7 +10,7 @@ import UserContext from '../contexts/UserContext'
 import DropzoneComp from '../components/DropzoneComp';
 export default function AddProduct() {
   const {userAuth} = useContext(UserContext);
-
+  const submitBtn = useRef();
   const [apiColors, setApiColors] = useState([]);
   const [brands, setBrands] = useState([]);
   const [usingStatuses, setUsingStatuses] = useState([]);
@@ -74,10 +74,9 @@ export default function AddProduct() {
     console.log(event.target.value);
   }
 
-  function categoryToNumber(){
-
+  function categoryToNumber(category){
+    return categories.indexOf(category) + 1;
   }
-
   const postProduct = async (userData) =>{
     const userImage = new FormData();
     userImage.append('File', selectedFile);
@@ -129,41 +128,14 @@ export default function AddProduct() {
     //   }, 
     // }).then((response)=> console.log(response)).catch((err)=> console.log(err.message))
   }
-  // drag drop
 
-  // const handleFiles = (fileList) => {
-  //   if (fileList) {
-  //     let files = Array.from(fileList);
-  //     setSelectedFile(files);
-  //     console.log(fileList);
-  //   }
-  // };
-  //   const handleDragEnter = e => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //   };
-  //   const handleDragLeave = e => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //   };
-  //   const handleDragOver = e => {
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //   };
-  //   const handleDrop = e => {
-  //     console.log(e);
-  //     e.preventDefault();
-  //     e.stopPropagation();
-  //     handleFiles(e.dataTransfer.items)
-
-  //   };
   
   return (
-    <Box sx={{background: '#F2F2F2'}}>
+    <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
       <Container maxWidth="xl" sx={{pt: 12}}>
-        <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 2, pb: 10}}>
-          <Grid item xs={7} sx={{ px: 2}}>
+        <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 4, pb: '11rem'}}>
+          <Grid item xs={6.5} sx={{ pl: 4, pr: 5, mr: 1, borderRight: '1px solid #F2F2F2'}}>
           <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor', mb: 3}}>Ürün DetayIarı</Typography>
           <Formik 
           initialValues={{
@@ -186,10 +158,12 @@ export default function AddProduct() {
             })
           }
           onSubmit={(values) => {
-            // console.log(values)
-            postProduct(values);
-            if(selectedFile){
-            }
+            categoryToNumber('Triko')
+
+            console.log(values)
+            // postProduct(values);
+            // if(selectedFile){
+            // }
           }}
           >
             {({values, errors, handleSubmit, dirty, handleChange}) => (
@@ -212,28 +186,33 @@ export default function AddProduct() {
                       <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}/>
                     </div>
                     <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-                      <label style={{color: '#B1B1B1', fontSize: '1.125rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferable">Teklif Opsiyonu</label>
+                      <label style={{color: '#B1B1B1', fontSize: '1rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferable">Teklif Opsiyonu</label>
                       <Switch handleChange={handleChange} id='isOfferable'/>
                     </Box>
                   </Box>
-
-                  
-                  <Button type="submit">Submit</Button>
+                  <button style={{display: 'none'}} onClick={()=> console.log('clicked')} type='submit' ref={submitBtn}></button>
                 </Box>
               </form>
             )}
           </Formik>
           </Grid>
 
-          <Grid item xs={5}>
+          <Grid item xs={5} sx={{mx: 'auto', position: 'relative'}}>
             <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün GörseIi</Typography>
-
-            {/* <div>
-              <input type="file" name='file' onChange={fileChangeHandler}/>
-            </div> */}
-
-           <DropzoneComp/>
-
+            <DropzoneComp  setSelectedFile={setSelectedFile}/>
+            <Button variant='contained' 
+            sx={{
+              color: '#fff',
+              fontSize: '18px',
+              borderRadius: '8px',
+              position: 'absolute', 
+              bottom: '-140px',  
+              right: 0,
+              px: 17,
+              '&:hover': {
+                cursor: 'pointer'
+              }
+              }} onClick={()=> submitBtn.current.click()}>Kaydet</Button>
           </Grid>
         </Grid>
       </Container>
