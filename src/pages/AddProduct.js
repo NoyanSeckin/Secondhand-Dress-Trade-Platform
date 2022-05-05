@@ -120,9 +120,13 @@ export default function AddProduct() {
               isOfferable: Yup.boolean()
             })
           }
-          onSubmit={(values) => {
+          onSubmit={(values, {resetForm}) => {
+            // check if user selected image
             if(selectedFile.path){
                 postProduct(values);
+                resetForm();
+                values.category = 'Kategori seç';
+                setSelectedFile({})
               }
           }}
           >

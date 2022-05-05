@@ -53,10 +53,13 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
   const renderSelectInput = ()=> {
     return(
       <div className={`select-wrapper ${isOpen && 'active-select-wrapper'} ${error && 'form-error'}`}onClick={handleOpen}>
+        
+        {/* the displayed value of select input */}
         <Typography variant='h6' 
         sx={{
           zIndex: `${isOpen && '7'}`, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}
           </Typography>
+
         <DropdownIcon 
         style={{alignSelf: 'center', transform: `${isOpen ? 'rotate(180deg) '  : 'rotate(0deg)'}`, marginRight: '-12px' }}/>
       </div>
