@@ -17,6 +17,7 @@ export default function DropzoneComp({setSelectedFile}) {
         preview: URL.createObjectURL(file)
       })));
       setSelectedFile(files);
+      console.log(files)
     }
   });
   
@@ -54,7 +55,8 @@ export default function DropzoneComp({setSelectedFile}) {
       :
       <aside style={{position: 'relative'}} >
         {thumbs}
-        <CloseIcon sx={{position: 'absolute', zIndex: 3, top: '17px', left: '105px', fontSize: '12px', color: '#fff', background: '#3E3E3E', borderRadius: '50%', '&:hover': {cursor: 'pointer'}}}/>
+        <CloseIcon onClick={()=> setFiles([])} 
+        sx={{position: 'absolute', zIndex: 3, top: '17px', left: '105px', fontSize: '12px', color: '#fff', background: '#3E3E3E', borderRadius: '50%', '&:hover': {cursor: 'pointer'}}}/>
       </aside>}
     </section>
   );

@@ -44,8 +44,6 @@ export default function AddProduct() {
     price: {label: 'Fiyat', placeholder: 'Bir fiyat girin'}
   }
 
-
-
   function renderInput(value, error, handleChange, valueName){
     return(
       <Box sx={{display: 'flex', flexDirection: 'column'}}>
@@ -154,11 +152,12 @@ export default function AddProduct() {
               status: Yup.string().required(),
               price: Yup.number().required(),
               isOfferable: Yup.boolean()
-              // oneOf([true], false)
             })
           }
           onSubmit={(values) => {
-            categoryToNumber('Triko')
+
+
+            // categoryToNumber('Triko')
 
             console.log(values)
             // postProduct(values);
@@ -212,7 +211,7 @@ export default function AddProduct() {
               '&:hover': {
                 cursor: 'pointer'
               }
-              }} onClick={()=> submitBtn.current.click()}>Kaydet</Button>
+              }} onClick={()=> {submitBtn.current.click(); postProduct() }}>Kaydet</Button>
           </Grid>
         </Grid>
       </Container>
