@@ -9,7 +9,7 @@ import UserContext from '../contexts/UserContext'
 export default function Detail() {
   const {product, setProduct} = useContext(ProductContext)
   const {userAuth} = useContext(UserContext)
-  console.log(userAuth.id)
+  
   const [localOffer, setLocalOffer] = useState('')
   const [offerError, setOfferError] = useState('')
   const [isBuyModal, setIsBuyModal] = useState(false);

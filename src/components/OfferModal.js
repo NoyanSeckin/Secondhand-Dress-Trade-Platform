@@ -23,7 +23,6 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
   
   const [activeCheckbox, setActiveCheckbox] = useState(null);
   const [offer, setOffer] = useState('')
-  console.log(product)
   function handleCheckbox(ratio){
     setOffer((Number(product.price) * (ratio / 100)).toFixed(2));
     setActiveCheckbox(ratio);

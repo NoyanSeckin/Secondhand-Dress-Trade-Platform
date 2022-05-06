@@ -1,16 +1,19 @@
-import {Container, Box, Typography, Button} from '@mui/material'
+import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
 
 import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../contexts/UserContext'
 import Navbar from '../components/Navbar'
+import CardItem from '../components/CardItem'
 import AccountIcon from '../constants/icons/AccountIcon'
+
 export default function Account() {
   const {userAuth} = useContext(UserContext);
 
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
-
+  const [deletedItemOfferId, setDeletedItemOfferId] = useState();
+  const [deletedItemId, setDeletedItemId] = useState();
   async function getUserProducts(){
     const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
 
@@ -24,6 +27,24 @@ export default function Account() {
   useEffect(()=> {
     getUserProducts();
   }, [])
+
+  useEffect(()=>{
+    // filter rejected offers
+    if(deletedItemOfferId){
+      const filteredArray = [];
+      userProducts.forEach(product => {
+        if(product.id === deletedItemId){
+          let filteredOffers = product.offers.filter(offer => offer.id !== deletedItemOfferId)
+          if(filteredOffers?.length > 0){
+            filteredArray.push({...product, offers: filteredOffers});
+          }
+        }else filteredArray.push(product);
+      })
+     setUserProducts(filteredArray);
+    }
+   
+  }  
+ , [deletedItemOfferId])
 
   function renderAccountCard(email){
     return(
@@ -47,69 +68,35 @@ export default function Account() {
      </Box>)
   }
 
-  function renderCardImageandOffer(){
-    return(
-      <Box sx={{display: 'flex', gap: 1.5}}>
-        <img src={require('../images/detail-image-0.png')} alt=""
-        style={{width: '74px', height: '84px', borderRadius: '8px'}} />
-        <Box>
-          <Typography variant='h6'>Beli Uzun Trenckot Kareli</Typography>
-          <Box sx={{display: 'flex', gap: 1, background: '#F2F2F2', borderRadius: '8px', pl: 1.3, pr: 7, py: 1, mt: 0.8}}>
-          <Typography sx={{color: '#B1B1B1'}}>
-            AIınan Teklif:
-          </Typography>
-          <Typography sx={{fontWeight: '700'}}>
-            119,90 TL
-          </Typography>
-          </Box>
-        </Box>
-      </Box>
-    )
-  }
-  
-  function renderRecievedOfferBtns(){
-    return(
-      <Box sx={{alignSelf: 'center'}}>
-        <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 1.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Onayla</Button>
-        <Button variant='contained' sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
-      </Box>
-    )
-  }
-
-  function renderSentOffersBtnAndStatus(){
-    return(
-      <Box sx={{alignSelf: 'center', display: 'flex'}}>
-        <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 3.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
-        <Typography sx={{color: 'primary.main', fontSize: '15px', alignSelf: 'center'}}>Onaylandı</Typography>
-      </Box>
-    )
-  }
-  
-  function renderCardItem(){
-    return(
-      <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
-      {renderCardImageandOffer()}  
-      {activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtns()
-      : renderSentOffersBtnAndStatus()}
-    </Box>
-    )
-  }
-
-  function renderUserProducts(name, image, offer){
-    userProducts.map(product => {
-      <div>
-
-      </div>
+  function renderUserProducts(){
+   return userProducts?.map(product => {
+     return product.offers?.map((offer, index) => (
+      <CardItem key={index} name={product.name} image={`https://bootcamp.akbolat.net${product.image?.url}`} offer={offer.offerPrice} activePage={activePage} offerId={offer.id}
+      setDeletedItemOfferId={setDeletedItemOfferId} setDeletedItemId={setDeletedItemId}/>
+   ))
     })
   }
+
+  function renderPage(){
+    if(activePage === 'Teklif Aldıklarım'){
+      // render new offers first with reverse direction
+      return(
+        <Box sx={{display: 'flex', flexDirection: 'column-reverse'}}>
+          {renderUserProducts()}
+        </Box>
+      ) 
+    }else{
+      return 0;
+    }
+  }
   return (
-    <Box sx={{background: '#F2F2F2', height: '120vh'}}>
+    <Box sx={{background: '#F2F2F2', minHeight: '120vh', pb: 10}}>
       <Navbar/>
       <Container sx={{pt: 12}} maxWidth="xl">
         {renderAccountCard(userAuth.email)}
         <Box sx={{background: '#fff', mt: 1.5, borderRadius: '8px', px: 3, pb: 18}}>
           {renderOfferNavs()}
-          {renderCardItem()}
+          {renderPage()}
         </Box>
       </Container>
     </Box>

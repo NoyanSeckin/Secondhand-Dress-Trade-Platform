@@ -1,44 +1,37 @@
-import {Container, Box, Typography, Button} from '@mui/material'
+import {Box, Typography, Button} from '@mui/material'
+import axios from 'axios'
 
+import React, {useContext} from 'react'
+import UserContext from '../contexts/UserContext'
+export default function CardItem({activePage, name, image, offer, offerId, setDeletedItemId, setDeletedItemOfferId}) {
 
-import React from 'react'
+  const {userAuth} = useContext(UserContext);
 
-export default function CardItem() {
-  function renderAccountCard(email){
-    return(
-      <Box sx={{background: '#fff', display: 'flex', gap: 1, pl: 3, py: 2, borderRadius: '8px'}}>
-        <AccountIcon/>
-        <Typography sx={{alignSelf: 'center',fontWeight: '700', color: '#525252', fontSize: '15px'}}>{email}</Typography>
-      </Box>
-    )
+  async function rejectOrder(id){
+    const address = `https://bootcamp.akbolat.net/offers/${id}`
+    await axios.delete(address, {
+      headers: {
+      Authorization: `Bearer ${userAuth.token}`
+    }}).then(response=> {
+      setDeletedItemOfferId(response.data.id)
+      setDeletedItemId(response.data.product.id)
+      console.log(response.data)
+    }).catch(err => console.log(err))
   }
 
-  function renderOfferNavs(){
-    const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
-    return( 
-      <Box sx={{display: 'flex', gap: 3,pt: 2}}> {navs.map(nav =>{
-      return(
-        <Typography className={nav === activePage && 'active-nav'} onClick={()=> setActivePage(nav)} sx={{color: '#B1B1B1',  fontWeight: nav === activePage && '700', '&:hover':{cursor: 'pointer'}}}>
-          {nav}
-        </Typography>
-      )
-    })} 
-     </Box>)
-  }
-
-  function renderCardImageandOffer(){
+  function renderCardNameImageOffer(name, image, offer){
     return(
       <Box sx={{display: 'flex', gap: 1.5}}>
-        <img src={require('../images/detail-image-0.png')} alt=""
+        <img src={image} alt=""
         style={{width: '74px', height: '84px', borderRadius: '8px'}} />
         <Box>
-          <Typography variant='h6'>Beli Uzun Trenckot Kareli</Typography>
+          <Typography variant='h6'>{name}</Typography>
           <Box sx={{display: 'flex', gap: 1, background: '#F2F2F2', borderRadius: '8px', pl: 1.3, pr: 7, py: 1, mt: 0.8}}>
           <Typography sx={{color: '#B1B1B1'}}>
             AIınan Teklif:
           </Typography>
           <Typography sx={{fontWeight: '700'}}>
-            119,90 TL
+            {parseFloat(offer).toFixed(2)} TL
           </Typography>
           </Box>
         </Box>
@@ -46,11 +39,14 @@ export default function CardItem() {
     )
   }
   
-  function renderRecievedOfferBtns(){
+  function renderRecievedOfferBtns(id){
     return(
       <Box sx={{alignSelf: 'center'}}>
         <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 1.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Onayla</Button>
-        <Button variant='contained' sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
+
+        <Button onClick={()=> rejectOrder(id)} 
+        variant='contained' 
+        sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
       </Box>
     )
   }
@@ -64,17 +60,17 @@ export default function CardItem() {
     )
   }
   
-  function renderCardItem(){
+  function renderCardItem(name, image, offer, offerId){
     return(
       <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
-      {renderCardImageandOffer()}  
-      {activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtns()
+      {renderCardNameImageOffer(name, image, offer)}  
+      {activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtns(offerId)
       : renderSentOffersBtnAndStatus()}
     </Box>
     )
   }
 
   return (
-    <div>CardItem</div>
+    <div>{renderCardItem(name, image, offer, offerId)}</div>
   )
 }
