@@ -10,12 +10,20 @@ import ProductContext from '../contexts/ProductContext'
 export default function Home() {
   const {setProduct} = useContext(ProductContext)
   const navigate = useNavigate();
-  const [activeNav, setActiveNav] = useState('Hepsi')
-  const [selectedCategory, setSelectedCategory] = useState(-1);
+
+  const active_nav = sessionStorage.getItem('active-nav');
+  const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
+
+  const [activeNav, setActiveNav] = useState(active_nav || 'Hepsi')
+  const [selectedCategory, setSelectedCategory] = useState(selected_category || -1);
   const [displayedCategory, setDisplayedCategory] = useState([]);
   const [categoryStartCounter, setCategoryStartCounter] = useState(0);
 
   const getCategories =  useCallback(async (count) => {
+    // save users displayed category for refresh
+    sessionStorage.setItem('active-nav', (activeNav));
+    sessionStorage.setItem('selected-category', JSON.stringify(selectedCategory))
+
     // -1 equals to all categories
     if(selectedCategory === -1){
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
@@ -35,26 +43,12 @@ export default function Home() {
       setDisplayedCategory(response.data)
       setCategoryStartCounter(0);
     }
-    // save users displayed category for refresh
-    sessionStorage.setItem('active-nav', (activeNav));
-    sessionStorage.setItem('selected-category', JSON.stringify(selectedCategory))
+    
   }, [selectedCategory, categoryStartCounter, displayedCategory] )
   
   console.log(selectedCategory)
 
-  useEffect(()=> {
-    // detect page refresh and display selected category
-    if(performance.getEntriesByType("navigation")[0].type){
-      const active_nav = sessionStorage.getItem('active-nav');
-      const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
-      console.log(typeof selected_category)
-      if(selected_category){
-        console.log(selected_category)
-        setSelectedCategory(selected_category);
-        setActiveNav(active_nav);
-      }
-    }
-  }, [])
+
 
   useEffect(() => {
     if(selectedCategory === -1){

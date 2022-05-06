@@ -1,30 +1,9 @@
 import {Container, Box, Typography, Button} from '@mui/material'
-import axios from 'axios'
 
-import React, { useState, useContext, useEffect } from 'react'
-import UserContext from '../contexts/UserContext'
-import Navbar from '../components/Navbar'
-import AccountIcon from '../constants/icons/AccountIcon'
-export default function Account() {
-  const {userAuth} = useContext(UserContext);
 
-  const [activePage, setActivePage] = useState('Teklif Aldıklarım');
-  const [userProducts, setUserProducts] = useState([]);
+import React from 'react'
 
-  async function getUserProducts(){
-    const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
-
-    await axios.get(address, {
-      headers: {
-        Authorization: `Bearer ${userAuth.token}`
-      }
-    }).then(response => setUserProducts(response.data)).catch(err => console.log(err))
-  }
-
-  useEffect(()=> {
-    getUserProducts();
-  }, [])
-
+export default function CardItem() {
   function renderAccountCard(email){
     return(
       <Box sx={{background: '#fff', display: 'flex', gap: 1, pl: 3, py: 2, borderRadius: '8px'}}>
@@ -95,23 +74,7 @@ export default function Account() {
     )
   }
 
-  function renderUserProducts(name, image, offer){
-    userProducts.map(product => {
-      <div>
-
-      </div>
-    })
-  }
   return (
-    <Box sx={{background: '#F2F2F2', height: '120vh'}}>
-      <Navbar/>
-      <Container sx={{pt: 12}} maxWidth="xl">
-        {renderAccountCard(userAuth.email)}
-        <Box sx={{background: '#fff', mt: 1.5, borderRadius: '8px', px: 3, pb: 18}}>
-          {renderOfferNavs()}
-          {renderCardItem()}
-        </Box>
-      </Container>
-    </Box>
+    <div>CardItem</div>
   )
 }
