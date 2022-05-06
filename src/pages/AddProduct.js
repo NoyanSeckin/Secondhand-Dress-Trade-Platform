@@ -8,6 +8,7 @@ import SelectInput from '../components/SelectInput';
 import Switch from '../components/Switch'
 import UserContext from '../contexts/UserContext'
 import DropzoneComp from '../components/DropzoneComp';
+
 export default function AddProduct() {
   const {userAuth} = useContext(UserContext);
   const [apiColors, setApiColors] = useState([]);
@@ -97,8 +98,8 @@ export default function AddProduct() {
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
-      <Container maxWidth="xl" sx={{pt: 12}}>
-        <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 4, pb: '11rem'}}>
+      <Container maxWidth="xl" sx={{pt: 12, position:'relative'}}>
+        <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 4, pb: '10.3rem'}}>
           <Grid item xs={6.5} sx={{ pl: 4, pr: 5, mr: 1, borderRight: '1px solid #F2F2F2'}}>
           <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor', mb: 3}}>Ürün DetayIarı</Typography>
           <Formik 
@@ -116,7 +117,7 @@ export default function AddProduct() {
               color: Yup.string(),
               brand: Yup.string(),
               status: Yup.string().required(),
-              price: Yup.number().required(),
+              price: Yup.number('0-9 Arasında Bir Rakam Girin').required(),
               isOfferable: Yup.boolean()
             })
           }
@@ -147,9 +148,11 @@ export default function AddProduct() {
                   <Box sx={{width: '36%'}}>
                     <label htmlFor="price">{inputInfos.price.label}</label>
                     <div className='price-wrapper'>
-                      <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}/>
+                      <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}
+                      style={{marginBottom: 0}}/>
+                      {errors.price && <Typography sx={{fontSize: '15px', color: '#f77474', pb: 2}}>0-9 Arasında Bir Rakam Girin</Typography>}
                     </div>
-                    <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 1}}>
                       <label style={{color: '#B1B1B1', fontSize: '1rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferable">Teklif Opsiyonu</label>
                       <Switch handleChange={handleChange} id='isOfferable'/>
                     </Box>
@@ -161,9 +164,9 @@ export default function AddProduct() {
                         fontSize: '18px',
                         borderRadius: '8px',
                         position: 'absolute', 
-                        bottom: '0',  
-                        right: 0,
-                        px: 17,
+                        bottom: '35px',  
+                        right: '70px',
+                        px: 16,
                         '&:hover': {
                           cursor: 'pointer'
                         }

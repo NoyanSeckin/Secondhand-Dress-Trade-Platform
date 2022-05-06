@@ -1,21 +1,19 @@
 import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
+import InfiniteScroll from 'react-infinite-scroll-component';
+import {useNavigate} from 'react-router-dom'
 
-import {React, useState, useEffect, useCallback} from 'react'
+import {React, useState, useEffect, useCallback, useContext} from 'react'
 import Navbar from '../components/Navbar'
 import CardComp from '../components/CardComp'
-import dummyData from '../constants/dummyData.json'
-import InfiniteScroll from 'react-infinite-scroll-component';
-
+import ProductContext from '../contexts/ProductContext'
 export default function Home() {
+  const {setProduct} = useContext(ProductContext)
+  const navigate = useNavigate();
   const [activeNav, setActiveNav] = useState('Hepsi')
-  // const [allCategories, setAllCategories] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState(-1);
-  const [selectedCategoryItems, setSelectedCategoryItems] = useState([]);
   const [displayedCategory, setDisplayedCategory] = useState([]);
   const [categoryStartCounter, setCategoryStartCounter] = useState(0);
-  const lastCategory = 'Etek';
-  let allCategories = [];
 
   const getCategories =  useCallback(async (count) => {
     // -1 equals to all categories
@@ -26,9 +24,8 @@ export default function Home() {
       setCategoryStartCounter(categoryStartCounter + 1);
       setCategoryStartCounter(categoryStartCounter + 1);
       }
-    
+      // these are other categories 'digerleri'
      else if(selectedCategory > 12){
-     
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?&_start=13`);
       setDisplayedCategory(response.data);
       
@@ -47,17 +44,6 @@ export default function Home() {
     getCategories();
   }, [selectedCategory]);
 
-  // useEffect(() => {
-  //   getCategories();
-  // }, []);
-
-  function setNavbar(link, index){
-    setActiveNav(link);
-    if(index > 12){
-      // get
-    }
-  }
-
   function renderMiddleNavbar(){
     const navbarItems = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
     return navbarItems.map((link, index) => {
@@ -72,24 +58,28 @@ export default function Home() {
       )
     }) 
   }
+
+  function directToDetailPage(product){
+    setProduct(product);
+    navigate('/detail')
+  }
+
   function renderCards(displayedCategory){
-    // const displayedCategory = selectedCategoryItems.length > 0 ? selectedCategoryItems : allCategories;
+
     return displayedCategory?.map((category) => {
       return(
         category.products.map((product, index) => {
-          // console.log('card map calisti')
-          // console.log(product)
-          if(product.image !== null){
+          if(product.image !== null && !product.isSold){
             return(
-              <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+              <div onClick={()=> directToDetailPage(product)}>
+                <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+              </div>
             )
           }
         })
       )
     })
   }
-
-
 
   return (
     <Box sx={{background: '#F2F2F2'}}>

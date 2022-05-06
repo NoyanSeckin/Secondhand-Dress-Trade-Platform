@@ -1,15 +1,24 @@
 import {Box, Container, Button, Typography, Grid} from '@mui/material'
 
-import React, {useState} from 'react'
+import React, {useState, useContext, useEffect} from 'react'
 import Navbar from '../components/Navbar'
 import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
-
+import ProductContext from '../contexts/ProductContext'
 export default function Detail() {
+  const {product} = useContext(ProductContext)
+  console.log(product)
   const [isBuyModal, setIsBuyModal] = useState(false);
   const [isOfferModal, setIsOfferModal] = useState(false);
+  const alternativeText = 'Belirtilmemiş';
 
-  function renderDetailPage(title, brand, color, condition, price, detail, image){
+  useEffect(()=> {
+    // scroll to the top of page
+    document.body.scrollTop = 0; // For Safari
+    document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+  }, [])
+
+  function renderDetailPage(name, brand, color, condition, price, detail, image){
     return(
       <Container sx={{pt: 12}} maxWidth='xl'>
         <Grid container sx={{background: '#fff', p: 2, borderRadius: '8px'}}>
@@ -17,7 +26,7 @@ export default function Detail() {
             {renderItemImage(image)}
           </Grid>
           <Grid item xs={6} sx={{pl: 5}}>
-            {renderTitle(title)}
+            {rendername(name)}
             {renderItemDetails(brand, color, condition)}
             {renderPrice(price)}
             {renderBtns()}
@@ -28,11 +37,11 @@ export default function Detail() {
     )
   }
   function renderItemImage(image){
-    return <img  style={{width: '100%'}} src={image} alt="" />
+    return <img  style={{borderRadius: '8px', width: '100%', maxHeight: '737px', maxWidth: '700px'}} src={image} alt="" />
   }
 
-  function renderTitle(title) {
-    return <Typography variant='h3' sx={{mt: 1.5}}>{title}</Typography>
+  function rendername(name) {
+    return <Typography variant='h3' sx={{mt: 1.5}}>{name}</Typography>
   }
 
   function renderItemDetails(brand, color, condition) {
@@ -43,7 +52,7 @@ export default function Detail() {
             Marka: 
           </Typography>
           <Typography sx={{width: '55%'}}>
-            {brand}
+            {brand || alternativeText}
           </Typography>
         </Box>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
@@ -51,7 +60,7 @@ export default function Detail() {
             Renk: 
           </Typography>
           <Typography sx={{width: '55%'}}>
-            {color}
+            {color || alternativeText}
           </Typography>
         </Box>
         <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
@@ -59,7 +68,7 @@ export default function Detail() {
           Kullanım Durumu: 
         </Typography>
         <Typography sx={{width: '55%'}}> 
-          {condition}
+          {condition || alternativeText}
         </Typography>
         </Box>
       </Box>
@@ -90,7 +99,7 @@ export default function Detail() {
     return(
       <Box>
          <Typography variant='h6' sx={{fontWeight: '700', mt: 2.5, mb: 0.5}}>Açıklama</Typography>
-          <Typography sx={{fontSize: '15px', pr: 18, mr: 6, color: '#555555'}}>{detail || 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Tenetur officia modi dignissimos aliquid atque? Aspernatur exercitationem nulla optio illo magni, ratione aliquid et, nesciunt ut quaerat ipsam deserunt. Amet, placeat.'}</Typography>
+          <Typography sx={{fontSize: '15px', pr: 18, mr: 6, color: '#555555'}}>{detail || alternativeText}</Typography>
       </Box>
     )
   }
@@ -98,7 +107,7 @@ export default function Detail() {
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
-      {renderDetailPage('Beli Uzun Trençkot Kareli', 'Luis Viton', 'Bej Rengi', 'Az Kullanılmış', '319,90',undefined, `${require("../images/detail-image-0.png")}`)}
+      {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`)}
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal}/>
       <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal}/>
     </Box>
