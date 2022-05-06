@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import {Backdrop, Box, Button, Container, Fade, Modal, Typography} from '@mui/material'
+import axios from 'axios'
 
 import CloseIcon  from '../constants/icons/CloseIcon';
 import ConfirmIcon from '../constants/icons/ConfirmIcon';
@@ -17,10 +18,16 @@ const style = {
   flexDirection: 'column',
   gap: '1rem'
 };
-export default function OfferModal({isOfferModal, setIsOfferModal}) {
+export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setLocalOffer, setOfferError}) {
   const handleClose = () => setIsOfferModal(false);
   
   const [activeCheckbox, setActiveCheckbox] = useState(null);
+  const [offer, setOffer] = useState('')
+  console.log(product)
+  function handleCheckbox(ratio){
+    setOffer((Number(product.price) * (ratio / 100)).toFixed(2));
+    setActiveCheckbox(ratio);
+  }
 
   function renderCheckboxes(){
     const ratios = [20, 30, 40];
@@ -40,7 +47,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
           gap: 0.5,
           '&:hover': {cursor: 'pointer'}
           }} 
-          onClick={()=> setActiveCheckbox(ratio)}>
+          onClick={()=> handleCheckbox(ratio)}>
           <Box sx={{ml: 1}}>
            {activeCheckbox === ratio ? <ConfirmIcon/> 
            : <img src={require('../images/ellipse-outline.png')} alt="small-ellipse" />} 
@@ -60,22 +67,22 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
     </Box>
     )
   }
-  function renderImgAndPrice(){
+  function renderNameImgAndPrice(image, price){
     return(
       <Box sx={{background: '#f0f8ff', display: 'flex', justifyContent: 'space-between', borderRadius: '10px', p: 1}}>
       <Box sx={{display: 'flex', width: '50%'}}>
-        <img src={require('../images/detail-image-0.png')} alt=""
+        <img src={image} alt=""
         style={{width: '50px', height: '50px', borderRadius: '8px'}} />
-        <Typography sx={{ml: 1, color: '#555555', lineHeight: '20px'}}>Beli Uzun Trenckot Kareli</Typography>
+        <Typography sx={{ml: 1, color: '#555555', lineHeight: '20px'}}>{product.name}</Typography>
       </Box>
-      <Typography sx={{color: '#525252', fontWeight: '700', alignSelf: 'center'}} variant='h6'>319,90 TL</Typography>
+      <Typography sx={{color: '#525252', fontWeight: '700', alignSelf: 'center'}} variant='h6'>{price} TL</Typography>
     </Box>
     )
   }
   function renderOfferInput(){
     return(
       <div className='offer-wrapper'>
-       <input type="number" placeholder='Teklif Belirle' className='offer-input' />
+       <input type="number" placeholder='Teklif Belirle' className='offer-input' value={offer} onChange={(e)=> setOffer(e.target.value)} />
       </div>
     )
   }
@@ -83,6 +90,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
     return(
       <Box sx={{mx: 'auto'}}>
         <Button variant='contained' 
+        onClick={sendOffer}
         sx={{
           color: '#fff', 
           borderRadius: '8px',
@@ -92,6 +100,25 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
      </Box>
     )
   }
+  async function sendOffer(){
+    const address = `https://bootcamp.akbolat.net/offers`
+    await axios.post(address, {product: product.id, users_permissions_user: userAuth.id, offerPrice: Number(offer)}, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`,
+      }, 
+    }).then((response)=> {
+      if(response.data.product.isOfferable){
+        setLocalOffer(response.data.offerPrice);
+        setOfferError('')
+      }else{
+        setOfferError('Bu ürün teklif kabul etmiyor')
+        setLocalOffer(1);
+      }
+    }).catch((err)=> console.log(err.message))
+    
+    handleClose();
+  }
+
   return (
     <div>
       <Modal
@@ -109,7 +136,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal}) {
         <Fade in={isOfferModal}>
           <Container sx={style}>
             {renderHeaderAndCloseIcon()}
-            {renderImgAndPrice()}
+            {renderNameImgAndPrice(`https://bootcamp.akbolat.net${product.image?.url}`, product.price)}
             {renderCheckboxes()}
             {renderOfferInput()}
             {renderConfirmBtn()}

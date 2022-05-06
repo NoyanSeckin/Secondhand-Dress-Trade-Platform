@@ -5,6 +5,7 @@ import Modal from '@mui/material/Modal';
 import Fade from '@mui/material/Fade';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import axios from 'axios'
 
 const style = {
   position: 'absolute',
@@ -22,10 +23,21 @@ const style = {
   
 };
 
-export default function BuyModal({isBuyModal, setIsBuyModal}) {
+export default function BuyModal({isBuyModal, setIsBuyModal, productId, setProduct, token}) {
   // const [open, setOpen] = React.useState(false);
   // const handleOpen = () => setIsBuyModal(true);
   const handleClose = () => setIsBuyModal(false);
+  async function buyProduct(){
+
+    const address = `https://bootcamp.akbolat.net/products/${productId}`
+    await axios.put(address, {isSold: true}, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }, 
+    }).then((response)=> setProduct(response.data)).catch((err)=> console.log(err.message))
+    
+    handleClose();
+  }
 
   return (
     <Box>
@@ -51,7 +63,7 @@ export default function BuyModal({isBuyModal, setIsBuyModal}) {
              Satın AImak istiyor musunuz?
             </Typography>
             <Button sx={{color: 'primary', background: '#f0f8ff', fontSize: '18px', fontWeight: '700', borderRadius: '8px', px: 5, mr: 1}}onClick={handleClose}>Vazgeç</Button>
-            <Button sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', borderRadius: '8px', px: 5,'&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
+            <Button onClick={buyProduct} sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', borderRadius: '8px', px: 5,'&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
           </Box> 
         </Fade>
       </Modal>

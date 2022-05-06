@@ -38,8 +38,9 @@ import { Email } from '@mui/icons-material';
       password
     })
     .then((response)=> {
-      setAuthCookieAndState(email, response.data.jwt);
-      directHome();
+      console.log(response.data.user.id)
+      setAuthCookieAndState(email, response.data.jwt, response.data.user.id);
+      // directHome();
     })
     .catch((error)=> {console.log(error); sendAlert(); })
    }
@@ -49,18 +50,19 @@ import { Email } from '@mui/icons-material';
        identifier: email,
        password: password
      }).then(response => {
-       setAuthCookieAndState(email, response.data.jwt);
+       
+       setAuthCookieAndState(email, response.data.jwt, response.data.user.id);
        directHome();
      }).catch(err => sendAlert())
 
    }
-   function setAuthCookieAndState(email, token){
+   function setAuthCookieAndState(email, token, id){
       document.cookie = `email = ${email}`; 
       document.cookie = `token = ${token}`;
+      document.cookie = `id = ${id}`
       const initialValue = {};
       const userInfo = document.cookie.split(';').map(cookie => cookie.split('=')).reduce((accumulator, [key, value]) => ({...accumulator, [key.trim()]: value}), initialValue);
-      setUserAuth({email: userInfo.email, token: userInfo.token});
-      // console.log(document.cookie)
+      setUserAuth({email: userInfo.email, token: userInfo.token, id: userInfo.id});
    }
   const register = {
     header: 'Üye OI',

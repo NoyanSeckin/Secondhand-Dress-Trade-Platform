@@ -70,10 +70,11 @@ export default function AddProduct() {
   function categoryToNumber(category){
     return categories.indexOf(category) + 1;
   }
+  
   const postProduct = async (userData) =>{
     const form = new FormData();
  
-    const postObject = { ...userData, category: categoryToNumber(userData.category), isSold: false, users_permissions_user: 1} 
+    const postObject = { ...userData, category: categoryToNumber(userData.category), isSold: false, users_permissions_user: userAuth.id} 
 
 
     form.append('data', JSON.stringify(postObject));
@@ -125,9 +126,9 @@ export default function AddProduct() {
             // check if user selected image
             if(selectedFile.path){
                 postProduct(values);
-                resetForm();
-                values.category = 'Kategori seç';
-                setSelectedFile({})
+                // resetForm();
+                // values.category = 'Kategori seç';
+                // setSelectedFile({})
               }
           }}
           >

@@ -35,13 +35,33 @@ export default function Home() {
       setDisplayedCategory(response.data)
       setCategoryStartCounter(0);
     }
+    // save users displayed category for refresh
+    sessionStorage.setItem('active-nav', (activeNav));
+    sessionStorage.setItem('selected-category', JSON.stringify(selectedCategory))
   }, [selectedCategory, categoryStartCounter, displayedCategory] )
   
+  console.log(selectedCategory)
+
+  useEffect(()=> {
+    // detect page refresh and display selected category
+    if(performance.getEntriesByType("navigation")[0].type){
+      const active_nav = sessionStorage.getItem('active-nav');
+      const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
+      console.log(typeof selected_category)
+      if(selected_category){
+        console.log(selected_category)
+        setSelectedCategory(selected_category);
+        setActiveNav(active_nav);
+      }
+    }
+  }, [])
+
   useEffect(() => {
     if(selectedCategory === -1){
       setDisplayedCategory([]);
     }
     getCategories();
+    console.log(selectedCategory)
   }, [selectedCategory]);
 
   function renderMiddleNavbar(){
@@ -69,7 +89,7 @@ export default function Home() {
     return displayedCategory?.map((category) => {
       return(
         category.products.map((product, index) => {
-          if(product.image !== null && !product.isSold){
+          if(product.image !== null ){
             return(
               <div onClick={()=> directToDetailPage(product)}>
                 <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>

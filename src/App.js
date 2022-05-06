@@ -22,11 +22,10 @@ function App(props) {
       setAuthStateAfterRefresh();
     }
   }, [])
-
   function setAuthStateAfterRefresh(){
     const initialValue = {};
       const userInfo = document.cookie.split(';').map(cookie => cookie.split('=')).reduce((accumulator, [key, value]) => ({...accumulator, [key.trim()]: value}), initialValue);
-      setUserAuth({email: userInfo.email, token: userInfo.token});
+      setUserAuth({email: userInfo.email, token: userInfo.token, id: userInfo.id});
   }
   
   return (
