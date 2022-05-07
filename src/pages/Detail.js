@@ -44,7 +44,7 @@ export default function Detail() {
             {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
             {width < mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
             {renderIsSold(isSold)}
-            {renderBtns(isSold, offer)}
+            {renderBtns(isSold)}
             {renderDescription(description)}
           </Grid>
         </Grid>
@@ -95,8 +95,28 @@ export default function Detail() {
   function renderIsSold(isSold){
     if(isSold){
       return(
-        <Box sx={{display: 'flex'}}>
-          <Typography variant='h6' sx={{color: '#FAAD60', fontWeight: '600', borderRadius: '8px', background: '#FFF0E2', px: 3, py: 1}}>Bu Ürün Satışta Değil</Typography>
+        <Box sx={{
+          display: 'flex',
+          background: {xs: '#fff', sm: 'none'},
+          bottom: 0,
+          left: {xs: '0', sm: 0},
+          mb: {xs: 0.6, sm: 0},
+          pt: {xs: 1, sm: 0},
+          pb: {xs: 0.7, sm: 0},
+          position: {xs: 'fixed', sm: 'relative'},
+          width: {xs: '100%', sm : '100%'},
+
+        }}>
+          <Typography variant='h6' 
+          sx={{
+            color: '#FAAD60', 
+            fontWeight: '600', 
+            borderRadius: '8px', 
+            background: '#FFF0E2', 
+            px: {xs: 10.5, sm: 3}, 
+            py: 1,
+            mx: {xs: 'auto', sm: 0}
+            }}>Bu Ürün Satışta Değil</Typography>
         </Box>
       )
     }
@@ -170,15 +190,38 @@ export default function Detail() {
       </Box>
     )
   }
-  function renderBtns(isSold, offer) {
+  function renderBtns(isSold) {
       if(!isSold){
         return(
-          <Box>
-          <Button sx={{color: '#fff', background: '#4B9CE2', fontWeight: 700, fontSize: '18px', px: 10.5, mr: 1,borderRadius: '8px','&:hover': {background: '#4B9CE2'}}}
+          <Box sx={{
+            background: {xs: '#fff', sm: 'none'},
+            bottom: 0,
+            left: {xs: '-24px', sm: 0},
+            mb: {xs: 0.6, sm: 0},
+            py: {xs: 1, sm: 0},
+            position: {xs: 'fixed', sm: 'relative'},
+            width: {xs: '110%', sm : '100%'},
+          }}>
+          <Button sx={{
+            background: '#4B9CE2', 
+            borderRadius: '8px',
+            color: '#fff', 
+            fontWeight: 700, 
+            fontSize: {xs: '18px', lg: '20px'}, 
+            mr: 1,
+            ml: {xs: 5, lg: 0},
+            px: {xs: 6.15, lg: 10.5}, 
+          }}
             onClick={()=> setIsBuyModal(true)}>
               Satın AI
             </Button>
-            <Button sx={{color: 'primary.main', background: '#F0F8FF', fontSize: '18px', px: 10.5, borderRadius: '8px'}} 
+            <Button sx={{
+              background: '#F0F8FF', 
+              borderRadius: '8px',
+              color: 'primary.main', 
+              fontSize: {xs: '18px', lg: '20px'}, 
+              px: {xs: 6.15, xl: 10.5}, 
+            }} 
             onClick={() => setIsOfferModal(true)}>
               Teklif Ver
             </Button>
@@ -189,8 +232,23 @@ export default function Detail() {
   function renderDescription(description) {
     return(
       <Box>
-         <Typography sx={{fontWeight: '700', mt: 2.5, mb: 0.5, fontSize: '20px'}}>Açıklama</Typography>
-          <Typography sx={{fontSize: '15px', pr: 18, mr: 6, color: '#555555'}}>{description || alternativeText}</Typography>
+         <Typography sx={{
+           fontWeight: '700', 
+           mt: {xs: 0.6, lg: 2.5}, 
+           mb: 0.5, 
+           fontSize: {xs: '15px', lg: '20px'}
+           }}>
+             Açıklama
+          </Typography>
+          <Typography sx={{
+            color: '#555555',
+            fontSize: '15px', 
+            pr: {xs: 0, lg: 18}, 
+            mr: 6, 
+            mb: {xs: 2, lg: 0}
+            }}>
+              {description || alternativeText}
+          </Typography>
       </Box>
     )
   }
