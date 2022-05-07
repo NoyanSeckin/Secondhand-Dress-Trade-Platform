@@ -12,6 +12,7 @@ export default function Home() {
   const {setProduct} = useContext(ProductContext)
   const navigate = useNavigate();
   const [width] = useWindowSize({ fps: 60 });
+  const mobileScreen = 400;
 
   const active_nav = sessionStorage.getItem('active-nav');
   const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
@@ -106,7 +107,7 @@ export default function Home() {
         <hr className='home-hr'/>
         </Box>
       <InfiniteScroll
-        className="infinite-scroll"
+        className={`infinite-scroll ${width  < mobileScreen && 'infinite-scroll-mobile'}`}
         dataLength={displayedCategory?.length} 
         next={getCategories}
         hasMore={true}

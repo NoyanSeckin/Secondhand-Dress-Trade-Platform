@@ -35,9 +35,10 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
       30: 'u',
       40: 'ı',
     }
-    return ratios.map(ratio => {
+    return ratios.map((ratio, index) => {
       return(
-        <Box sx={{
+        <Box key={index} 
+        sx={{
           border: '1px solid #E0E0E0',
           borderRadius: '8px',
           height: '45px',

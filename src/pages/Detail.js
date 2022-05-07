@@ -6,10 +6,15 @@ import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
 import UserContext from '../contexts/UserContext'
+import { useWindowSize } from "@react-hook/window-size/throttled";
+
 export default function Detail() {
   const {product, setProduct} = useContext(ProductContext)
   const {userAuth} = useContext(UserContext)
-  
+  const [width] = useWindowSize({ fps: 60 });
+  const mobileScreen = 400;
+
+
   const [localOffer, setLocalOffer] = useState('')
   const [offerError, setOfferError] = useState('')
   const [isBuyModal, setIsBuyModal] = useState(false);
@@ -23,15 +28,21 @@ export default function Detail() {
 
   function renderDetailPage(name, brand, color, condition, price, description, image, isSold, offer){
     return(
-      <Container sx={{pt: 12}} maxWidth='xl'>
-        <Grid container sx={{background: '#fff', p: 2, borderRadius: '8px'}}>
-          <Grid item xs={6}>
+      <Container maxWidth='xl' sx={{pt: {xs: 10, xl: 12}}}>
+        <Grid container 
+        sx={{
+          background: '#fff', 
+          p: {xs: 0.7, xl: 2}, 
+          borderRadius: '8px'
+          }}>
+          <Grid item xs={12} xl={6}> 
             {renderItemImage(image)}
           </Grid>
-          <Grid item xs={6} sx={{pl: 5}}>
+          <Grid item xs={12} xl={6} 
+          sx={{pl: {xs: 1, xl: 5}}}>
             {renderName(name)}
-            {renderItemDetails(brand, color, condition)}
-            {renderPriceAndOffer(price, offer)}
+            {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
+            {width < mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
             {renderIsSold(isSold)}
             {renderBtns(isSold, offer)}
             {renderDescription(description)}
@@ -45,14 +56,32 @@ export default function Detail() {
     if(offer){
       return(
         <Box sx={{display: 'flex'}}>
-          <Box sx={{display: 'flex', background: '#F2F2F2', borderRadius: '8px', pl: 1.6, pr: 5.3, py: 0.9}}>
+          <Box sx={{
+            display: 'flex', 
+            background: '#F2F2F2', 
+            borderRadius: '8px', 
+            pl: {xs: 1.3, xl: 1.6}, 
+            pr: {xs: 1.3, xl: 5.3}, 
+            py: {xs: 0.3, xl: 0.9},
+            }}>
             {offerError ? 
             <Typography variant='h6'>{offerError}</Typography> 
             : <Box sx={{display: 'flex'}}>
-              <Typography variant='h6' sx={{mr: 0.4, color: '#B1B1B1'}}>
+              <Typography variant='h6' 
+              sx={{
+                color: '#B1B1B1',
+                mr: 0.4, 
+                fontSize: {xs: '12px', xl: '1.125rem'},
+                alignSelf: {xs: 'center', xl: 'start'}
+                }}>
               Verilen Teklif: 
               </Typography>
-              <Typography variant='h6' sx={{color: 'textColor', fontWeight: 'bold'}}>
+              <Typography variant='h6' 
+              sx={{
+                color: 'textColor', 
+                fontWeight: 'bold',
+                fontSize: {xs: '15px', xl: '1.125rem'}
+                }}>
               {offer} TL
             </Typography>
             </Box>
@@ -78,7 +107,13 @@ export default function Detail() {
   }
 
   function renderName(name) {
-    return <Typography variant='h3' sx={{mt: 1.5}}>{name}</Typography>
+    return <Typography variant='h3' 
+            sx={{
+              mt: 1.5, 
+              fontSize: {xs: '18px', xl: '2.125rem'}
+              }}>
+              {name}
+            </Typography>
   }
 
   function renderItemDetails(brand, color, condition) {
@@ -113,8 +148,14 @@ export default function Detail() {
   }
   function renderPriceAndOffer(price, offer){
     return(
-      <Box sx={{my: 2.5}}>
-        <Typography sx={{fontWeight: '700', fontSize: '25px'}}>
+      <Box sx={{
+        my:{xs: 1,xl: 2.5},
+        display: {xs: 'flex', xl: 'block'},
+        justifyContent: 'space-between'
+        }}>
+        <Typography 
+        sx={{
+          fontWeight: '700', fontSize: {xs: '20px', xl: '25px'}}}>
         {price} TL
         </Typography>
         {renderGivenOffer(offer)}
@@ -149,8 +190,11 @@ export default function Detail() {
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
+
       {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, localOffer)}
+     
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={product.id} setProduct={setProduct} token={userAuth.token}/>
+     
       <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setLocalOffer={setLocalOffer} setOfferError={setOfferError} offerError={offerError}/>
     </Box>
   )

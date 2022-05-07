@@ -158,6 +158,10 @@ form input:focus{
 	width: 103.5%;
 }
 
+.infinite-scroll-mobile{
+	gap: 0.6rem
+}
+
 /* Account Page */
 
 .offer-wrapper{
