@@ -9,7 +9,7 @@ import AccountIcon from '../constants/icons/AccountIcon'
 
 export default function Account() {
   const {userAuth} = useContext(UserContext);
-
+  console.log(userAuth.token)
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
   const [deletedItemOfferId, setDeletedItemOfferId] = useState();
@@ -21,7 +21,7 @@ export default function Account() {
       headers: {
         Authorization: `Bearer ${userAuth.token}`
       }
-    }).then(response => setUserProducts(response.data)).catch(err => console.log(err))
+    }).then(response => {setUserProducts(response.data); console.log(response.data)}).catch(err => console.log(err))
   }
 
   useEffect(()=> {

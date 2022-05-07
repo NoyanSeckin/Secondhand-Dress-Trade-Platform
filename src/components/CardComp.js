@@ -1,6 +1,8 @@
 import {Card, CardContent, CardMedia, Typography, Box} from '@mui/material'
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React from 'react'
+
 
 export default function CardComp({brand, color, price, image}) {
   function renderCard(brand, color, price, image){

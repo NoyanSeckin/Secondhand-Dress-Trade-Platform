@@ -3,28 +3,17 @@ import { Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import {useNavigate} from 'react-router-dom'
-
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import {React, useState, useEffect, useContext} from 'react'
 import UserContext from '../contexts/UserContext';
 import Alert from '../components/Alert'
+import EyeIcon from '../constants/icons/EyeIcon'
 import { Email } from '@mui/icons-material';
 
  export default function LoginSignup(props) {
-         // Send them back to the page they tried to visit when they were
-      // redirected to the login page. Use { replace: true } so we don't create
-      // another entry in the history stack for the login page.  This means that
-      // when they get to the protected page and click the back button, they
-      // won't end up back on the login page, which is also really nice for the
-      // user experience.
-      // navigate(from, { replace: true });
-
-       // Redirect them to the /login page, but save the current location they were
-    // trying to go to when they were redirected. This allows us to send them
-    // along to that page after they login, which is a nicer user experience
-    // than dropping them off on the home page.
-    // return <Navigate to="/login" state={{ from: location }} replace />;
    const {userAuth, setUserAuth} = useContext(UserContext);
+   const [width, height] = useWindowSize({ fps: 60 });
 
   let navigate = useNavigate();
   const [isAlert, setIsAlert] = useState(false)
@@ -74,7 +63,7 @@ import { Email } from '@mui/icons-material';
   const login = {
     header: 'Giriş Yap',
     intro: 'Fırsatlardan yararlanmak için giriş yap!',
-    btnText: 'Giriş',
+    btnText: 'Giriş Yap',
     accountInfo: 'Hesabın yok mu?',
     action: 'Üye Ol',
   }
@@ -94,10 +83,10 @@ import { Email } from '@mui/icons-material';
   }
 
   return (
-    <Box className='form-container'>
-      <Alert isAlert={isAlert}/>
+    <Box className={` form-container ${width < 400 && 'form-container-mobile'}`}>
+      <Alert isAlert={isAlert} screen={width}/>
       <Typography variant='h4' sx={{fontWeight: 'bold'}}> {returnEither(register.header, login.header)} </Typography>
-      <Typography variant='subtitle1' sx={{color: '#525252', mb: 8}}>{returnEither(register.intro, login.intro)}</Typography>
+      <Typography variant='subtitle1' sx={{color: '#525252', mb: {xs: 3.5 , lg: 8}}}>{returnEither(register.intro, login.intro)}</Typography>
       <Formik initialValues={{
         email: '',
         password: '',
@@ -117,13 +106,19 @@ import { Email } from '@mui/icons-material';
       }}
       >
         {({values, errors, handleSubmit, dirty, handleChange}) => (
-          <form onSubmit={handleSubmit} style={{width: '80%'}}>
-            <Box sx={{display: 'flex', flexDirection: 'column'}}>
+          <form onSubmit={handleSubmit} style={{width: `${width < 400 ? '115%' : '80%'}`}}>
+            <Box sx={{display: 'flex', flexDirection: 'column', }}>
               <label htmlFor='email'>Email</label>
               <input className={errors.email && 'form-error'} type="email" id='email' value={values.email} onChange={handleChange} placeholder='Email@example.com' />
               <label htmlFor='password'>Şifre</label>
               <input className={(errors.password) && 'form-error'} type="password" id='password' value={values.password} onChange={handleChange} />
-              {!isLogin && <Typography sx={{alignSelf: 'end', fontSize: '12px', color: '#B1B1B1', mb: 1.5}}>Şifremi Unuttum</Typography>}
+              {isLogin && <Typography sx={{alignSelf: 'end', fontSize: '12px', color: '#B1B1B1', mb: {xs: 0,lg: 1.5}, position: 'relative'}}>Şifremi Unuttum  
+              
+              {/* <EyeIcon style={{position: 'absolute', bottom: '39px', right: '17px'}}/> */}
+              
+              </Typography>}
+
+
               <Button type='submit' variant='contained' 
               sx={
                 {textTransform: 'none', color: '#fff', mt: 1.5, mb: 4, py: 1 ,borderRadius: '8px', fontWeight: 'bold', fontSize: '18px', '&:hover': {

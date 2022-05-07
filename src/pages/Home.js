@@ -2,6 +2,7 @@ import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {useNavigate} from 'react-router-dom'
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import {React, useState, useEffect, useCallback, useContext} from 'react'
 import Navbar from '../components/Navbar'
@@ -10,6 +11,7 @@ import ProductContext from '../contexts/ProductContext'
 export default function Home() {
   const {setProduct} = useContext(ProductContext)
   const navigate = useNavigate();
+  const [width] = useWindowSize({ fps: 60 });
 
   const active_nav = sessionStorage.getItem('active-nav');
   const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
@@ -46,8 +48,6 @@ export default function Home() {
     
   }, [selectedCategory, categoryStartCounter, displayedCategory] )
   
-  console.log(selectedCategory)
-
 
 
   useEffect(() => {
@@ -55,7 +55,6 @@ export default function Home() {
       setDisplayedCategory([]);
     }
     getCategories();
-    console.log(selectedCategory)
   }, [selectedCategory]);
 
   function renderMiddleNavbar(){
@@ -98,11 +97,11 @@ export default function Home() {
   return (
     <Box sx={{background: '#F2F2F2'}}>
       <Navbar/>
-      <Container maxWidth='xl' sx={{pt: 12}}>
-        <img className='main-header' src={require('../images/main-header.png')} alt="" />
+      <Container maxWidth='xl' sx={{pt: {xs: 10, lg: 12}, px: {xs: 1, xl: 3}}}>
+        <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
         <Box sx={{position: 'relative'}}>
           <Box sx={{display: 'flex',  width: '103.5%', mt: 2.5}}>
-            {renderMiddleNavbar()}
+            {/* {renderMiddleNavbar()} */}
           </Box>
         <hr className='home-hr'/>
         </Box>
