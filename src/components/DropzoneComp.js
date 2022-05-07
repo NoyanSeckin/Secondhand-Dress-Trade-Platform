@@ -30,7 +30,6 @@ export default function DropzoneComp({setSelectedFile, setSelectedFileError}) {
         // get the uploaded image
         setSelectedFile(acceptedFiles[0])
         setSelectedFileError('')
-        console.log(acceptedFiles[0])
         // disable loader
         setTimeout(() => {
           setLoader(false);

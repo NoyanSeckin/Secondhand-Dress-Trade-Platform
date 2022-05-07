@@ -102,7 +102,7 @@ export default function Home() {
         <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
         <Box sx={{position: 'relative'}}>
           <Box sx={{display: 'flex',  width: '103.5%', mt: 2.5}}>
-            {/* {renderMiddleNavbar()} */}
+            {renderMiddleNavbar()}
           </Box>
         <hr className='home-hr'/>
         </Box>

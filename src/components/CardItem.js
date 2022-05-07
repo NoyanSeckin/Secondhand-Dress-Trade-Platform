@@ -3,20 +3,33 @@ import axios from 'axios'
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
-export default function CardItem({activePage, name, image, offer, offerId, setDeletedItemId, setDeletedItemOfferId}) {
+export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setDeletedItemId, setDeletedItemOfferId, setIsAcceptOrReject, setBoughtProductId}) {
 
   const {userAuth} = useContext(UserContext);
+  
+  async function updateOfferStatus(id, bool){
 
-  async function rejectOrder(id){
     const address = `https://bootcamp.akbolat.net/offers/${id}`
-    await axios.delete(address, {
+  
+    await axios.put(address, {isStatus: bool}, {
       headers: {
       Authorization: `Bearer ${userAuth.token}`
     }}).then(response=> {
       setDeletedItemOfferId(response.data.id)
       setDeletedItemId(response.data.product.id)
+     
       console.log(response.data)
     }).catch(err => console.log(err))
+
+  }
+
+  async function buyProduct(){
+    const address = `https://bootcamp.akbolat.net/products/${productId}`
+    await axios.put(address, {isSold: true}, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`,
+      }, 
+    }).then((response)=> setBoughtProductId(response.data.id)).catch((err)=> console.log(err.message))
   }
 
   function renderCardNameImageOffer(name, image, offer){
@@ -39,38 +52,108 @@ export default function CardItem({activePage, name, image, offer, offerId, setDe
     )
   }
   
-  function renderRecievedOfferBtns(id){
-    return(
-      <Box sx={{alignSelf: 'center'}}>
-        <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 1.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Onayla</Button>
+  function renderRecievedOfferBtns(id, status){
+    if(status === null){
+      return(
+        <Box sx={{alignSelf: 'center'}}>
+          <Button variant='contained' 
+          onClick={()=> {
+            setIsAcceptOrReject(true); 
+            updateOfferStatus(id, true);
+          }}
+          sx={{
+            color: '#fff', 
+            fontSize: '15px', 
+            py: 0.3, 
+            px: 2, 
+            mr: 1.5, 
+            borderRadius: '8px', 
+            '&:hover': {background: '#4B9CE2'}}}>
+              Onayla
+          </Button>
 
-        <Button onClick={()=> rejectOrder(id)} 
-        variant='contained' 
-        sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
-      </Box>
+          <Button onClick={()=> {
+            setIsAcceptOrReject(false); 
+            updateOfferStatus(id, false);
+          }} 
+          variant='contained' 
+          sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
+        </Box>
+      )
+    }else if(status){
+      return(
+        <Typography variant='h6' sx={{color: 'primary.main', alignSelf: 'center'}}>
+          OnayIandı
+        </Typography>
+      )
+    }else if(!status){
+       return(
+        <Typography variant='h6' sx={{color: '#F77474', alignSelf: 'center'}}>
+          Reddedildi
+        </Typography>
+       )
+    }
+
+  }
+
+  function renderOfferStatusText(text, color){
+    return(
+      <Typography sx={{color: color, fontSize: '15px', alignSelf: 'center'}}>{text}</Typography>
     )
   }
 
-  function renderSentOffersBtnAndStatus(){
+  function renderSentOffersBtnAndStatus(offerStatus, isSold, productId){
+    if(offerStatus){
     return(
       <Box sx={{alignSelf: 'center', display: 'flex'}}>
-        <Button variant='contained' sx={{color: '#fff', fontSize: '15px', py: 0.3, px: 2, mr: 3.5, borderRadius: '8px', '&:hover': {background: '#4B9CE2'}}}>Satın AI</Button>
-        <Typography sx={{color: 'primary.main', fontSize: '15px', alignSelf: 'center'}}>Onaylandı</Typography>
+        {!isSold && 
+        <Button variant='contained'
+        onClick={()=> buyProduct(productId)} 
+        sx={{
+          color: '#fff', 
+          fontSize: '15px', 
+          py: 0.3, 
+          px: 2, 
+          mr: 3.5, 
+          borderRadius: '8px', 
+          '&:hover': {background: '#4B9CE2'}
+          }}>
+            Satın AI
+          </Button>}
+          {renderOfferStatusText('OnayIandı', 'primary.main')}
       </Box>
     )
+   }else if(offerStatus === null){
+    return renderOfferStatusText('Beklemede', 'orange')
+  }
+   else if(!offerStatus){
+    return renderOfferStatusText('Reddedildi', 'danger')
+   }
+
   }
   
-  function renderCardItem(name, image, offer, offerId){
+  function renderUserProducts(name, image, offer, offerId, status){
     return(
       <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
       {renderCardNameImageOffer(name, image, offer)}  
-      {activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtns(offerId)
-      : renderSentOffersBtnAndStatus()}
+      {renderRecievedOfferBtns(offerId, status)}
+    </Box>
+    )
+  }
+
+  function renderSentOffers(name, image, offerPrice, offerStatus, isSold, productId){
+    return(
+      <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
+      {renderCardNameImageOffer(name, image, offerPrice)}  
+      {renderSentOffersBtnAndStatus(offerStatus, isSold, productId)}
     </Box>
     )
   }
 
   return (
-    <div>{renderCardItem(name, image, offer, offerId)}</div>
+    <div>{activePage === 'Teklif Aldıklarım' ? 
+          renderUserProducts(name, image, offer, offerId, status)
+          : renderSentOffers(name, image, offerPrice, offerStatus, isSold, productId)}
+    </div>
   )
 }

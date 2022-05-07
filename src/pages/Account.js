@@ -9,42 +9,92 @@ import AccountIcon from '../constants/icons/AccountIcon'
 
 export default function Account() {
   const {userAuth} = useContext(UserContext);
-  console.log(userAuth.token)
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
   const [deletedItemOfferId, setDeletedItemOfferId] = useState();
   const [deletedItemId, setDeletedItemId] = useState();
-  async function getUserProducts(){
-    const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
+  const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
+  const [boughtProduct, setBoughtProductId] = useState();
+  const [sentOffers, setSentOffers] = useState([]);
 
-    await axios.get(address, {
-      headers: {
-        Authorization: `Bearer ${userAuth.token}`
-      }
-    }).then(response => {setUserProducts(response.data); console.log(response.data)}).catch(err => console.log(err))
-  }
-
+   // fetch data 
   useEffect(()=> {
-    getUserProducts();
-  }, [])
+    if(activePage === 'Teklif Aldıklarım'){
+      getUserProducts();
+    }else if(activePage === 'Teklif Verdiklerim'){
+      getSentOffers();
+    }
+  }, [activePage])
 
+  // update userProducts on change to avoid api request
   useEffect(()=>{
-    // filter rejected offers
     if(deletedItemOfferId){
       const filteredArray = [];
       userProducts.forEach(product => {
         if(product.id === deletedItemId){
-          let filteredOffers = product.offers.filter(offer => offer.id !== deletedItemOfferId)
-          if(filteredOffers?.length > 0){
-            filteredArray.push({...product, offers: filteredOffers});
-          }
+
+          product.offers.forEach(offer => {
+            if(offer.id === deletedItemOfferId){
+              offer.isStatus = isAcceptOrReject;
+              filteredArray.push(product);
+            }
+          })
         }else filteredArray.push(product);
       })
      setUserProducts(filteredArray);
     }
-   
   }  
  , [deletedItemOfferId])
+
+  //  update sentOffers array to avoid api request
+  useEffect(()=>{
+    console.log(sentOffers)
+    setSentOffers(sentOffers);
+    // sentOffers.forEach(offer => {
+    //   if(offer.product.id === boughtProduct){
+
+    //   }
+    // })
+  }, [boughtProduct])
+
+  async function getUserProducts(){
+    const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
+    await axios.get(address, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`
+      }
+    }).then(response => setUserProducts(response.data)).catch(err => console.log(err))
+  }
+
+ function renderUserProducts(){
+  return userProducts?.map(product => {
+    return product.offers?.map((offer, index) => (
+     <CardItem key={index} name={product.name} image={`https://bootcamp.akbolat.net${product.image?.url}`} offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus} 
+     setDeletedItemOfferId={setDeletedItemOfferId} setDeletedItemId={setDeletedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
+     />
+  ))
+   })
+ }
+
+  async function getSentOffers(){
+    const address = `https://bootcamp.akbolat.net/offers?users_permissions_user=${userAuth.id}`;
+    await axios.get(address, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`
+      }
+    }).then(response => {setSentOffers(response.data); console.log(response.data)}).catch(err => console.log(err))
+  }
+
+  
+
+  function renderSentOffers(){
+    return sentOffers.map((offer, index) => (
+      <CardItem key={index} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus} 
+      productId={offer?.product?.id} setBoughtProductId={setBoughtProductId}
+      isSold={offer?.product?.isSold}/>
+    ))
+  }
+  
 
   function renderAccountCard(email){
     return(
@@ -68,14 +118,7 @@ export default function Account() {
      </Box>)
   }
 
-  function renderUserProducts(){
-   return userProducts?.map(product => {
-     return product.offers?.map((offer, index) => (
-      <CardItem key={index} name={product.name} image={`https://bootcamp.akbolat.net${product.image?.url}`} offer={offer.offerPrice} activePage={activePage} offerId={offer.id}
-      setDeletedItemOfferId={setDeletedItemOfferId} setDeletedItemId={setDeletedItemId}/>
-   ))
-    })
-  }
+
 
   function renderPage(){
     if(activePage === 'Teklif Aldıklarım'){
@@ -86,7 +129,11 @@ export default function Account() {
         </Box>
       ) 
     }else{
-      return 0;
+      return(
+        <Box sx={{display: 'flex', flexDirection: 'column-reverse'}}>
+          {renderSentOffers()}
+        </Box>
+      )
     }
   }
   return (

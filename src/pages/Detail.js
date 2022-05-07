@@ -202,7 +202,7 @@ export default function Detail() {
             position: {xs: 'fixed', sm: 'relative'},
             width: {xs: '110%', sm : '100%'},
           }}>
-          <Button sx={{
+          <Button variant='contained' sx={{
             background: '#4B9CE2', 
             borderRadius: '8px',
             color: '#fff', 
