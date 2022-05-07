@@ -52,7 +52,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
     )
   }
   
-  function renderRecievedOfferBtns(id, status){
+  function renderRecievedOfferBtnsAndText(id, status){
     if(status === null){
       return(
         <Box sx={{alignSelf: 'center'}}>
@@ -81,24 +81,17 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
         </Box>
       )
     }else if(status){
-      return(
-        <Typography variant='h6' sx={{color: 'primary.main', alignSelf: 'center'}}>
-          OnayIandı
-        </Typography>
-      )
+      return renderOfferStatusText('OnayIandı', 'primary.main')
+     
     }else if(!status){
-       return(
-        <Typography variant='h6' sx={{color: '#F77474', alignSelf: 'center'}}>
-          Reddedildi
-        </Typography>
-       )
+       return renderOfferStatusText('OnayIandı', 'danger')
     }
 
   }
 
   function renderOfferStatusText(text, color){
     return(
-      <Typography sx={{color: color, fontSize: '15px', alignSelf: 'center'}}>{text}</Typography>
+      <Typography variant='h6' sx={{color: color, alignSelf: 'center'}}>{text}</Typography>
     )
   }
 
@@ -136,7 +129,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
     return(
       <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
       {renderCardNameImageOffer(name, image, offer)}  
-      {renderRecievedOfferBtns(offerId, status)}
+      {renderRecievedOfferBtnsAndText(offerId, status)}
     </Box>
     )
   }
