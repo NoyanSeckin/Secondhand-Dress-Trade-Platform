@@ -108,7 +108,7 @@ export default function Detail() {
       width: '100%', 
       maxHeight: '737px', 
       maxWidth: '700px', 
-      height: `${width < mobileScreen && '362px'}`,
+      height: `${width < mobileScreen ? '362px' : 'auto'}`,
     }} src={image} alt="" />
   }
 
