@@ -14,7 +14,7 @@ export default function Account() {
   const [deletedItemOfferId, setDeletedItemOfferId] = useState();
   const [deletedItemId, setDeletedItemId] = useState();
   const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
-  const [boughtProduct, setBoughtProductId] = useState();
+  const [boughtProductId, setBoughtProductId] = useState();
   const [sentOffers, setSentOffers] = useState([]);
 
    // fetch data 
@@ -48,14 +48,17 @@ export default function Account() {
 
   //  update sentOffers array to avoid api request
   useEffect(()=>{
-    console.log(sentOffers)
-    setSentOffers(sentOffers);
-    // sentOffers.forEach(offer => {
-    //   if(offer.product.id === boughtProduct){
-
-    //   }
-    // })
-  }, [boughtProduct])
+    if(boughtProductId){
+      let filteredArray = [];
+      sentOffers.forEach(offer => {
+        if(offer?.product?.id === boughtProductId){
+          offer.product.isSold = true;
+          filteredArray.push(offer);
+        }else filteredArray.push(offer);
+      })
+      setSentOffers(filteredArray);
+    }
+  }, [boughtProductId])
 
   async function getUserProducts(){
     const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
