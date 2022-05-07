@@ -35,10 +35,10 @@ export default function Detail() {
           p: {xs: 0.7, xl: 2}, 
           borderRadius: '8px'
           }}>
-          <Grid item xs={12} xl={6}> 
+          <Grid item xs={12} lg={6}> 
             {renderItemImage(image)}
           </Grid>
-          <Grid item xs={12} xl={6} 
+          <Grid item xs={12} lg={6} 
           sx={{pl: {xs: 1, xl: 5}}}>
             {renderName(name)}
             {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
@@ -103,7 +103,13 @@ export default function Detail() {
   }
 
   function renderItemImage(image){
-    return <img  style={{borderRadius: '8px', width: '100%', maxHeight: '737px', maxWidth: '700px'}} src={image} alt="" />
+    return <img style={{
+      borderRadius: '8px', 
+      width: '100%', 
+      maxHeight: '737px', 
+      maxWidth: '700px', 
+      height: `${width < mobileScreen && '362px'}`,
+    }} src={image} alt="" />
   }
 
   function renderName(name) {
@@ -117,32 +123,31 @@ export default function Detail() {
   }
 
   function renderItemDetails(brand, color, condition) {
+    const details = {[brand]: 'Marka', [color]: 'Renk', [condition]: 'Kullanım Durumu'};
+    const detailsArray = [brand, color, condition];
     return(
-      <Box sx={{mt: 2, width: '50%', display: 'flex', flexDirection: 'column', gap: 2}}>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-          <Typography sx={{fontWeight: '700'}}>
-            Marka: 
-          </Typography>
-          <Typography sx={{width: '55%'}}>
-            {brand || alternativeText}
-          </Typography>
-        </Box>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-          <Typography sx={{fontWeight: '700'}}>
-            Renk: 
-          </Typography>
-          <Typography sx={{width: '55%'}}>
-            {color || alternativeText}
-          </Typography>
-        </Box>
-        <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-        <Typography sx={{fontWeight: '700'}}>
-          Kullanım Durumu: 
-        </Typography>
-        <Typography sx={{width: '55%'}}> 
-          {condition || alternativeText}
-        </Typography>
-        </Box>
+      <Box sx={{
+        mt: {xs: 0, xl: 2}, 
+        width: {xs: '100%', lg: '50%'}, 
+        display: 'flex', 
+        flexDirection: 'column', 
+        gap: {xs: 0.6, xl: 2}
+        }}>
+        {detailsArray.map(detail => {
+          return(
+            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Typography sx={{
+              fontWeight: '700',
+              fontSize: {xs: '15px', lg: '16px'}
+              }}>
+              {details[detail]}: 
+            </Typography>
+            <Typography sx={{width: '55%'}}>
+              {detail || alternativeText}
+            </Typography>
+          </Box>
+          )
+        })}
       </Box>
     )
   }
@@ -151,11 +156,14 @@ export default function Detail() {
       <Box sx={{
         my:{xs: 1,xl: 2.5},
         display: {xs: 'flex', xl: 'block'},
-        justifyContent: 'space-between'
+        justifyContent: 'space-between',
+        maxWidth: {sm: '285px', lg: '250px'}
         }}>
         <Typography 
         sx={{
-          fontWeight: '700', fontSize: {xs: '20px', xl: '25px'}}}>
+          fontWeight: '700', 
+          fontSize: {xs: '20px', xl: '25px'}
+          }}>
         {price} TL
         </Typography>
         {renderGivenOffer(offer)}
@@ -188,7 +196,11 @@ export default function Detail() {
   }
  
   return (
-    <Box sx={{background: '#F2F2F2', height: '120vh'}}>
+    <Box sx={{
+      background: '#F2F2F2', 
+      height: {xs: 'auto', xl: '120vh'},
+      pb: {xs: 9, xl: 0}
+      }}>
       <Navbar/>
 
       {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, localOffer)}
