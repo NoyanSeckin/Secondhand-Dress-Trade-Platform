@@ -153,9 +153,9 @@ export default function Detail() {
         flexDirection: 'column', 
         gap: {xs: 0.6, xl: 2}
         }}>
-        {detailsArray.map(detail => {
+        {detailsArray.map((detail, index) => {
           return(
-            <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
+            <Box key={index} sx={{display: 'flex', justifyContent: 'space-between'}}>
             <Typography sx={{
               fontWeight: '700',
               fontSize: {xs: '15px', lg: '16px'}
@@ -265,7 +265,7 @@ export default function Detail() {
      
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={product.id} setProduct={setProduct} token={userAuth.token}/>
      
-      <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setLocalOffer={setLocalOffer} setOfferError={setOfferError} offerError={offerError}/>
+      <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setLocalOffer={setLocalOffer} setOfferError={setOfferError} offerError={offerError} screen={width} mobileScreen={mobileScreen}/>
     </Box>
   )
 }

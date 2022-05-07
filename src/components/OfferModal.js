@@ -6,19 +6,33 @@ import CloseIcon  from '../constants/icons/CloseIcon';
 import ConfirmIcon from '../constants/icons/ConfirmIcon';
 const style = {
   position: 'absolute',
+  bgcolor: '#fff',
+  borderRadius: '10px',
+  boxShadow: '0px 3px 12px #1E36482E',
+  display: 'flex',
+  flexDirection: 'column',
+};
+
+const desktopStyle = {
+  ...style, 
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
   width: '480px',
-  bgcolor: '#fff',
-  borderRadius: '10px',
-  boxShadow: '0px 3px 12px #1E36482E',
   padding: '1.5rem 1rem',
-  display: 'flex',
-  flexDirection: 'column',
   gap: '1rem'
-};
-export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setLocalOffer, setOfferError}) {
+
+}
+
+const mobileStyle = {
+  ...style,
+  width: '95%',
+  marginLeft: '10px',
+  marginTop: '10px',
+  gap: '0.5rem',
+  padding: '1rem'
+}
+export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setLocalOffer, setOfferError, screen, mobileScreen}) {
   const handleClose = () => setIsOfferModal(false);
   
   const [activeCheckbox, setActiveCheckbox] = useState(null);
@@ -52,7 +66,10 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
            {activeCheckbox === ratio ? <ConfirmIcon/> 
            : <img src={require('../images/ellipse-outline.png')} alt="small-ellipse" />} 
           </Box>
-         <Typography sx={{color: activeCheckbox === ratio ? 'primary.main' : '#525252'}}>
+         <Typography sx={{
+           color: activeCheckbox === ratio ? 'primary.main' : '#525252',
+           fontSize: {xs: '15px', lg: '1rem'}
+           }}>
            %{ratio}'{ratioLetters[ratio]} Kadar Teklif Ver
          </Typography>
         </Box>
@@ -62,27 +79,54 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
   function renderHeaderAndCloseIcon(){
     return(
       <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
-      <Typography sx={{fontSize: '25px', fontWeight: '700'}}>Teklif Ver</Typography>
+      <Typography sx={{
+        fontSize: {xs: '18px', lg: '25px'}, 
+        fontWeight: '700',
+        }}>Teklif Ver</Typography>
       <div onClick={handleClose}><CloseIcon /></div>
     </Box>
     )
   }
   function renderNameImgAndPrice(image, price){
     return(
-      <Box sx={{background: '#f0f8ff', display: 'flex', justifyContent: 'space-between', borderRadius: '10px', p: 1}}>
-      <Box sx={{display: 'flex', width: '50%'}}>
-        <img src={image} alt=""
-        style={{width: '50px', height: '50px', borderRadius: '8px'}} />
-        <Typography sx={{ml: 1, color: '#555555', lineHeight: '20px'}}>{product.name}</Typography>
-      </Box>
-      <Typography sx={{color: '#525252', fontWeight: '700', alignSelf: 'center'}} variant='h6'>{price} TL</Typography>
+      <Box sx={{
+        background: '#f0f8ff', 
+        borderRadius: '10px', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        p: {xs: 0.5, lg: 1},
+        mb: {xs: 1, lg: 0}
+        }}>
+        <Box sx={{display: 'flex', width: '50%'}}>
+          <img src={image} alt=""
+          style={{
+            borderRadius: '8px',
+            height: `${screen < mobileScreen ? '36px' : '50px'}`, 
+            width: `${screen < mobileScreen ? '37px' : '50px'}`, 
+            }} />
+          <Typography sx={{
+            ml: 1, 
+            color: '#555555', 
+            lineHeight: '20px',
+            fontSize: {xs: '13px', lg: '16px'}
+            }}>{product.name}</Typography>
+        </Box>
+        <Typography sx={{
+          color: '#525252', 
+          fontWeight: '700', 
+          alignSelf: 'center',
+          fontSize: {xs: '15px', lg: '1.125rem'}
+          }} variant='h6'>{price} TL</Typography>
     </Box>
     )
   }
   function renderOfferInput(){
     return(
       <div className='offer-wrapper'>
-       <input type="number" placeholder='Teklif Belirle' className='offer-input' value={offer} onChange={(e)=> setOffer(e.target.value)} />
+       <input style={{
+         width: `${screen < mobileScreen && '95%'}`,
+        }} 
+       type="number" placeholder='Teklif Belirle' className='offer-input' value={offer} onChange={(e)=> setOffer(e.target.value)} />
       </div>
     )
   }
@@ -95,7 +139,9 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
           color: '#fff', 
           borderRadius: '8px',
           fontSize: '18px',
-          px: 15
+          px: {xs: 17, lg: 16},
+          mt: {xs: 1.5, lg: 0},
+          mb: {xs: 1, lg: 0}
           }}>Onayla</Button>
      </Box>
     )
@@ -134,7 +180,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
         }}
       >
         <Fade in={isOfferModal}>
-          <Container sx={style}>
+          <Container sx={screen < mobileScreen ? mobileStyle : desktopStyle}>
             {renderHeaderAndCloseIcon()}
             {renderNameImgAndPrice(`https://bootcamp.akbolat.net${product.image?.url}`, product.price)}
             {renderCheckboxes()}
