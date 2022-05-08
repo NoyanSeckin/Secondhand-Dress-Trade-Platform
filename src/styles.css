@@ -352,3 +352,10 @@ form textarea:focus{
 	margin-top: 1.2rem;
 }
 
+.swiper-slide{
+	width: auto!important;
+}
+
+.swiper-wrapper{
+	gap: 1.45rem;
+}

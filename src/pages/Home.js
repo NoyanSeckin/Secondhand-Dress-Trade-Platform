@@ -8,6 +8,8 @@ import {React, useState, useEffect, useCallback, useContext} from 'react'
 import Navbar from '../components/Navbar'
 import CardComp from '../components/CardComp'
 import ProductContext from '../contexts/ProductContext'
+import VirtualSlide from '../components/VirtualSlide'
+
 export default function Home() {
   const {setProduct} = useContext(ProductContext)
   const navigate = useNavigate();
@@ -59,9 +61,10 @@ export default function Home() {
     getCategories();
   }, [selectedCategory]);
 
+  const navLinks = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
   function renderMiddleNavbar(){
-    const navbarItems = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
-    return navbarItems.map((link, index) => {
+    
+    return navLinks.map((link, index) => {
       return(
         <Box sx={{ flexGrow: 1}}>
            <Box sx={{display: 'flex'}}>
@@ -103,10 +106,15 @@ export default function Home() {
         <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
         <Box sx={{position: 'relative'}}>
           <Box sx={{display: 'flex',  width: '103.5%', mt: 2.5}}>
-            {renderMiddleNavbar()}
+            {width > mobileScreen ? 
+            renderMiddleNavbar()
+            : <VirtualSlide display={navLinks} activeNav={activeNav} setActiveNav={setActiveNav} setSelectedCategory={setSelectedCategory}/>
+          }
+            
           </Box>
         <hr className='home-hr'/>
         </Box>
+
       <InfiniteScroll
         className={`infinite-scroll ${width  < mobileScreen && 'infinite-scroll-mobile'}`}
         dataLength={displayedCategory?.length} 
