@@ -14,6 +14,7 @@ export default function Account() {
   
   const {userAuth} = useContext(UserContext);
   const [width] = useWindowSize({ fps: 60 });
+  const mobileScreen = 400;
 
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
@@ -28,6 +29,7 @@ export default function Account() {
   useEffect(()=> {
     if(activePage === 'Teklif Aldıklarım'){
       getUserProducts();
+      console.log(userProducts)
     }else if(activePage === 'Teklif Verdiklerim'){
       getSentOffers();
     }
@@ -78,15 +80,17 @@ export default function Account() {
     }).then(response => setUserProducts(response.data)).catch(err => console.log(err))
   }
 
- function renderUserProducts(){
-  return userProducts?.map(product => {
-    return product.offers?.map((offer, index) => (
-     <CardItem key={index} name={product.name} image={`https://bootcamp.akbolat.net${product.image?.url}`} offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus} 
-     setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
-     />
-  ))
-   })
- }
+  function renderUserProducts(){
+    return userProducts?.map(product => {
+      return product.offers?.map((offer, index) => (
+      <CardItem key={index} name={product.name} 
+      image={`https://bootcamp.akbolat.net${width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url}`} 
+      offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus} 
+      setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
+      />
+    ))
+    })
+  }
 
   async function getSentOffers(){
     const address = `https://bootcamp.akbolat.net/offers?users_permissions_user=${userAuth.id}`;
@@ -104,13 +108,23 @@ export default function Account() {
       isSold={offer?.product?.isSold} setIsBuyModal={setIsBuyModal}/>
     ))
   }
-  
 
   function renderAccountCard(email){
     return(
-      <Box sx={{background: '#fff', display: 'flex', gap: 1, pl: 3, py: 2, borderRadius: '8px'}}>
+      <Box sx={{
+        background: '#fff', 
+        borderRadius: '8px',
+        display: 'flex', 
+        gap: 1, 
+        pl: 3, 
+        py: 2
+        }}>
         <AccountIcon/>
-        <Typography sx={{alignSelf: 'center',fontWeight: '700', color: '#525252', fontSize: '15px'}}>{email}</Typography>
+        <Typography sx={{
+          alignSelf: 'center',
+          color: '#525252', 
+          fontWeight: '700', 
+          fontSize: '15px'}}>{email}</Typography>
       </Box>
     )
   }
@@ -118,41 +132,56 @@ export default function Account() {
   function renderOfferNavs(){
     const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
     return( 
-      <Box sx={{display: 'flex', gap: 3,pt: 2, position: 'relative'}}> {navs.map(nav =>{
+      <Box sx={{
+        display: 'flex', 
+        gap: {xs: 5,lg: 3},
+        justifyContent: {xs: 'center', lg: 'start'},
+        pt: 2, 
+        position: 'relative'
+      }}> {navs.map(nav =>{
       return(
-        <Typography key={nav} className={nav === activePage && 'active-nav'} onClick={()=> setActivePage(nav)} sx={{color: '#B1B1B1',  fontWeight: nav === activePage && '700', '&:hover':{cursor: 'pointer'}}}>
+        <Typography key={nav} className={nav === activePage && 'active-nav'} onClick={()=> setActivePage(nav)} 
+        sx={{
+          color: '#B1B1B1',  
+          fontSize: {xs: '15px', lg: '16px'},
+          fontWeight: nav === activePage && '700', 
+          '&:hover':{cursor: 'pointer'}}}>
           {nav}
         </Typography>
       )
     })} 
-      <hr className='account-hr'/>
+      <hr style={{
+        padding: width > mobileScreen ? '0 1.46rem' : '0 1rem',
+        left: width > mobileScreen ? '-24px' : '-10px',
+        width: width > mobileScreen ? '100%' : '96%'
+        }} className='account-hr'/>
      </Box>)
   }
 
-
-
   function renderPage(){
-    if(activePage === 'Teklif Aldıklarım'){
-      // render new offers first with reverse direction
-      return(
-        <Box sx={{display: 'flex', flexDirection: 'column-reverse'}}>
-          {renderUserProducts()}
-        </Box>
-      ) 
-    }else{
-      return(
-        <Box sx={{display: 'flex', flexDirection: 'column-reverse'}}>
-          {renderSentOffers()}
-        </Box>
-      )
-    }
+    return(
+      <Box sx={{display: 'flex', flexDirection: 'column-reverse'}}>
+        {activePage === 'Teklif Aldıklarım' ? renderUserProducts() : renderSentOffers()}
+      </Box>
+    ) 
   }
+
   return (
     <Box sx={{background: '#F2F2F2', minHeight: '120vh', pb: 10}}>
       <Navbar/>
-      <Container sx={{pt: 12}} maxWidth="xl">
+      <Container maxWidth="xl" 
+      sx={{
+        pt: {xs: 10, lg: 12},
+        px: {xs: 1.2, lg: 0}
+        }}>
         {renderAccountCard(userAuth.email)}
-        <Box sx={{background: '#fff', mt: 1.5, borderRadius: '8px', px: 3, pb: 18}}>
+        <Box sx={{
+          background: '#fff', 
+          borderRadius: '8px', 
+          mt: 1.5, 
+          px: {xs: 1, lg: 3}, 
+          pb: 18
+          }}>
           {renderOfferNavs()}
           {renderPage()}
         </Box>

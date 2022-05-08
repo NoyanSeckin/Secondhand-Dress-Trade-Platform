@@ -1,12 +1,15 @@
 import {Box, Typography, Button} from '@mui/material'
 import axios from 'axios'
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
+
 export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal}) {
 
   const {userAuth} = useContext(UserContext);
-  
+  const [width] = useWindowSize({ fps: 60 });
+  const mobileScreen = 400;
   // update users recieved offers
   async function updateOfferStatus(id, bool){
 
@@ -29,18 +32,50 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
     setBoughtProductId(productId);
   }
 
+  function checkNameLength(str){
+    if(width < mobileScreen){
+      const totalWhitespace = str.split(' ').length -1;
+      const totalCharacters = str.length;
+      const totalSpace = totalWhitespace + totalCharacters;
+      if(totalSpace > 24 ){
+        return (str.substring(0, 23) + '...')
+      } else return str;
+    } else return str;
+  }
+
   function renderCardNameImageOffer(name, image, offer){
     return(
       <Box sx={{display: 'flex', gap: 1.5}}>
         <img src={image} alt=""
-        style={{width: '74px', height: '84px', borderRadius: '8px'}} />
+        style={{
+          borderRadius: '8px',
+          width: width > mobileScreen ? '74px' : '78px', 
+          height: '84px',
+          }}/>
         <Box>
-          <Typography variant='h6'>{name}</Typography>
-          <Box sx={{display: 'flex', gap: 1, background: '#F2F2F2', borderRadius: '8px', pl: 1.3, pr: 7, py: 1, mt: 0.8}}>
-          <Typography sx={{color: '#B1B1B1'}}>
+          <Typography variant='h6'>
+            {checkNameLength(name)}
+          </Typography>
+          <Box sx={{
+            background: '#F2F2F2', 
+            borderRadius: '8px', 
+            display: 'flex', 
+            gap: 1, 
+            pl: 1.3, 
+            pr: {xs: 6, lg: 7}, 
+            py: 1,
+            mt: 0.8
+            }}>
+          <Typography sx={{
+            color: '#B1B1B1',
+            fontSize: {xs: '15px', lg: '16px'}
+            }}>
             AIınan Teklif:
           </Typography>
-          <Typography sx={{fontWeight: '700'}}>
+          <Typography sx={{
+            fontWeight: '700',
+            fontSize: {xs: '15px', lg: '16px'}
+            }}>
             {parseFloat(offer).toFixed(2)} TL
           </Typography>
           </Box>
@@ -50,7 +85,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
   }
   
   function renderRecievedOfferBtnsAndText(id, status){
-    // offer status
+    // offer status 
     if(status === null){
       return(
         <Box sx={{alignSelf: 'center'}}>
@@ -75,7 +110,15 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
             updateOfferStatus(id, false);
           }} 
           variant='contained' 
-          sx={{background: '#F77474', color: '#fff', fontSize: '15px', py: 0.3, px: 2, borderRadius: '8px', '&:hover': {background: '#F77474'}}}>Reddet</Button>
+          sx={{
+            background: '#F77474', 
+            color: '#fff', 
+            fontSize: '15px', 
+            py: 0.3, 
+            px: 2, 
+            borderRadius: '8px', 
+            '&:hover': {background: '#F77474'}
+            }}>Reddet</Button>
         </Box>
       )
     }else if(status){
@@ -89,7 +132,12 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
 
   function renderOfferStatusText(text, color){
     return(
-      <Typography variant='h6' sx={{color: color, alignSelf: 'center'}}>{text}</Typography>
+      <Typography variant='h6' 
+      sx={{
+        color: color, 
+        alignSelf: 'center',
+        fontSize: {xs: '15px', xl: '1.125rem'}
+      }}>{text}</Typography>
     )
   }
 
@@ -125,7 +173,17 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
   
   function renderUserProducts(name, image, offer, offerId, status){
     return(
-      <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
+      <Box sx={{
+        borderRadius: '8px',
+        border: '1px solid #F2F2F2', 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        flexDirection: {xs: 'column', lg: 'row'},
+        mt: 2.5, 
+        py: 1, 
+        pl: {xs: 1,lg: 2}, 
+        pr: {xs: 1, xl: 3}, 
+        }}>
       {renderCardNameImageOffer(name, image, offer)}  
       {renderRecievedOfferBtnsAndText(offerId, status)}
     </Box>

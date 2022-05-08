@@ -188,9 +188,9 @@ form input:focus{
 }
 
 .account-hr{
-	border: 1px solid #E0E0E0;
+	border: 1px solid #F2F2F2;
 	position: absolute;
-	top: 42px;
+	top: 41px;
 	width: 100%;
 	padding: 0px 1.46rem;
 	left: -24px;
