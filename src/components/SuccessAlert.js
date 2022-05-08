@@ -5,7 +5,6 @@ import SuccesIcon from '../constants/icons/SuccessIcon';
 
 export default function BasicAlert({isAlert, setIsAlert, screen}) {
 
-  console.log(isAlert)
   const style = {
     position: 'absolute',
     zIndex: 3,

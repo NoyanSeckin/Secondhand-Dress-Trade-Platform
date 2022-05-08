@@ -30,13 +30,12 @@ export default function Detail() {
   }, [])
 
   async function withdrawOffer(){
-    console.log(offer)
     const address = `https://bootcamp.akbolat.net/offers/${offer.id}`;
     await axios.delete(address, {
       headers: {
         Authorization: `Bearer ${userAuth.token}`,
       }, 
-    }).then((response)=> console.log(response)).catch(err => console.log(err))
+    }).then((response)=> setOffer({})).catch(err => console.log(err))
   }
 
   function renderDetailPage(name, brand, color, condition, productPrice, description, image, isSold, offerPrice){
@@ -224,7 +223,7 @@ export default function Detail() {
             fontWeight: 700, 
             fontSize: {xs: '18px', lg: '20px'}, 
             mr: 1,
-            ml: {xs: 5, lg: 0},
+            ml: {xs: 5, sm: 0, lg: 0},
             px: {xs: 6.15, lg: 10.5}, 
           }}
             onClick={()=> setIsBuyModal(true)}>
@@ -235,7 +234,9 @@ export default function Detail() {
               borderRadius: '8px',
               color: 'primary.main', 
               fontSize: {xs: '18px', lg: '20px'}, 
-              px: {xs: 6.15, xl: 10.5}, 
+              px: {
+                xs: offer ? 3.15 : 6.15, 
+                lg: offer ? 7 : 10.5}, 
             }} 
             onClick={() => {offer ? withdrawOffer() : setIsOfferModal(true)}}>
               {offer ? 'Teklifi Geri Çek' : 'Teklif Ver'}
@@ -277,7 +278,7 @@ export default function Detail() {
       }}>
       <Navbar/>
 
-      {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, offer.price)}
+      {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, offer?.price)}
      
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={product.id} setProduct={setProduct} token={userAuth.token} setIsProductBought={setIsProductBought}/>
      

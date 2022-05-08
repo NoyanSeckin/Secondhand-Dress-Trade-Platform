@@ -97,8 +97,6 @@ export default function Account() {
     }).then(response => setSentOffers(response.data)).catch(err => console.log(err))
   }
 
-  
-
   function renderSentOffers(){
     return sentOffers.map((offer, index) => (
       <CardItem key={index} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus} 
