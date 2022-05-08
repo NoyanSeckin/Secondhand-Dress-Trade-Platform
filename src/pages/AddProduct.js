@@ -97,11 +97,26 @@ export default function AddProduct() {
   return (
     <Box sx={{background: '#F2F2F2', height: '120vh'}}>
       <Navbar/>
-      <Container maxWidth="xl" sx={{pt: 12, position:'relative'}}>
-        <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 4, pb: '10.3rem'}}>
-          <Grid item xs={6.5} 
-          sx={{ pl: 4, pr: 5, mr: 1, borderRight: '1px solid #F2F2F2'}}>
-          <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor', mb: 3}}>Ürün DetayIarı</Typography>
+      <Container maxWidth="xl" sx={{pt: {xs: 11, lg: 12}, position:'relative'}}>
+        <Grid container sx={{
+          background: '#fff', 
+          borderRadius: '8px', 
+          pt: 4, 
+          pb: '10.3rem'
+          }}>
+          <Grid item xs={12} lg={6.5} 
+          sx={{ 
+            borderRight: {xs: 'none', lg: '1px solid #F2F2F2'},
+            mr: {xs: 0, lg: 1}, 
+            pl: {xs: 1.6, lg: '4'}, 
+            pr: {xs: 1.6, lg: '5'}, 
+            }}>
+          <Typography variant='h5' 
+          sx={{
+            fontWeight: '700', 
+            color: 'textColor', 
+            mb: 3
+            }}>Ürün DetayIarı</Typography>
           <Formik 
           initialValues={{
             name: '',
@@ -149,20 +164,29 @@ export default function AddProduct() {
                     {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'status', 'Kullanım Durumu', handleChange, errors.status)}
                   </Box>
 
-                  <Box sx={{width: {sm: '92%', lg: '30%'}}}>
-                    <label htmlFor="price">{inputInfos.price.label}</label>
+                  <Box sx={{
+                    display: 'flex', 
+                    flexDirection: 'column', 
+                    width: {sm: '100%', md: '30%'},
+                    gap: 2.7,
+                    }}>
                     <div className='price-wrapper'>
+                      <label htmlFor="price" style={{marginBottom: '10px'}}>{inputInfos.price.label}</label>
                       <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}
                       style={{marginBottom: 0}}/>
-                     
+                      {errors.price && <Typography sx={{fontSize: '15px', color: '#f77474', mb: 2}}>0-9 Arasında Bir Rakam Girin</Typography>}
                     </div>
-                    {errors.price && <Typography sx={{fontSize: '15px', color: '#f77474'}}>0-9 Arasında Bir Rakam Girin</Typography>}
                     <Box sx={{
                       display: 'flex', 
                       justifyContent: 'space-between', 
-                      width: {sm: '120%', lg: '125%'}
+                      mt: 1
                       }}>
-                      <label style={{color: '#B1B1B1', fontSize: '1rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferable">Teklif Opsiyonu</label>
+                      <label style={{
+                        color: '#B1B1B1', 
+                        fontSize: '1rem', 
+                        alignSelf: 'center', 
+                        marginBottom: '0.2rem'
+                        }} htmlFor="isOfferable">Teklif Opsiyonu</label>
                       <Switch handleChange={handleChange} id='isOfferable'/>
                     </Box>
                   </Box>
@@ -187,7 +211,7 @@ export default function AddProduct() {
           </Formik>
           </Grid>
 
-          <Grid item xs={5} sx={{mx: 'auto', position: 'relative'}}>
+          <Grid item xs={12} lg={5} sx={{mx: 'auto', position: 'relative'}}>
             <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün GörseIi</Typography>
             <DropzoneComp selectedFile={selectedFile}  setSelectedFile={setSelectedFile} setSelectedFileError={setSelectedFileError}/>
             {renderSelectedFileError()}

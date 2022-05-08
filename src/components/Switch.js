@@ -60,7 +60,7 @@ export default function CustomizedSwitch({id, handleChange}) {
   return (
     <FormGroup >
       <FormControlLabel
-        control={<IOSSwitch id={id} onChange={handleChange}  sx={{ m: 1 }}  />}
+        control={<IOSSwitch id={id} onChange={handleChange}/>}
       />
     </FormGroup>
   );

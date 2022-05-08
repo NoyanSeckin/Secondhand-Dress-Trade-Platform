@@ -239,8 +239,6 @@ form textarea:focus{
 	position: absolute;
 	padding-top: 0.5rem;
 	padding-bottom: 0.5rem;
-	padding-left: 0.3rem;
-	padding-right: 1.85rem;
 	overflow: scroll;
 	overflow-x: hidden;
 	width: 100%;
@@ -281,15 +279,18 @@ form textarea:focus{
 	border-radius: 15px;
 	background-color: #F2F2F2;
 	padding: 5rem 0;
-	border: 12px solid #fff;
+	border-right: 16px solid #fff;
+	border-left: 10px solid #fff;
+	border-bottom: 8px solid #fff;
+	border-bottom-right-radius: 20px;
 }
 
 .options-wrapper::-webkit-scrollbar-thumb {
 	background: #B1B1B1;
 	height: 3px;
   background-clip: padding-box;
-	border-left: 12px #fff solid;
-	border-right: 12px #fff solid;
+	border-left: 10px #fff solid;
+  border-right: 16px #fff solid;
 }
 
 .price-wrapper{
@@ -301,8 +302,8 @@ form textarea:focus{
 	content: "TL";
 	color: #99A0A7;
 	position: absolute;
-	right: -10px;
-	top: 24px;
+	right: 10px;
+	top: 40px;
 }
 
 .price-input{
@@ -314,6 +315,7 @@ form textarea:focus{
 	outline: none;
 	padding-left: 1rem;
 	width: 100%;
+	box-sizing: border-box;
 }
 
 
