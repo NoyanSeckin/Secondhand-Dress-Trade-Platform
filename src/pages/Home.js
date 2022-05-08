@@ -33,13 +33,12 @@ export default function Home() {
      
       setDisplayedCategory(displayedCategory?.concat(response.data));
       setCategoryStartCounter(categoryStartCounter + 1);
-      setCategoryStartCounter(categoryStartCounter + 1);
       }
       // these are other categories 'digerleri'
      else if(selectedCategory > 12){
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?&_start=13`);
       setDisplayedCategory(response.data);
-      
+      // from pants to others
     } else if(selectedCategory <= 12){
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${selectedCategory}`);
 
@@ -52,8 +51,10 @@ export default function Home() {
 
 
   useEffect(() => {
-    if(selectedCategory === -1){
+    if(selectedCategory === -1 ){
       setDisplayedCategory([]);
+      setCategoryStartCounter(0);
+      console.log(displayedCategory)
     }
     getCategories();
   }, [selectedCategory]);

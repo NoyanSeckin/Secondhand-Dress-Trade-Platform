@@ -57,7 +57,11 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
         {/* the displayed value of select input */}
         <Typography variant='h6' 
         sx={{
-          zIndex: `${isOpen && '7'}`, fontWeight: 'normal', color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`}}>{isOpen ? placeholder : selectedValue}
+          zIndex: `${isOpen && '7'}`, 
+          fontWeight: 'normal', 
+          color: `${isOpen ? '#B1B1B1' : '#99A0A7'}`
+          }}>{
+          isOpen ? placeholder : selectedValue}
           </Typography>
 
         <DropdownIcon 

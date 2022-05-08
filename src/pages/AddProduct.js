@@ -59,13 +59,11 @@ export default function AddProduct() {
 
   function renderSelectOption(values, placeholder, id, label,handleChange, error){
     return(
-      <Box sx={{width: '46%'}}>
+      <Box sx={{ width: {xs: '100%', sm: '100%', md: '48%'}}}>
         <SelectInput error={error} values={values} placeholder={placeholder} handleChange={handleChange} id={id} label={label}/>
       </Box>
     )
   }
-
-
 
   function categoryToNumber(category){
     return categories.indexOf(category) + 1;
@@ -101,7 +99,8 @@ export default function AddProduct() {
       <Navbar/>
       <Container maxWidth="xl" sx={{pt: 12, position:'relative'}}>
         <Grid container sx={{background: '#fff', borderRadius: '8px', pt: 4, pb: '10.3rem'}}>
-          <Grid item xs={6.5} sx={{ pl: 4, pr: 5, mr: 1, borderRight: '1px solid #F2F2F2'}}>
+          <Grid item xs={6.5} 
+          sx={{ pl: 4, pr: 5, mr: 1, borderRight: '1px solid #F2F2F2'}}>
           <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor', mb: 3}}>Ürün DetayIarı</Typography>
           <Formik 
           initialValues={{
@@ -139,21 +138,30 @@ export default function AddProduct() {
                   {renderInput(values.name, errors.name, handleChange, 'name')}
                   {renderInput(values.description, errors.description, handleChange, 'description')}
                   
-                  <Box sx={{display: 'flex', justifyContent: 'space-between', width: '95.5%', flexWrap: 'wrap'}}>
+                  <Box sx={{
+                    display: 'flex', 
+                    justifyContent: 'space-between', 
+                    flexWrap: 'wrap',
+                    }}>
                     {renderSelectOption(categories, inputInfos.category.placeholder, 'category', 'Kategori', handleChange, errors.category)}
                     {renderSelectOption(brands, inputInfos.brand.placeholder, 'brand', 'Marka', handleChange, errors.brand)}
                     {renderSelectOption(apiColors, inputInfos.color.placeholder, 'color', 'Renk', handleChange, errors.color)}
                     {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'status', 'Kullanım Durumu', handleChange, errors.status)}
                   </Box>
 
-                  <Box sx={{width: '36%'}}>
+                  <Box sx={{width: {sm: '92%', lg: '30%'}}}>
                     <label htmlFor="price">{inputInfos.price.label}</label>
                     <div className='price-wrapper'>
                       <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}
                       style={{marginBottom: 0}}/>
-                      {errors.price && <Typography sx={{fontSize: '15px', color: '#f77474', pb: 2}}>0-9 Arasında Bir Rakam Girin</Typography>}
+                     
                     </div>
-                    <Box sx={{display: 'flex', justifyContent: 'space-between', mt: 1}}>
+                    {errors.price && <Typography sx={{fontSize: '15px', color: '#f77474'}}>0-9 Arasında Bir Rakam Girin</Typography>}
+                    <Box sx={{
+                      display: 'flex', 
+                      justifyContent: 'space-between', 
+                      width: {sm: '120%', lg: '125%'}
+                      }}>
                       <label style={{color: '#B1B1B1', fontSize: '1rem', alignSelf: 'center', marginBottom: '0.2rem'}} htmlFor="isOfferable">Teklif Opsiyonu</label>
                       <Switch handleChange={handleChange} id='isOfferable'/>
                     </Box>

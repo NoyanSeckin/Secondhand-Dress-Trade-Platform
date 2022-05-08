@@ -3,10 +3,11 @@ import axios from 'axios'
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
-export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setDeletedItemId, setDeletedItemOfferId, setIsAcceptOrReject, setBoughtProductId}) {
+export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId}) {
 
   const {userAuth} = useContext(UserContext);
   
+  // updae users recieved offers
   async function updateOfferStatus(id, bool){
 
     const address = `https://bootcamp.akbolat.net/offers/${id}`
@@ -15,14 +16,15 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
       headers: {
       Authorization: `Bearer ${userAuth.token}`
     }}).then(response=> {
-      setDeletedItemOfferId(response.data.id)
-      setDeletedItemId(response.data.product.id)
+      setUpdatedItemOfferId(response.data.id)
+      setUpdatedItemId(response.data.product.id)
      
       console.log(response.data)
     }).catch(err => console.log(err))
 
   }
 
+  // buy the product of given offers
   async function buyProduct(){
     const address = `https://bootcamp.akbolat.net/products/${productId}`
     await axios.put(address, {isSold: true}, {
@@ -53,6 +55,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
   }
   
   function renderRecievedOfferBtnsAndText(id, status){
+    // offer status
     if(status === null){
       return(
         <Box sx={{alignSelf: 'center'}}>
@@ -84,7 +87,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
       return renderOfferStatusText('OnayIandı', 'primary.main')
      
     }else if(!status){
-       return renderOfferStatusText('OnayIandı', 'danger')
+       return renderOfferStatusText('Reddedildi', 'danger')
     }
 
   }

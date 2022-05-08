@@ -218,8 +218,7 @@ form textarea:focus{
 	margin-top: 0.5rem;
 	padding: 0.7rem 1rem;
 	padding-left: 0.8rem;
-	padding-right: 1.38rem;
-	width: 100%;
+	padding-right: 1.6rem;
 }
 
 .select-wrapper:hover{
@@ -302,8 +301,8 @@ form textarea:focus{
 	content: "TL";
 	color: #99A0A7;
 	position: absolute;
-	right: 35px;
-	top: 23px;
+	right: -10px;
+	top: 24px;
 }
 
 .price-input{
@@ -314,7 +313,7 @@ form textarea:focus{
 	font-family: 'Nunito', 'sans-serif';
 	outline: none;
 	padding-left: 1rem;
-	width: 83%;
+	width: 100%;
 }
 
 

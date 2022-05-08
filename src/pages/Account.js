@@ -11,8 +11,8 @@ export default function Account() {
   const {userAuth} = useContext(UserContext);
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
-  const [deletedItemOfferId, setDeletedItemOfferId] = useState();
-  const [deletedItemId, setDeletedItemId] = useState();
+  const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
+  const [updatedItemId, setUpdatedItemId] = useState();
   const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
   const [boughtProductId, setBoughtProductId] = useState();
   const [sentOffers, setSentOffers] = useState([]);
@@ -28,13 +28,13 @@ export default function Account() {
 
   // update userProducts on change to avoid api request
   useEffect(()=>{
-    if(deletedItemOfferId){
+    if(updatedItemOfferId){
       const filteredArray = [];
       userProducts.forEach(product => {
-        if(product.id === deletedItemId){
+        if(product.id === updatedItemId){
 
           product.offers.forEach(offer => {
-            if(offer.id === deletedItemOfferId){
+            if(offer.id === updatedItemOfferId){
               offer.isStatus = isAcceptOrReject;
               filteredArray.push(product);
             }
@@ -44,7 +44,7 @@ export default function Account() {
      setUserProducts(filteredArray);
     }
   }  
- , [deletedItemOfferId])
+ , [updatedItemOfferId])
 
   //  update sentOffers array to avoid api request
   useEffect(()=>{
@@ -73,7 +73,7 @@ export default function Account() {
   return userProducts?.map(product => {
     return product.offers?.map((offer, index) => (
      <CardItem key={index} name={product.name} image={`https://bootcamp.akbolat.net${product.image?.url}`} offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus} 
-     setDeletedItemOfferId={setDeletedItemOfferId} setDeletedItemId={setDeletedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
+     setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
      />
   ))
    })

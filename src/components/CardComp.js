@@ -1,14 +1,8 @@
 import {Card, CardContent, CardMedia, Typography, Box} from '@mui/material'
-import { useWindowSize } from "@react-hook/window-size/throttled";
-
 import React from 'react'
-
 
 export default function CardComp({brand, color, price, image}) {
 
-  const [width] = useWindowSize({ fps: 60 });
-
-  
   function renderCard(brand, color, price, image){
     return(
       <Card elevation={0} 
@@ -33,11 +27,24 @@ export default function CardComp({brand, color, price, image}) {
           justifyContent: 'space-between', 
           flexDirection: {xs: 'column', lg: 'row', xl: 'row'} 
         }}>
-          <Typography sx={{color: '#4B9CE2', fontWeight: '700'}}>{brand}</Typography>
-          <Typography sx={{fontWeight: '700', fontSize: {xs: '12px'}}}>Renk: <span style={{fontWeight: 'normal'}}>{color}</span></Typography>
+          <Typography sx={{
+            color: '#4B9CE2', 
+            fontWeight: '700'
+            }}>
+              {brand}
+          </Typography>
+          <Typography sx={{
+            fontWeight: '700', 
+            fontSize: {xs: '12px', lg: '14px'}
+            }}>Renk: <span style={{fontWeight: 'normal'}}>{color}</span>
+            </Typography>
         </Box>
-        <Typography variant="h6" sx={{fontWeight: 'bold', mt: {xs: 0.7, xl: 2}, 
-        }}>{price} TL</Typography>
+        <Typography variant="h6" sx={{
+          fontWeight: 'bold',
+           mt: {xs: 0.7, xl: 2}, 
+          }}>
+            {price} TL
+          </Typography>
       </CardContent>
     </Card>
     )
