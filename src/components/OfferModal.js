@@ -32,13 +32,13 @@ const mobileStyle = {
   gap: '0.5rem',
   padding: '1rem'
 }
-export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setLocalOffer, setOfferError, screen, mobileScreen}) {
+export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setOffer, setOfferError, screen, mobileScreen}) {
   const handleClose = () => setIsOfferModal(false);
   
   const [activeCheckbox, setActiveCheckbox] = useState(null);
-  const [offer, setOffer] = useState('')
+  const [givenOffer, setGivenOffer] = useState('')
   function handleCheckbox(ratio){
-    setOffer((Number(product.price) * (ratio / 100)).toFixed(2));
+    setGivenOffer((Number(product.price) * (ratio / 100)).toFixed(2));
     setActiveCheckbox(ratio);
   }
 
@@ -126,7 +126,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
        <input style={{
          width: `${screen < mobileScreen && '95%'}`,
         }} 
-       type="number" placeholder='Teklif Belirle' className='offer-input' value={offer} onChange={(e)=> setOffer(e.target.value)} />
+       type="number" placeholder='Teklif Belirle' className='offer-input' value={givenOffer} onChange={(e)=> setGivenOffer(e.target.value)} />
       </div>
     )
   }
@@ -148,17 +148,18 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
   }
   async function sendOffer(){
     const address = `https://bootcamp.akbolat.net/offers`
-    await axios.post(address, {product: product.id, users_permissions_user: userAuth.id, offerPrice: Number(offer)}, {
+    await axios.post(address, {product: product.id, users_permissions_user: userAuth.id, offerPrice: Number(givenOffer)}, {
       headers: {
         Authorization: `Bearer ${userAuth.token}`,
       }, 
     }).then((response)=> {
+      console.log(response.data)
       if(response.data.product.isOfferable){
-        setLocalOffer(response.data.offerPrice);
+        setOffer({id: response.data.id, price: response.data.offerPrice});
         setOfferError('')
       }else{
         setOfferError('Bu ürün teklif kabul etmiyor')
-        setLocalOffer(1);
+        // setOffer({});
       }
     }).catch((err)=> console.log(err.message))
     

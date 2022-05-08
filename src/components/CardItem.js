@@ -7,7 +7,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
 
   const {userAuth} = useContext(UserContext);
   
-  // updae users recieved offers
+  // update users recieved offers
   async function updateOfferStatus(id, bool){
 
     const address = `https://bootcamp.akbolat.net/offers/${id}`
@@ -24,14 +24,9 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
 
   }
 
-  // buy the product of given offers
-  async function buyProduct(){
-    const address = `https://bootcamp.akbolat.net/products/${productId}`
-    await axios.put(address, {isSold: true}, {
-      headers: {
-        Authorization: `Bearer ${userAuth.token}`,
-      }, 
-    }).then((response)=> setBoughtProductId(response.data.id)).catch((err)=> console.log(err.message))
+  function handlePurchase(productId){
+    setIsBuyModal(true); 
+    setBoughtProductId(productId);
   }
 
   function renderCardNameImageOffer(name, image, offer){
@@ -104,7 +99,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
       <Box sx={{alignSelf: 'center', display: 'flex'}}>
         {!isSold && 
         <Button variant='contained'
-        onClick={()=> {setIsBuyModal(true); setBoughtProductId(productId)}} 
+        onClick={()=> handlePurchase(productId)} 
         sx={{
           color: '#fff', 
           fontSize: '15px', 

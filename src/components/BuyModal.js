@@ -19,24 +19,19 @@ const style = {
   boxShadow: '0px 3px 12px #1E36482E',
   textAlign: 'center',
   zIndex: 33,
-  // opacity: 1,
-  
 };
 
 export default function BuyModal({isBuyModal, setIsBuyModal, productId, setProduct, token, setIsProductBought}) {
-  // const [open, setOpen] = React.useState(false);
-  // const handleOpen = () => setIsBuyModal(true);
+  
   const handleClose = () => setIsBuyModal(false);
   
   function handlePurchase(responseData){
     // setProduct belongs to detail page
     if(setProduct){
-      setProduct(responseData)
+      setProduct(responseData);
     }
-    // setIsProductBought belongs to account page
-    else if(setIsProductBought){
-      setIsProductBought(true)
-    }
+    // detail and account pages
+    setIsProductBought(true);
   }
   async function buyProduct(){
 

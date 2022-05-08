@@ -1,5 +1,6 @@
 import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../contexts/UserContext'
@@ -7,8 +8,13 @@ import Navbar from '../components/Navbar'
 import CardItem from '../components/CardItem'
 import AccountIcon from '../constants/icons/AccountIcon'
 import BuyModal from '../components/BuyModal'
+import SuccessAlert from '../components/SuccessAlert'
+
 export default function Account() {
+  
   const {userAuth} = useContext(UserContext);
+  const [width] = useWindowSize({ fps: 60 });
+
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
   const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
@@ -155,6 +161,7 @@ export default function Account() {
       </Container>
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={boughtProductId} setIsProductBought={setIsProductBought}
       token={userAuth.token}/>
+      <SuccessAlert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
     </Box>
   )
 }

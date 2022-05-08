@@ -1,4 +1,6 @@
 import {Box, Container, Button, Typography, Grid} from '@mui/material'
+import { useWindowSize } from "@react-hook/window-size/throttled";
+import axios from 'axios'
 
 import React, {useState, useContext, useEffect} from 'react'
 import Navbar from '../components/Navbar'
@@ -6,7 +8,7 @@ import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
 import UserContext from '../contexts/UserContext'
-import { useWindowSize } from "@react-hook/window-size/throttled";
+import SuccessAlert from '../components/SuccessAlert'
 
 export default function Detail() {
   const {product, setProduct} = useContext(ProductContext)
@@ -14,19 +16,30 @@ export default function Detail() {
   const [width] = useWindowSize({ fps: 60 });
   const mobileScreen = 400;
 
-
-  const [localOffer, setLocalOffer] = useState('')
+  const [offer, setOffer] = useState({})
   const [offerError, setOfferError] = useState('')
   const [isBuyModal, setIsBuyModal] = useState(false);
   const [isOfferModal, setIsOfferModal] = useState(false);
+  const [isProductBought, setIsProductBought] = useState(false);
   const alternativeText = 'Belirtilmemiş';
+
   useEffect(()=> {
     // scroll to the top of page
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
   }, [])
 
-  function renderDetailPage(name, brand, color, condition, price, description, image, isSold, offer){
+  async function withdrawOffer(){
+    console.log(offer)
+    const address = `https://bootcamp.akbolat.net/offers/${offer.id}`;
+    await axios.delete(address, {
+      headers: {
+        Authorization: `Bearer ${userAuth.token}`,
+      }, 
+    }).then((response)=> console.log(response)).catch(err => console.log(err))
+  }
+
+  function renderDetailPage(name, brand, color, condition, productPrice, description, image, isSold, offerPrice){
     return(
       <Container maxWidth='xl' sx={{pt: {xs: 10, xl: 12}}}>
         <Grid container 
@@ -41,10 +54,10 @@ export default function Detail() {
           <Grid item xs={12} lg={6} 
           sx={{pl: {xs: 1, xl: 5}}}>
             {renderName(name)}
-            {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
-            {width < mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(price, offer)}
+            {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(productPrice, offerPrice)}
+            {width < mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(productPrice, offerPrice)}
             {renderIsSold(isSold)}
-            {renderBtns(isSold)}
+            {renderBtns(isSold, offerPrice)}
             {renderDescription(description)}
           </Grid>
         </Grid>
@@ -52,8 +65,8 @@ export default function Detail() {
     )
   }
 
-  function renderGivenOffer(offer){
-    if(offer){
+  function renderGivenOffer(offerPrice){
+    if(offerPrice){
       return(
         <Box sx={{display: 'flex'}}>
           <Box sx={{
@@ -82,7 +95,7 @@ export default function Detail() {
                 fontWeight: 'bold',
                 fontSize: {xs: '15px', xl: '1.125rem'}
                 }}>
-              {offer} TL
+              {offerPrice} TL
             </Typography>
             </Box>
           } 
@@ -171,7 +184,8 @@ export default function Detail() {
       </Box>
     )
   }
-  function renderPriceAndOffer(price, offer){
+
+  function renderPriceAndOffer(productPrice, offerPrice){
     return(
       <Box sx={{
         my:{xs: 1,xl: 2.5},
@@ -184,13 +198,14 @@ export default function Detail() {
           fontWeight: '700', 
           fontSize: {xs: '20px', xl: '25px'}
           }}>
-        {price} TL
+        {productPrice} TL
         </Typography>
-        {renderGivenOffer(offer)}
+        {renderGivenOffer(offerPrice)}
       </Box>
     )
   }
-  function renderBtns(isSold) {
+
+  function renderBtns(isSold, offer) {
       if(!isSold){
         return(
           <Box sx={{
@@ -222,13 +237,14 @@ export default function Detail() {
               fontSize: {xs: '18px', lg: '20px'}, 
               px: {xs: 6.15, xl: 10.5}, 
             }} 
-            onClick={() => setIsOfferModal(true)}>
-              Teklif Ver
+            onClick={() => {offer ? withdrawOffer() : setIsOfferModal(true)}}>
+              {offer ? 'Teklifi Geri Çek' : 'Teklif Ver'}
             </Button>
         </Box>
       )
     }
   }
+
   function renderDescription(description) {
     return(
       <Box>
@@ -261,11 +277,13 @@ export default function Detail() {
       }}>
       <Navbar/>
 
-      {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, localOffer)}
+      {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, offer.price)}
      
-      <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={product.id} setProduct={setProduct} token={userAuth.token}/>
+      <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={product.id} setProduct={setProduct} token={userAuth.token} setIsProductBought={setIsProductBought}/>
      
-      <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setLocalOffer={setLocalOffer} setOfferError={setOfferError} offerError={offerError} screen={width} mobileScreen={mobileScreen}/>
+      <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setOffer={setOffer} setOfferError={setOfferError} offerError={offerError} screen={width} mobileScreen={mobileScreen}/>
+
+      <SuccessAlert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
     </Box>
   )
 }
