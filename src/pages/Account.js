@@ -6,7 +6,7 @@ import UserContext from '../contexts/UserContext'
 import Navbar from '../components/Navbar'
 import CardItem from '../components/CardItem'
 import AccountIcon from '../constants/icons/AccountIcon'
-
+import BuyModal from '../components/BuyModal'
 export default function Account() {
   const {userAuth} = useContext(UserContext);
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
@@ -14,9 +14,10 @@ export default function Account() {
   const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
   const [updatedItemId, setUpdatedItemId] = useState();
   const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
-  const [boughtProductId, setBoughtProductId] = useState();
   const [sentOffers, setSentOffers] = useState([]);
-
+  const [boughtProductId, setBoughtProductId] = useState();
+  const [isBuyModal, setIsBuyModal] = useState(false);
+  const [isProductBought, setIsProductBought] = useState(false);
    // fetch data 
   useEffect(()=> {
     if(activePage === 'Teklif Aldıklarım'){
@@ -48,7 +49,8 @@ export default function Account() {
 
   //  update sentOffers array to avoid api request
   useEffect(()=>{
-    if(boughtProductId){
+    
+    if(isProductBought){
       let filteredArray = [];
       sentOffers.forEach(offer => {
         if(offer?.product?.id === boughtProductId){
@@ -57,8 +59,9 @@ export default function Account() {
         }else filteredArray.push(offer);
       })
       setSentOffers(filteredArray);
+      console.log('product bought effect calisti')
     }
-  }, [boughtProductId])
+  }, [isProductBought])
 
   async function getUserProducts(){
     const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
@@ -85,7 +88,7 @@ export default function Account() {
       headers: {
         Authorization: `Bearer ${userAuth.token}`
       }
-    }).then(response => {setSentOffers(response.data); console.log(response.data)}).catch(err => console.log(err))
+    }).then(response => setSentOffers(response.data)).catch(err => console.log(err))
   }
 
   
@@ -94,7 +97,7 @@ export default function Account() {
     return sentOffers.map((offer, index) => (
       <CardItem key={index} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus} 
       productId={offer?.product?.id} setBoughtProductId={setBoughtProductId}
-      isSold={offer?.product?.isSold}/>
+      isSold={offer?.product?.isSold} setIsBuyModal={setIsBuyModal}/>
     ))
   }
   
@@ -111,13 +114,14 @@ export default function Account() {
   function renderOfferNavs(){
     const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
     return( 
-      <Box sx={{display: 'flex', gap: 3,pt: 2}}> {navs.map(nav =>{
+      <Box sx={{display: 'flex', gap: 3,pt: 2, position: 'relative'}}> {navs.map(nav =>{
       return(
-        <Typography className={nav === activePage && 'active-nav'} onClick={()=> setActivePage(nav)} sx={{color: '#B1B1B1',  fontWeight: nav === activePage && '700', '&:hover':{cursor: 'pointer'}}}>
+        <Typography key={nav} className={nav === activePage && 'active-nav'} onClick={()=> setActivePage(nav)} sx={{color: '#B1B1B1',  fontWeight: nav === activePage && '700', '&:hover':{cursor: 'pointer'}}}>
           {nav}
         </Typography>
       )
     })} 
+      <hr className='account-hr'/>
      </Box>)
   }
 
@@ -149,6 +153,8 @@ export default function Account() {
           {renderPage()}
         </Box>
       </Container>
+      <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={boughtProductId} setIsProductBought={setIsProductBought}
+      token={userAuth.token}/>
     </Box>
   )
 }

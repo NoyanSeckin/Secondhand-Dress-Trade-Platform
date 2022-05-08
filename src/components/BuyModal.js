@@ -23,10 +23,21 @@ const style = {
   
 };
 
-export default function BuyModal({isBuyModal, setIsBuyModal, productId, setProduct, token}) {
+export default function BuyModal({isBuyModal, setIsBuyModal, productId, setProduct, token, setIsProductBought}) {
   // const [open, setOpen] = React.useState(false);
   // const handleOpen = () => setIsBuyModal(true);
   const handleClose = () => setIsBuyModal(false);
+  
+  function handlePurchase(responseData){
+    // setProduct belongs to detail page
+    if(setProduct){
+      setProduct(responseData)
+    }
+    // setIsProductBought belongs to account page
+    else if(setIsProductBought){
+      setIsProductBought(true)
+    }
+  }
   async function buyProduct(){
 
     const address = `https://bootcamp.akbolat.net/products/${productId}`
@@ -34,7 +45,7 @@ export default function BuyModal({isBuyModal, setIsBuyModal, productId, setProdu
       headers: {
         Authorization: `Bearer ${token}`,
       }, 
-    }).then((response)=> setProduct(response.data)).catch((err)=> console.log(err.message))
+    }).then((response)=> handlePurchase(response.data)).catch((err)=> console.log(err.message))
     
     handleClose();
   }

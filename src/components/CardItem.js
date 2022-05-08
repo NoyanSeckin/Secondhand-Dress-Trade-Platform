@@ -3,7 +3,7 @@ import axios from 'axios'
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
-export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId}) {
+export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal}) {
 
   const {userAuth} = useContext(UserContext);
   
@@ -104,7 +104,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
       <Box sx={{alignSelf: 'center', display: 'flex'}}>
         {!isSold && 
         <Button variant='contained'
-        onClick={()=> buyProduct(productId)} 
+        onClick={()=> {setIsBuyModal(true); setBoughtProductId(productId)}} 
         sx={{
           color: '#fff', 
           fontSize: '15px', 
