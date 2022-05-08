@@ -322,13 +322,12 @@ form textarea:focus{
 /* Dropzone */
 
 .dropzone{
-	margin-top: 2rem;
 	border: 1px dashed #B1B1B1;
 	border-radius: 10px;
 	display: flex;
 	flex-direction: column;
 	align-items: center;
-	padding: 1.5rem 0;
+	/* padding: 1.5rem 0; */
 	width: 100%;
 }
 

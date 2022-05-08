@@ -95,21 +95,25 @@ export default function AddProduct() {
     }
 }
   return (
-    <Box sx={{background: '#F2F2F2', height: '120vh'}}>
+    <Box sx={{
+      background: '#F2F2F2', 
+      height: { xs: 'auto', lg: '120vh'},
+      pb: {xs: 1.5, lg: 0}
+      }}>
       <Navbar/>
       <Container maxWidth="xl" sx={{pt: {xs: 11, lg: 12}, position:'relative'}}>
         <Grid container sx={{
           background: '#fff', 
           borderRadius: '8px', 
-          pt: 4, 
-          pb: '10.3rem'
+          pt: {xs: 2, lg: 4}, 
+          pb: {xs: 9, lg: '10.3rem'}
           }}>
           <Grid item xs={12} lg={6.5} 
           sx={{ 
             borderRight: {xs: 'none', lg: '1px solid #F2F2F2'},
             mr: {xs: 0, lg: 1}, 
-            pl: {xs: 1.6, lg: '4'}, 
-            pr: {xs: 1.6, lg: '5'}, 
+            pl: {xs: 1.6, lg: 4}, 
+            pr: {xs: 1.6, lg: 5}, 
             }}>
           <Typography variant='h5' 
           sx={{
@@ -179,7 +183,8 @@ export default function AddProduct() {
                     <Box sx={{
                       display: 'flex', 
                       justifyContent: 'space-between', 
-                      mt: 1
+                      mt: 1,
+                      width: {xs: '105%', lg: '100%'}
                       }}>
                       <label style={{
                         color: '#B1B1B1', 
@@ -197,9 +202,12 @@ export default function AddProduct() {
                         fontSize: '18px',
                         borderRadius: '8px',
                         position: 'absolute', 
-                        bottom: '35px',  
-                        right: '70px',
-                        px: 16,
+                        px: {xs: 0, lg:16},
+                        left: {xs: 0, lg: 'auto'},
+                        mx: {xs: 3.5, lg: 0},
+                        right: {xs: '0', lg: '70px'},
+                        bottom: {xs: 0, lg: '35px'},  
+                        mb: {xs: 1, lg: 0},
                         '&:hover': {
                           cursor: 'pointer'
                         }
@@ -211,8 +219,19 @@ export default function AddProduct() {
           </Formik>
           </Grid>
 
-          <Grid item xs={12} lg={5} sx={{mx: 'auto', position: 'relative'}}>
-            <Typography variant='h5' sx={{fontWeight: '700', color: 'textColor'}}>Ürün GörseIi</Typography>
+          <Grid item xs={12} lg={5} 
+          sx={{
+            mx: 'auto', 
+            position: 'relative',
+            px: {xs: 1.6, lg: 0}
+            }}>
+            <Typography variant='h5' 
+            sx={{
+            color: 'textColor',
+            fontWeight: '700', 
+            mb: {lg: 4},
+            my: {xs: 2}
+            }}>Ürün GörseIi</Typography>
             <DropzoneComp selectedFile={selectedFile}  setSelectedFile={setSelectedFile} setSelectedFileError={setSelectedFileError}/>
             {renderSelectedFileError()}
           </Grid>

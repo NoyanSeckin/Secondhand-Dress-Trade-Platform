@@ -67,16 +67,24 @@ export default function DropzoneComp({setSelectedFile, setSelectedFileError}) {
   function renderPage(){
     if(files.length === 0){
       return(
-        <div {...getRootProps({className: 'dropzone'})}>
+        <Box sx={{
+          py: {xs: 1, lg: 1.5}
+        }} {...getRootProps({className: 'dropzone'})}>
           <input {...getInputProps()} />
           <CloudIcon/>
-          <Typography sx={{color: '#525252', fontWeight: '600'}}>Sürükleyip bırakarak yükle</Typography>
-          <span>veya</span>
+          <Typography sx={{
+            color: '#525252', 
+            fontWeight: '600',
+            display: {xs: 'none', lg: 'block'}
+            }}>Sürükleyip bırakarak yükle </Typography>
+          <Typography sx={{display: {xs: 'none', lg: 'block'}}}>veya</Typography>
           <button type="button" className='dropzone-button' onClick={open}>Görsel Seçin</button>
-          <Typography sx={{color: '#B1B1B1', fontSize: '14px'}}>
+          <Typography sx={{
+            color: '#B1B1B1', 
+            fontSize: {xs: '12px', lg: '14px'}}}>
             PNG ve JPEG Dosya boyutu: max. 400kb
           </Typography>
-        </div>
+        </Box>
       )
      } else if(loader){
         return(
