@@ -4,12 +4,13 @@ import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
+import MobileContext from '../contexts/MobileContext'
 
 export default function CardItem({activePage, name, image, offer, offerId, status, isSold, offerStatus,  offerPrice, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal}) {
 
   const {userAuth} = useContext(UserContext);
+  const mobileScreen = useContext(MobileContext)
   const [width] = useWindowSize({ fps: 60 });
-  const mobileScreen = 400;
   // update users recieved offers
   async function updateOfferStatus(id, bool){
 

@@ -10,6 +10,7 @@ import CardComp from '../components/CardComp'
 import ProductContext from '../contexts/ProductContext'
 import MobileContext from "../contexts/MobileContext";
 import VirtualSlide from '../components/VirtualSlide'
+import Skeleton from '../components/Skeleton'
 
 export default function Home() {
   const {setProduct} = useContext(ProductContext)
@@ -129,12 +130,13 @@ export default function Home() {
           </Box>
         <hr className='home-hr'/>
         </Box>
+        <Skeleton></Skeleton>
       <InfiniteScroll
         className={`infinite-scroll ${width  < mobileScreen && 'infinite-scroll-mobile'}`}
         dataLength={selectedCategory === -1 ? displayAllProducts?.length : displayedCategory?.length} 
         next={getCategories}
         hasMore={true}
-        // loader={<h4>Loading...</h4>}
+        loader={<Skeleton/>}
         scrollThreshold={0.5}
       >
         {selectedCategory === -1 ? 

@@ -6,7 +6,7 @@ import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../contexts/UserContext'
 import MobileContext from "../contexts/MobileContext"; 
 import Navbar from '../components/Navbar'
-import CardItem from '../components/CardItem'
+import AccountCard from '../components/AccountCard.js'
 import AccountIcon from '../constants/icons/AccountIcon'
 import BuyModal from '../components/BuyModal'
 import SuccessAlert from '../components/SuccessAlert'
@@ -83,7 +83,7 @@ export default function Account() {
   function renderUserProducts(){
     return userProducts?.map(product => {
       return product.offers?.map((offer, index) => (
-      <CardItem key={index} name={product.name} 
+      <AccountCard key={index} name={product.name} 
       image={`https://bootcamp.akbolat.net${width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url}`} 
       offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus} 
       setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject} 
@@ -103,7 +103,7 @@ export default function Account() {
 
   function renderSentOffers(){
     return sentOffers.map((offer, index) => (
-      <CardItem key={index} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus} 
+      <AccountCard key={index} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus} 
       productId={offer?.product?.id} setBoughtProductId={setBoughtProductId}
       isSold={offer?.product?.isSold} setIsBuyModal={setIsBuyModal}/>
     ))
