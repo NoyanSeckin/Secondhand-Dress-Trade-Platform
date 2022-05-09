@@ -130,7 +130,6 @@ export default function Home() {
           </Box>
         <hr className='home-hr'/>
         </Box>
-        <Skeleton></Skeleton>
       <InfiniteScroll
         className={`infinite-scroll ${width  < mobileScreen && 'infinite-scroll-mobile'}`}
         dataLength={selectedCategory === -1 ? displayAllProducts?.length : displayedCategory?.length} 
