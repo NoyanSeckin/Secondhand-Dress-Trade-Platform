@@ -2,9 +2,8 @@ import { Box, Typography } from '@mui/material';
 import {Field} from 'formik'
 import React, { useState, useEffect, useRef } from 'react';
 import DropdownIcon from '../constants/icons/DropdownIcon';
+
 export default function SelectInput({values, placeholder, handleChange, id, label, error}) {
-
-
   const [isOpen, setIsOpen] = useState(false);
   const [selectedValue, setSelectedValue] = useState(placeholder);
   const handleOpen = ()=> {

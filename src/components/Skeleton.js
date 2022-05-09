@@ -1,12 +1,10 @@
 import Skeleton from '@mui/material/Skeleton';
 import Stack from '@mui/material/Stack';
-import MobileContext from '../contexts/MobileContext';
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import React, {useContext} from 'react';
+import React from 'react';
 
 export default function Variants() {
-  const mobileScreen = useContext(MobileContext)
   const [width] = useWindowSize({ fps: 60 });
 
   function renderSkeleton(){

@@ -137,6 +137,7 @@ export default function Home() {
         hasMore={true}
         loader={<Skeleton/>}
         scrollThreshold={0.5}
+        endMessage={<h1>The End</h1>}
       >
         {selectedCategory === -1 ? 
         renderAllProducts()
