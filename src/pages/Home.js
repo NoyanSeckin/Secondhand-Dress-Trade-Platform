@@ -24,6 +24,30 @@ export default function Home() {
   const [displayedCategory, setDisplayedCategory] = useState([]);
   const [categoryStartCounter, setCategoryStartCounter] = useState(0);
 
+  const [totalProducts, setTotalProducts] = useState(5);
+
+
+  const [displayAllProducts, setDisplayAllProducts] = useState([]);
+
+
+  async function getTotalProducts(){
+    await axios.get('https://bootcamp.akbolat.net/products/count').then(response => setTotalProducts(response.data)).catch(err => console.log(err));
+    console.log(totalProducts)
+  }
+
+  function renderProducts(){
+    // console.log(displayAllProducts)
+    return displayAllProducts?.map((product, index) => {
+     return <div onClick={()=> directToDetailPage(product)}>
+      <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+    </div>
+   })
+  }
+
+  useEffect(() => {
+    getCategories();
+  }, [selectedCategory]);
+
   const getCategories =  useCallback(async (count) => {
     // save users displayed category for refresh
     sessionStorage.setItem('active-nav', (activeNav));
@@ -31,10 +55,16 @@ export default function Home() {
 
     // -1 equals to all categories
     if(selectedCategory === -1){
-      const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
-     
-      setDisplayedCategory(displayedCategory?.concat(response.data));
+
+      const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=5&_start=${categoryStartCounter}`);
+
+      // if()
+
+
+      setDisplayAllProducts(displayAllProducts?.concat(response.data))
       setCategoryStartCounter(categoryStartCounter + 1);
+      // setDisplayedCategory(displayedCategory?.concat(response.data));
+      // const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
       }
       // these are other categories 'digerleri'
      else if(selectedCategory > 12){
@@ -43,23 +73,14 @@ export default function Home() {
       // from pants to others
     } else if(selectedCategory <= 12){
       const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${selectedCategory}`);
-
       setDisplayedCategory(response.data)
-      setCategoryStartCounter(0);
     }
     
   }, [selectedCategory, categoryStartCounter, displayedCategory] )
   
 
 
-  useEffect(() => {
-    if(selectedCategory === -1 ){
-      setDisplayedCategory([]);
-      setCategoryStartCounter(0);
-      console.log(displayedCategory)
-    }
-    getCategories();
-  }, [selectedCategory]);
+  
 
   const navLinks = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
   function renderMiddleNavbar(){
@@ -78,6 +99,7 @@ export default function Home() {
   }
 
   function directToDetailPage(product){
+    // set product context
     setProduct(product);
     navigate('/detail')
   }
@@ -90,7 +112,7 @@ export default function Home() {
           if(product.image !== null ){
             return(
               <div onClick={()=> directToDetailPage(product)}>
-                <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+                <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product?.image?.url}`}/>
               </div>
             )
           }
@@ -100,7 +122,7 @@ export default function Home() {
   }
 
   return (
-    <Box sx={{background: '#F2F2F2'}}>
+    <Box sx={{background: '#F2F2F2', minHeight: {xs: 'auto', lg: '120vh'}}}>
       <Navbar/>
       <Container maxWidth='xl' sx={{pt: {xs: 10, lg: 12}, px: {xs: 1, xl: 3}}}>
         <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
@@ -114,21 +136,17 @@ export default function Home() {
           </Box>
         <hr className='home-hr'/>
         </Box>
-
       <InfiniteScroll
         className={`infinite-scroll ${width  < mobileScreen && 'infinite-scroll-mobile'}`}
-        dataLength={displayedCategory?.length} 
+        dataLength={selectedCategory === -1 ? displayAllProducts?.length : displayedCategory?.length} 
         next={getCategories}
         hasMore={true}
         // loader={<h4>Loading...</h4>}
-        endMessage={
-          <p style={{ textAlign: 'center' }}>
-            <b>Yay! You have seen it all</b>
-          </p>
-        }
-        // scrollThreshold={0.90}
       >
-       {renderCards(displayedCategory)}
+        {selectedCategory === -1 ? 
+        renderProducts()
+        : renderCards(displayedCategory)
+      }
       </InfiniteScroll>
       </Container>
     </Box>
