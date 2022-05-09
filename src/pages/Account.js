@@ -167,7 +167,10 @@ export default function Account() {
   }
 
   return (
-    <Box sx={{background: '#F2F2F2', minHeight: '120vh', pb: 10}}>
+    <Box sx={{
+      background: '#F2F2F2', 
+      minHeight: '120vh', 
+      pb: {xs: 4, lg: 10}}}>
       <Navbar/>
       <Container maxWidth="xl" 
       sx={{
@@ -180,7 +183,7 @@ export default function Account() {
           borderRadius: '8px', 
           mt: 1.5, 
           px: {xs: 1, lg: 3}, 
-          pb: 18
+          pb: {xs: 1.5, lg: 18}
           }}>
           {renderOfferNavs()}
           {renderPage()}

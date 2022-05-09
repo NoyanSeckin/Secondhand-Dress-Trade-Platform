@@ -62,7 +62,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
             display: 'flex', 
             gap: 1, 
             pl: 1.3, 
-            pr: {xs: 6, lg: 7}, 
+            pr: {xs: 7.1, lg: 7}, 
             py: 1,
             mt: 0.8
             }}>
@@ -88,7 +88,9 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
     // offer status 
     if(status === null){
       return(
-        <Box sx={{alignSelf: 'center'}}>
+        <Box sx={{
+          alignSelf: {xs: 'end', lg: 'center'}
+          }}>
           <Button variant='contained' 
           onClick={()=> {
             setIsAcceptOrReject(true); 
@@ -98,7 +100,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
             color: '#fff', 
             fontSize: '15px', 
             py: 0.3, 
-            px: 2, 
+            px: {xs: 3.85, lg: 2}, 
             mr: 1.5, 
             borderRadius: '8px', 
             '&:hover': {background: '#4B9CE2'}}}>
@@ -115,7 +117,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
             color: '#fff', 
             fontSize: '15px', 
             py: 0.3, 
-            px: 2, 
+            px: {xs: 3.85, lg: 2}, 
             borderRadius: '8px', 
             '&:hover': {background: '#F77474'}
             }}>Reddet</Button>
@@ -134,9 +136,10 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
     return(
       <Typography variant='h6' 
       sx={{
+        alignSelf: {xs: 'end', lg:'center'},
         color: color, 
-        alignSelf: 'center',
-        fontSize: {xs: '15px', xl: '1.125rem'}
+        fontSize: {xs: '15px', xl: '1.125rem'},
+        mr: {xs: 2.3, lg: 0}
       }}>{text}</Typography>
     )
   }
@@ -179,7 +182,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
         display: 'flex', 
         justifyContent: 'space-between', 
         flexDirection: {xs: 'column', lg: 'row'},
-        mt: 2.5, 
+        mt: {xs: 1.2, lg: 2.5}, 
         py: 1, 
         pl: {xs: 1,lg: 2}, 
         pr: {xs: 1, xl: 3}, 
