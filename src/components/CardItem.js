@@ -33,7 +33,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
   }
 
   function checkNameLength(str){
-    if(width < mobileScreen){
+    if(width < mobileScreen && str){
       const totalWhitespace = str.split(' ').length -1;
       const totalCharacters = str.length;
       const totalSpace = totalWhitespace + totalCharacters;
@@ -147,7 +147,10 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
   function renderSentOffersBtnAndStatus(offerStatus, isSold, productId){
     if(offerStatus){
     return(
-      <Box sx={{alignSelf: 'center', display: 'flex'}}>
+      <Box sx={{
+        alignSelf: {xs: 'end', lg: 'center'}, 
+        display: 'flex',
+        }}>
         {!isSold && 
         <Button variant='contained'
         onClick={()=> handlePurchase(productId)} 
@@ -155,7 +158,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
           color: '#fff', 
           fontSize: '15px', 
           py: 0.3, 
-          px: 2, 
+          px: {xs: 4.2,lg: 2}, 
           mr: 3.5, 
           borderRadius: '8px', 
           '&:hover': {background: '#4B9CE2'}
@@ -183,9 +186,9 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
         justifyContent: 'space-between', 
         flexDirection: {xs: 'column', lg: 'row'},
         mt: {xs: 1.2, lg: 2.5}, 
-        py: 1, 
         pl: {xs: 1,lg: 2}, 
         pr: {xs: 1, xl: 3}, 
+        py: 1, 
         }}>
       {renderCardNameImageOffer(name, image, offer)}  
       {renderRecievedOfferBtnsAndText(offerId, status)}
@@ -195,7 +198,17 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
 
   function renderSentOffers(name, image, offerPrice, offerStatus, isSold, productId){
     return(
-      <Box sx={{display: 'flex', py: 1, pl: 2, pr: 3, mt: 2.5, justifyContent: 'space-between', border: '1px solid #F2F2F2', borderRadius: '8px'}}>
+      <Box sx={{
+        border: '1px solid #F2F2F2', 
+        borderRadius: '8px',
+        display: 'flex', 
+        flexDirection: {xs: 'column', lg: 'row'},
+        justifyContent: 'space-between', 
+        mt: {xs: 1.2, lg: 2.5}, 
+        pl: {xs: 1,lg: 2}, 
+        pr: {xs: 1, xl: 3}, 
+        py: 1, 
+        }}>
       {renderCardNameImageOffer(name, image, offerPrice)}  
       {renderSentOffersBtnAndStatus(offerStatus, isSold, productId)}
     </Box>
