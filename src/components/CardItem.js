@@ -64,7 +64,7 @@ export default function CardItem({activePage, name, image, offer, offerId, statu
             pl: 1.3, 
             pr: {xs: 7.1, lg: 7}, 
             py: 1,
-            mt: 0.8
+            mt: 0.8,
             }}>
           <Typography sx={{
             color: '#B1B1B1',

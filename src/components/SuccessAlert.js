@@ -6,28 +6,30 @@ import SuccesIcon from '../constants/icons/SuccessIcon';
 export default function BasicAlert({isAlert, setIsAlert, screen}) {
 
   const style = {
+    background: '#F1FFF0',
+    borderRadius:' 8px',
+    boxShadow:' 0px 3px 12px #1E36482E',
+    color: '#46af32',
+    fontSize: '16px',
     position: 'absolute',
     zIndex: 3,
-    background: '#F1FFF0',
-    color: '#46af32',
-    boxShadow:' 0px 3px 12px #1E36482E',
-    borderRadius:' 8px',
-    fontSize: '16px',
   }
 
   const desktopStyle = {
     ...style, 
-    width: '321px',
-    py: 1.3,
     mr: 3,
-    top: '85px',
+    py: 1.3,
     right: '-20px',
+    top: '85px',
+    width: '321px',
   }
 
   const mobileStyle = {
     ...style,
-    width: '114%',
-    top: '14px'
+    left: '10px',
+    padding: '0.6rem 0.7rem',
+    top: '81px',
+    width: '89%',
   }
   
   function handleClose(){
