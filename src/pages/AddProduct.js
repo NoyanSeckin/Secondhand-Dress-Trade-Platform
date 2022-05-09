@@ -2,7 +2,7 @@ import {Box, Container, Typography, Grid, Button} from '@mui/material'
 import { Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
-import React, {useState, useEffect, useContext, useRef} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import Navbar from '../components/Navbar'
 import SelectInput from '../components/SelectInput';
 import Switch from '../components/Switch'
@@ -47,12 +47,13 @@ export default function AddProduct() {
 
   function renderInput(value, error, handleChange, valueName){
     return(
-      <Box sx={{display: 'flex', flexDirection: 'column'}}>
+      <Box sx={{display: 'flex', flexDirection: 'column', position: 'relative'}}>
         <label htmlFor={valueName}> 
           {inputInfos[valueName].label}
         </label>
         <textarea className={error && 'form-error'} id={valueName} type='text' value={value} onChange={handleChange} rows={`${valueName === 'description' ? '3' : '1'}`}
         />
+        <Typography sx={{position: 'absolute', bottom: '-5px', color: '#F77474'}}>{error}</Typography>
       </Box>
     )
   }
@@ -93,7 +94,8 @@ export default function AddProduct() {
       </Typography>
       )
     }
-}
+  }
+
   return (
     <Box sx={{
       background: '#F2F2F2', 
@@ -121,6 +123,7 @@ export default function AddProduct() {
             color: 'textColor', 
             mb: 3
             }}>Ürün DetayIarı</Typography>
+         {/*Form elements begin*/}
           <Formik 
           initialValues={{
             name: '',
@@ -132,10 +135,10 @@ export default function AddProduct() {
             Yup.object({
               name: Yup.string().max(100, 'Maksimum 100 karakter giriniz.').required(requiredText),
               description: Yup.string().max(500, 'Maksimum 500 karakter giriniz').required(requiredText),
-              category: Yup.string().required(),
+              category: Yup.string().required(requiredText),
               color: Yup.string(),
               brand: Yup.string(),
-              status: Yup.string().required(),
+              status: Yup.string().required(requiredText),
               price: Yup.number('0-9 Arasında Bir Rakam Girin').required(),
               isOfferable: Yup.boolean()
             })
@@ -145,9 +148,8 @@ export default function AddProduct() {
             if(selectedFile.path){
                 postProduct(values);
                 // resetForm();
-                // values.category = 'Kategori seç';
                 // setSelectedFile({})
-              }
+            }
           }}
           >
             {({values, errors, handleSubmit, dirty, handleChange}) => (

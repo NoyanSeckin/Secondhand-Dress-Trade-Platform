@@ -52,7 +52,7 @@ export default function SelectInput({values, placeholder, handleChange, id, labe
 
   const renderSelectInput = ()=> {
     return(
-      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'} ${error && 'form-error'}`}onClick={handleOpen}>
+      <div className={`select-wrapper ${isOpen && 'active-select-wrapper'}`}onClick={handleOpen}>
         
         {/* the displayed value of select input */}
         <Typography variant='h6' 

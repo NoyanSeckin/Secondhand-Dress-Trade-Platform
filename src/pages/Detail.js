@@ -9,24 +9,39 @@ import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
 import UserContext from '../contexts/UserContext'
 import SuccessAlert from '../components/SuccessAlert'
+import MobileContext from "../contexts/MobileContext";
 
 export default function Detail() {
   const {product, setProduct} = useContext(ProductContext)
   const {userAuth} = useContext(UserContext)
+  const mobileScreen = useContext(MobileContext)
+  
   const [width] = useWindowSize({ fps: 60 });
-  const mobileScreen = 400;
-
+  
   const [offer, setOffer] = useState({})
   const [offerError, setOfferError] = useState('')
   const [isBuyModal, setIsBuyModal] = useState(false);
   const [isOfferModal, setIsOfferModal] = useState(false);
   const [isProductBought, setIsProductBought] = useState(false);
   const alternativeText = 'Belirtilmemiş';
-
+  
   useEffect(()=> {
     // scroll to the top of page
     document.body.scrollTop = 0; // For Safari
     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+
+    // use local storage to avoid data crash on refresh
+    const isSessionItem = sessionStorage.getItem('product-detail')
+    if(product.id){
+      sessionStorage.setItem('product-detail', JSON.stringify(product))
+    }
+    if(performance.getEntriesByType("navigation")[0].type){
+      if(isSessionItem && !product.id){
+        setProduct(JSON.parse(isSessionItem))
+      }
+    }
+    
+    
   }, [])
 
   async function withdrawOffer(){

@@ -1,11 +1,14 @@
 import {Grid, Box} from '@mui/material'
+import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import {React} from 'react'
+import React, {useContext} from 'react'
 import LoginSignup from '../components/LoginSignup'
 import SvgLogo from '../constants/icons/SvgLogo'
-import { useWindowSize } from "@react-hook/window-size/throttled";
+import MobileContext from "../contexts/MobileContext";
+
 export default function Authentication() {
-  const [width, height] = useWindowSize({ fps: 60 });
+  const [width] = useWindowSize({ fps: 60 });
+  const mobileScreen = useContext(MobileContext)
   return (
     <Grid container >
       <Grid item lg={5} sx={{display: {xs: 'none', lg: 'block'}}}>  
@@ -16,8 +19,8 @@ export default function Authentication() {
         background: {xs: '#f2f2f2', lg: '#FBFBFB '}, height: '100vh', display: 'flex',
         }}>
         <Box sx={{m: 'auto', display: 'flex',flexDirection: 'column', width: {xs: '75%' ,lg: '45%'}, height: {xs: '100%', lg: 'auto'},alignItems: 'center', position: 'relative'}}>
-          {width < 400 ? <SvgLogo style={{my: 3, width: 148.63, height: 48.46}}/> : <img className='intro-logo' src={require('../images/intro-logo.png')} alt="logo" />}
-          <LoginSignup/>
+          {width < mobileScreen ? <SvgLogo sxStyle={{my: 3, width: 148.63, height: 48.46}}/> : <img className='intro-logo' src={require('../images/intro-logo.png')} alt="logo" />}
+          <LoginSignup mobileScreen={mobileScreen}/>
         </Box>
       </Grid>
     </Grid>

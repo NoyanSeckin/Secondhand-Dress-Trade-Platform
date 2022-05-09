@@ -7,14 +7,13 @@ import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import {React, useState, useEffect, useContext} from 'react'
 import UserContext from '../contexts/UserContext';
-import Alert from '../components/Alert'
+import WarnAlert from './WarnAlert'
 import EyeIcon from '../constants/icons/EyeIcon'
-import { Email } from '@mui/icons-material';
 
- export default function LoginSignup(props) {
-   const {userAuth, setUserAuth} = useContext(UserContext);
-   const [width, height] = useWindowSize({ fps: 60 });
-
+ export default function LoginSignup({mobileScreen}) {
+   const {setUserAuth} = useContext(UserContext);
+   
+  const [width] = useWindowSize({ fps: 60 });
   let navigate = useNavigate();
   const [isAlert, setIsAlert] = useState(false)
   // if false show register page, else login page
@@ -31,7 +30,7 @@ import { Email } from '@mui/icons-material';
       setAuthCookieAndState(email, response.data.jwt, response.data.user.id);
       // directHome();
     })
-    .catch((error)=> {console.log(error); sendAlert(); })
+    .catch((error)=> sendAlert())
    }
 
    async function loginUser(email, password){
@@ -84,7 +83,7 @@ import { Email } from '@mui/icons-material';
 
   return (
     <Box className={` form-container ${width < 400 && 'form-container-mobile'}`}>
-      <Alert isAlert={isAlert} screen={width}/>
+      <WarnAlert isAlert={isAlert} screen={width}/>
       <Typography variant='h4' sx={{fontWeight: 'bold'}}> {returnEither(register.header, login.header)} </Typography>
       <Typography variant='subtitle1' sx={{color: '#525252', mb: {xs: 3.5 , lg: 8}}}>{returnEither(register.intro, login.intro)}</Typography>
       <Formik initialValues={{
@@ -93,11 +92,11 @@ import { Email } from '@mui/icons-material';
       }}
       validationSchema={
         Yup.object({
-          email: Yup.string().email('Emailiniz veya şifreniz hatalı.').required('Geçersiz bir email girdiniz.'),
+          email: Yup.string().email().required('Geçersiz bir email girdiniz.'),
           password: Yup.string().min(8, 'Şifreniz en az 8 karaterden oluşmalı.').max(20, 'Şifreniz en fazla 20 karakterden oluşmalı.').required('Lütfen bir şifre giriniz'),
         })
       }
-      onSubmit={(values, {setErrors}) => {
+      onSubmit={(values, {errors}) => {
         if(!isLogin){
           registerUser(values.email ,values.email, values.password)
         }else if(isLogin){
@@ -114,7 +113,7 @@ import { Email } from '@mui/icons-material';
               <input className={(errors.password) && 'form-error'} type="password" id='password' value={values.password} onChange={handleChange} />
               {isLogin && <Typography sx={{alignSelf: 'end', fontSize: '12px', color: '#B1B1B1', mb: {xs: 0,lg: 1.5}, position: 'relative'}}>Şifremi Unuttum  
               
-              {/* <EyeIcon style={{position: 'absolute', bottom: '39px', right: '17px'}}/> */}
+             {width < mobileScreen && isLogin && <EyeIcon style={{position: 'absolute', bottom: '39px', right: '17px'}}/>}
               
               </Typography>}
 

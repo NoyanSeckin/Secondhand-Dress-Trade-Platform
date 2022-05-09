@@ -8,13 +8,15 @@ import {React, useState, useEffect, useCallback, useContext} from 'react'
 import Navbar from '../components/Navbar'
 import CardComp from '../components/CardComp'
 import ProductContext from '../contexts/ProductContext'
+import MobileContext from "../contexts/MobileContext";
 import VirtualSlide from '../components/VirtualSlide'
 
 export default function Home() {
   const {setProduct} = useContext(ProductContext)
+  const mobileScreen = useContext(MobileContext)
+  
   const navigate = useNavigate();
   const [width] = useWindowSize({ fps: 60 });
-  const mobileScreen = 400;
 
   const active_nav = sessionStorage.getItem('active-nav');
   const selected_category = JSON.parse(sessionStorage.getItem('selected-category'));
@@ -30,7 +32,7 @@ export default function Home() {
   }, [selectedCategory]);
 
   async function getAllProducts(){
-    const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=20&_start=${categoryStartCounter}`);
+    const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=30&_start=${categoryStartCounter}`);
 
     // avoid setting duplicate products
     let existingProductIds = displayAllProducts?.map(product => product.id)
@@ -107,9 +109,16 @@ export default function Home() {
   }
 
   return (
-    <Box sx={{background: '#F2F2F2', minHeight: {xs: 'auto', lg: '120vh'}}}>
+    <Box sx={{
+      background: '#F2F2F2', 
+      minHeight: {xs: 'auto', lg: '120vh'}
+      }}>
       <Navbar/>
-      <Container maxWidth='xl' sx={{pt: {xs: 10, lg: 12}, px: {xs: 1, xl: 3}}}>
+      <Container maxWidth='xl' 
+      sx={{
+        pt: {xs: 10, lg: 12}, 
+        px: {xs: 1, xl: 3}
+        }}>
         <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
         <Box sx={{position: 'relative'}}>
           <Box sx={{display: 'flex',  width: '103.5%', mt: 2.5}}>
@@ -117,7 +126,6 @@ export default function Home() {
             renderMiddleNavbar()
             : <VirtualSlide display={navLinks} activeNav={activeNav} setActiveNav={setActiveNav} setSelectedCategory={setSelectedCategory}/>
           }
-            
           </Box>
         <hr className='home-hr'/>
         </Box>

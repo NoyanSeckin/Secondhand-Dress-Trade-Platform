@@ -4,6 +4,7 @@ import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../contexts/UserContext'
+import MobileContext from "../contexts/MobileContext"; 
 import Navbar from '../components/Navbar'
 import CardItem from '../components/CardItem'
 import AccountIcon from '../constants/icons/AccountIcon'
@@ -11,10 +12,9 @@ import BuyModal from '../components/BuyModal'
 import SuccessAlert from '../components/SuccessAlert'
 
 export default function Account() {
-  
   const {userAuth} = useContext(UserContext);
   const [width] = useWindowSize({ fps: 60 });
-  const mobileScreen = 400;
+  const mobileScreen = useContext(MobileContext);
 
   const [activePage, setActivePage] = useState('Teklif Aldıklarım');
   const [userProducts, setUserProducts] = useState([]);
