@@ -23,22 +23,26 @@ export default function Home() {
   const [selectedCategory, setSelectedCategory] = useState(selected_category || -1);
   const [displayedCategory, setDisplayedCategory] = useState([]);
   const [categoryStartCounter, setCategoryStartCounter] = useState(0);
-
-
-
   const [displayAllProducts, setDisplayAllProducts] = useState([]);
-
-  function renderProducts(){
-    return displayAllProducts?.map((product, index) => {
-     return <div onClick={()=> directToDetailPage(product)}>
-      <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
-    </div>
-   })
-  }
 
   useEffect(() => {
     getCategories();
   }, [selectedCategory]);
+
+  async function getAllProducts(){
+    const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=20&_start=${categoryStartCounter}`);
+
+    // avoid setting duplicate products
+    let existingProductIds = displayAllProducts?.map(product => product.id)
+    let uniqueItems = [];
+    response.data.forEach(product => {
+      if(!existingProductIds.includes(product.id)){
+        uniqueItems.push(product)
+      }
+    })
+    setDisplayAllProducts(displayAllProducts?.concat(uniqueItems))
+    setCategoryStartCounter(categoryStartCounter + 1);
+  }
 
   const getCategories =  useCallback(async (count) => {
     // save users displayed category for refresh
@@ -47,21 +51,7 @@ export default function Home() {
 
     // -1 equals to all categories
     if(selectedCategory === -1){
-
-      const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=5&_start=${categoryStartCounter}`);
-
-      // avoid setting duplicate products
-      let existingProductIds = displayAllProducts?.map(product => product.id)
-      let uniqueItems = [];
-      response.data.forEach(product => {
-        if(!existingProductIds.includes(product.id)){
-          uniqueItems.push(product)
-        }
-      })
-      setDisplayAllProducts(displayAllProducts?.concat(uniqueItems))
-      setCategoryStartCounter(categoryStartCounter + 1);
-      // setDisplayedCategory(displayedCategory?.concat(response.data));
-      // const response = await axios.get(`https://bootcamp.akbolat.net/categories?_limit=1&_start=${categoryStartCounter}`);
+      getAllProducts()
       }
       // these are other categories 'digerleri'
      else if(selectedCategory > 12){
@@ -75,13 +65,9 @@ export default function Home() {
     
   }, [selectedCategory, categoryStartCounter, displayedCategory] )
   
-
-
-  
-
   const navLinks = ['Hepsi', 'Pantolon', 'Gömlek', 'Tişört', 'Şort', 'Sweatshirt', 'Kazak', 'Polar', 'Mont', 'Abiye', 'Ayakkabı', 'Aksesuar', 'Çanta', 'Triko', 'Diğer'];
+  
   function renderMiddleNavbar(){
-    
     return navLinks.map((link, index) => {
       return(
         <Box sx={{ flexGrow: 1}}>
@@ -102,20 +88,22 @@ export default function Home() {
   }
 
   function renderCards(displayedCategory){
-
-    return displayedCategory?.map((category) => {
-      return(
-        category.products.map((product, index) => {
-          if(product.image !== null ){
-            return(
-              <div onClick={()=> directToDetailPage(product)}>
-                <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product?.image?.url}`}/>
-              </div>
-            )
-          }
-        })
+    return displayedCategory?.map((category) => (
+        category.products.map((product, index) => (
+          <div onClick={()=> directToDetailPage(product)}>
+            <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product?.image?.url}`}/>
+          </div>
+        )
       )
-    })
+    ))
+  }
+
+  function renderAllProducts(){
+    return displayAllProducts?.map((product, index) => (
+     <div onClick={()=> directToDetailPage(product)}>
+      <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`}/>
+    </div>
+    ))
   }
 
   return (
@@ -139,11 +127,10 @@ export default function Home() {
         next={getCategories}
         hasMore={true}
         // loader={<h4>Loading...</h4>}
-        scrollThreshold={0.50}
-        onScroll={()=> console.log('scrolled')}
+        scrollThreshold={0.5}
       >
         {selectedCategory === -1 ? 
-        renderProducts()
+        renderAllProducts()
         : renderCards(displayedCategory)
       }
       </InfiniteScroll>
