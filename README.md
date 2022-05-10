@@ -2,7 +2,7 @@
 
 ## Description
 
-This is a second hand dress trade platform, where users can authenticate, add and delete products, send and recieve offers, upload a product and see all the products added by other users. It is the graduation project of Protein React Bootcamp in collaboration with Patika.dev organization. The design comes from the sketches I was provided with, and I wrote the code which brought this design to life.
+This is a second hand dress trade platform, where users can authenticate, add and delete products, send and recieve offers, upload a product and see all the products added by other users. It is the graduation project of Protein React Bootcamp in collaboration with Patika.dev organization. The design comes from the sketches I was provided with, and I wrote the code which brought this design to life. Make sure to check out its mobile version too!
 
 ### App is live at: https://secondhand-dress-trade-platform.netlify.app/
 
@@ -21,6 +21,14 @@ This is a second hand dress trade platform, where users can authenticate, add an
 ### Screen Shots
 
 ![authentication](https://i.ibb.co/wyWQrbp/authentication.png)
+![home](https://i.ibb.co/C9BYyjg/home-page.png)
+![add-product](https://i.ibb.co/QX9x0Vk/add-product.png)
+![add-product-active](https://i.ibb.co/JBkb6zt/add-product-active.png)
+![detail-page-offer-modal](https://i.ibb.co/cFnjxdc/detail-page-offer-modal.png)
+![detail-page-withdraw-offer](https://i.ibb.co/FXjVK4H/detail-page-withdraw-offer.png)
+![recieved-offers](https://i.ibb.co/Bf5CQjx/recieved-offers.png)
+![sent-offers](https://i.ibb.co/0V00rBJ/sent-offers.png)
+![sent-offers-modal](https://i.ibb.co/wC1N2TB/sent-offers-modal.png)
 
 
 
