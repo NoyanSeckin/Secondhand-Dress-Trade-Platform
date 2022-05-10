@@ -1,3 +1,29 @@
+## Secondhand Dress Trade Platform
+
+## Description
+
+This is a second hand dress trade platform, where users can authenticate, add and delete products, send and recieve offers, upload a product and see all the products added by other users. It is the graduation project of Protein React Bootcamp in collaboration with Patika.dev organization. The design comes from the sketches I was provided with, and I wrote the code which brought this design to life.
+
+### App is live at: https://secondhand-dress-trade-platform.netlify.app/
+
+### Libraries
+
+```
+-Axios
+-Material UI
+-Formik
+-React Router
+-React Infinite Scroll
+-Swiper
+-Yup
+```
+
+### Screen Shots
+
+![authentication](https://i.ibb.co/wyWQrbp/authentication.png)
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
