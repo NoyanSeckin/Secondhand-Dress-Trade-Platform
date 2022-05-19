@@ -14,15 +14,13 @@ import AddProduct from "./pages/AddProduct";
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import MobileContext from "./contexts/MobileContext";
 
-function App(props) {
+function App() {
   const [userAuth, setUserAuth] = useState({});
   const [product, setProduct] = useState([]);
 
   useEffect(()=> {
-    // detect page refresh and keep user logged in
-    if(performance.getEntriesByType("navigation")[0].type){
+    // after refresh keep user logged in
       setAuthStateAfterRefresh();
-    }
   }, [])
   function setAuthStateAfterRefresh(){
     const initialValue = {};

@@ -307,7 +307,7 @@ form textarea:focus{
 }
 
 .price-wrapper::after{
-	content: "TL";
+	content: "$";
 	color: #99A0A7;
 	position: absolute;
 	right: 10px;
