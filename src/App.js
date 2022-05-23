@@ -5,7 +5,7 @@ import './styles.css'
 import {useState, useEffect} from 'react'
 import UserToken from './contexts/UserContext'
 import ProductContext from "./contexts/ProductContext";
-import  {GlobalTheme}  from './theme/GlobalTheme';
+import  {globalTheme}  from './theme/GlobalTheme';
 import Home from './pages/Home'
 import Authentication from './pages/Authentication'
 import Detail from './pages/Detail'
@@ -33,7 +33,7 @@ function App() {
     <MobileContext.Provider value={400}>
     <UserToken.Provider value={{userAuth, setUserAuth}}>
      <ProductContext.Provider value={{product, setProduct}}>
-       <ThemeProvider theme={GlobalTheme}>
+       <ThemeProvider theme={globalTheme}>
         <BrowserRouter >
             <Routes>
               <Route  path="/" element={ userAuth.token ? <Home/> :  <Authentication/>} >

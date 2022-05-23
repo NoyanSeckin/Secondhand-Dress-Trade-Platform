@@ -34,13 +34,9 @@ export default function Detail() {
     const isSessionItem = sessionStorage.getItem('product-detail')
     if(product.id){
       sessionStorage.setItem('product-detail', JSON.stringify(product))
+    } else if(isSessionItem && !product.id){
+      setProduct(JSON.parse(isSessionItem))
     }
-    if(performance.getEntriesByType("navigation")[0].type){
-      if(isSessionItem && !product.id){
-        setProduct(JSON.parse(isSessionItem))
-      }
-    }
-    
     
   }, [])
 
