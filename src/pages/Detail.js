@@ -8,7 +8,7 @@ import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
 import UserContext from '../contexts/UserContext'
-import SuccessAlert from '../components/AlertComponent/SuccessAlert'
+import Alert from '../components/Alert/Alert'
 import MobileContext from "../contexts/MobileContext";
 
 export default function Detail() {
@@ -294,7 +294,7 @@ export default function Detail() {
      
       <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setOffer={setOffer} setOfferError={setOfferError} offerError={offerError} screen={width} mobileScreen={mobileScreen}/>
 
-      <SuccessAlert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
+      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
     </Box>
   )
 }

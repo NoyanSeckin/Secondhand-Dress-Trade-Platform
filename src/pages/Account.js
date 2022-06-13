@@ -9,7 +9,7 @@ import MobileContext from "../contexts/MobileContext";
 import AccountCard from '../components/AccountCard.js'
 import AccountIcon from '../constants/icons/AccountIcon'
 import BuyModal from '../components/BuyModal'
-import SuccessAlert from '../components/AlertComponent/SuccessAlert'
+import Alert from '../components/Alert/Alert'
 
 export default function Account() {
   const {userAuth} = useContext(UserContext);
@@ -190,7 +190,7 @@ export default function Account() {
       </Container>
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={boughtProductId} setIsProductBought={setIsProductBought}
       token={userAuth.token}/>
-      <SuccessAlert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
+      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
     </Box>
   )
 }

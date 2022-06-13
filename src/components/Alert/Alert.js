@@ -49,15 +49,14 @@ export default function BasicAlert({ isAlert, setIsAlert }) {
   }, [isAlert, setIsAlert])
 
   function renderAlert() {
-    if(!isAlert){
 
+    if(isAlert){
       return(
         <Alert icon={<SuccesIcon/>} variant="filled" 
         sx={style} >
           Satın AIındı
         </Alert>
         )      
-
     }
   }
 

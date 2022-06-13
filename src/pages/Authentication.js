@@ -1,12 +1,17 @@
 import {Grid, Box} from '@mui/material'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import React, {useContext} from 'react'
-import LoginSignup from '../components/LoginSignup'
+import React, {useState, useContext} from 'react'
 import Logo from '../constants/icons/Logo'
 import MobileContext from "../contexts/MobileContext";
 
+import Login from '../components/AuthForms/Login'
+import Register from '../components/AuthForms/Register'
+
 export default function Authentication() {
+
+  const [ authType, setAuthType ] = useState("login");
+
   const [width] = useWindowSize({ fps: 60 });
   const mobileScreen = useContext(MobileContext)
   return (
@@ -20,7 +25,9 @@ export default function Authentication() {
         }}>
         <Box sx={{m: 'auto', display: 'flex',flexDirection: 'column', width: {xs: '75%' ,lg: '45%'}, height: {xs: '100%', lg: 'auto'},alignItems: 'center', position: 'relative'}}>
           {width < mobileScreen ? <Logo sx={{my: 3, width: 148.63, height: 48.46}}/> : <img className='intro-logo' src={require('../images/intro-logo.png')} alt="logo" />}
-          <LoginSignup mobileScreen={mobileScreen}/>
+          {/* <LoginSignup mobileScreen={mobileScreen}/> */}
+          {/* <Login setAuthType={setAuthType}/> */}
+          <Register setAuthType={setAuthType}/>
         </Box>
       </Grid>
     </Grid>
