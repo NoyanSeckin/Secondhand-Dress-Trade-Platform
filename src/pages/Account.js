@@ -9,7 +9,7 @@ import MobileContext from "../contexts/MobileContext";
 import AccountCard from '../components/AccountCard.js'
 import AccountIcon from '../constants/icons/AccountIcon'
 import BuyModal from '../components/BuyModal'
-import SuccessAlert from '../components/SuccessAlert'
+import SuccessAlert from '../components/AlertComponent/SuccessAlert'
 
 export default function Account() {
   const {userAuth} = useContext(UserContext);

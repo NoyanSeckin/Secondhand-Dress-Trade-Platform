@@ -1,10 +1,10 @@
 import React from 'react'
 
-import {Card, CardContent, CardMedia, Typography} from '@mui/material'
+import { Card, CardContent, CardMedia, Typography } from '@mui/material'
 
-import {styles} from './Styles'
+import { styles } from './CardStyles'
 
-export default function CardComp({brand, color, price, image}) {
+export default function CardComp({ brand, color, price, image }) {
 
   function renderCard(brand, color, price, image){
 
@@ -40,7 +40,7 @@ export default function CardComp({brand, color, price, image}) {
     )
   }
 
-  const cardView = renderCard(brand, color, price, image)
+  const cardView = renderCard(brand, color, price, image);
 
   return (
     <>

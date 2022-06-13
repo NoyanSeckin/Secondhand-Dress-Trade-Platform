@@ -8,7 +8,7 @@ import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
 import UserContext from '../contexts/UserContext'
-import SuccessAlert from '../components/SuccessAlert'
+import SuccessAlert from '../components/AlertComponent/SuccessAlert'
 import MobileContext from "../contexts/MobileContext";
 
 export default function Detail() {
