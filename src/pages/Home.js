@@ -6,8 +6,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import {useNavigate} from 'react-router-dom'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import Navbar from '../components/Navbar/Navbar'
-import CardComp from '../components/CardComp'
+import CardComp from '../components/Card/CardComp'
 import ProductContext from '../contexts/ProductContext'
 import MobileContext from "../contexts/MobileContext";
 import VirtualSlide from '../components/VirtualSlide'
@@ -115,7 +114,6 @@ export default function Home() {
       background: '#F2F2F2', 
       minHeight: {xs: 'auto', lg: '120vh'}
       }}>
-      <Navbar/>
       <Container maxWidth='xl' 
       sx={{
         pt: {xs: 10, lg: 12}, 

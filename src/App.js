@@ -1,11 +1,13 @@
-import { BrowserRouter, Routes, Route} from "react-router-dom";
+import { useState, useEffect } from 'react'
+
+import { Routes, Route,} from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import {ThemeProvider} from '@mui/material/styles';
 
 import './styles.css'
-import {useState, useEffect} from 'react'
+import  {globalTheme}  from './theme/GlobalTheme';
 import UserToken from './contexts/UserContext'
 import ProductContext from "./contexts/ProductContext";
-import  {globalTheme}  from './theme/GlobalTheme';
 import Home from './pages/Home'
 import Authentication from './pages/Authentication'
 import Detail from './pages/Detail'
@@ -13,20 +15,41 @@ import Account from './pages/Account'
 import AddProduct from "./pages/AddProduct";
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import MobileContext from "./contexts/MobileContext";
+import Navbar from "./components/Navbar/Navbar";
 
 function App() {
+  let location = useLocation();
+
   const [userAuth, setUserAuth] = useState({});
   const [product, setProduct] = useState([]);
 
   useEffect(()=> {
-    // after refresh keep user logged in
+    function setAuthStateAfterRefresh(){
+
+        const initialValue = {};
+        const userInfo = document.cookie.split(';').map(cookie => cookie.split('=')).reduce((accumulator, [key, value]) => ({...accumulator, [key.trim()]: value}), initialValue);
+        
+        setUserAuth({email: userInfo.email, token: userInfo.token, id: userInfo.id});
+    }
+
       setAuthStateAfterRefresh();
   }, [])
-  function setAuthStateAfterRefresh(){
-    const initialValue = {};
-      const userInfo = document.cookie.split(';').map(cookie => cookie.split('=')).reduce((accumulator, [key, value]) => ({...accumulator, [key.trim()]: value}), initialValue);
-      setUserAuth({email: userInfo.email, token: userInfo.token, id: userInfo.id});
+  
+  function renderIndexElement(){
+    return userAuth.token ? <Home/> :  <Authentication/>
   }
+
+  // display navbar except auth page
+  function renderNavbar(){
+
+      if(location.pathname !== '/'){
+        return <Navbar/>
+      }
+
+  }
+
+
+  const navbarView = renderNavbar();
   
   return (
   <div className="App">
@@ -34,19 +57,17 @@ function App() {
     <UserToken.Provider value={{userAuth, setUserAuth}}>
      <ProductContext.Provider value={{product, setProduct}}>
        <ThemeProvider theme={globalTheme}>
-        <BrowserRouter >
+            {navbarView}
             <Routes>
-              <Route  path="/" element={ userAuth.token ? <Home/> :  <Authentication/>} >
-              </Route>
-              <Route index path="/home" element={<Home/>} />
-              <Route path="/detail" element={<Detail/>}/>
+              <Route  path="/" element={renderIndexElement()}/> 
+              <Route index path="/home" element={<Home/>}/>
               <Route path="*" element={<Home/>}/>
+              <Route path="/detail" element={<Detail/>}/>
               <Route element={<ProtectedRoutes/>}>
                 <Route path="/account" element={<Account/>}/>
                 <Route path="/addproduct" element={<AddProduct/>}/>
               </Route>  
             </Routes>
-        </BrowserRouter>
       </ThemeProvider>
       </ProductContext.Provider> 
     </UserToken.Provider>
