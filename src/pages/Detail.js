@@ -3,7 +3,7 @@ import { useWindowSize } from "@react-hook/window-size/throttled";
 import axios from 'axios'
 
 import React, {useState, useContext, useEffect} from 'react'
-import Navbar from '../components/Navbar'
+
 import BuyModal from '../components/BuyModal'
 import OfferModal from '../components/OfferModal'
 import ProductContext from '../contexts/ProductContext'
@@ -287,7 +287,6 @@ export default function Detail() {
       height: {xs: 'auto', xl: '120vh'},
       pb: {xs: 9, xl: 0}
       }}>
-      <Navbar/>
 
       {renderDetailPage(product.name, product.brand, product.color, product.status, product.price, product.description, `https://bootcamp.akbolat.net${product.image?.url}`, product.isSold, offer?.price)}
      

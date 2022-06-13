@@ -1,11 +1,12 @@
+import {React, useState, useEffect, useCallback, useContext} from 'react'
+
 import {Container, Box, Typography} from '@mui/material'
 import axios from 'axios'
 import InfiniteScroll from 'react-infinite-scroll-component';
 import {useNavigate} from 'react-router-dom'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import {React, useState, useEffect, useCallback, useContext} from 'react'
-import Navbar from '../components/Navbar'
+import Navbar from '../components/Navbar/Navbar'
 import CardComp from '../components/CardComp'
 import ProductContext from '../contexts/ProductContext'
 import MobileContext from "../contexts/MobileContext";

@@ -3,7 +3,7 @@ import { Formik} from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios'
 import React, {useState, useEffect, useContext} from 'react'
-import Navbar from '../components/Navbar'
+
 import SelectInput from '../components/SelectInput';
 import Switch from '../components/Switch'
 import UserContext from '../contexts/UserContext'
@@ -102,7 +102,6 @@ export default function AddProduct() {
       height: { xs: 'auto', lg: '120vh'},
       pb: {xs: 1.5, lg: 0}
       }}>
-      <Navbar/>
       <Container maxWidth="xl" sx={{pt: {xs: 11, lg: 12}, position:'relative'}}>
         <Grid container sx={{
           background: '#fff', 

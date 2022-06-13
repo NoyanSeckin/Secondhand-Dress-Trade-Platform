@@ -5,7 +5,7 @@ import { useWindowSize } from "@react-hook/window-size/throttled";
 import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../contexts/UserContext'
 import MobileContext from "../contexts/MobileContext"; 
-import Navbar from '../components/Navbar'
+
 import AccountCard from '../components/AccountCard.js'
 import AccountIcon from '../constants/icons/AccountIcon'
 import BuyModal from '../components/BuyModal'
@@ -171,7 +171,6 @@ export default function Account() {
       background: '#F2F2F2', 
       minHeight: '120vh', 
       pb: {xs: 4, lg: 10}}}>
-      <Navbar/>
       <Container maxWidth="xl" 
       sx={{
         pt: {xs: 10, lg: 12},

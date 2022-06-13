@@ -37,7 +37,6 @@ export default function BasicAlert({isAlert, setIsAlert, screen}) {
       setIsAlert(false);
     }, 3000);
   }
-  // test
 
   useEffect(()=> {
     if(isAlert){
