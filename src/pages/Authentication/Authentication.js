@@ -1,47 +1,46 @@
-import React, {useState} from 'react'
+import React, { useState } from 'react'
 
-import {Grid, Box} from '@mui/material'
-
+import { Grid, Box } from '@mui/material'
 
 import AuthTypeContext from '../../contexts/AuthTypeContext'
 import Logo from '../../constants/icons/Logo'
-import {styles} from './AuthenticationStyles'
+import { styles } from './StylesAuthentication'
 import Login from '../../components/AuthForms/Login'
 import Register from '../../components/AuthForms/Register'
 
 export default function Authentication() {
-  
+
   // used in AuthForms Form
-  const [ authType, setAuthType ] = useState("login");
-  
+  const [authType, setAuthType] = useState("login");
+
   const renderAuthForm = () => {
 
-    if(authType === 'login'){
-      return <Login/>
+    if (authType === 'login') {
+      return <Login />
     }
-    else{
-      return <Register/>
+    else {
+      return <Register />
     }
   }
 
   const renderLogo = () => {
 
-    return(
+    return (
       <>
-      <Box sx={styles.mobileLogoWrapper}>
-        <Logo sx={styles.logo}/> 
-      </Box>
-      <Box sx={styles.desktopLogoWrapper}>
-        <img className='intro-logo' src={'/images/intro-logo.png'} alt="logo" />
-      </Box>
-    </>
+        <Box sx={styles.mobileLogoWrapper}>
+          <Logo sx={styles.logo} />
+        </Box>
+        <Box sx={styles.desktopLogoWrapper}>
+          <img className='intro-logo' src={'/images/intro-logo.png'} alt="logo" />
+        </Box>
+      </>
     )
   }
 
   const renderImageGrid = () => {
 
-    return(
-      <Grid item lg={5} sx={styles.imageGrid}>  
+    return (
+      <Grid item lg={5} sx={styles.imageGrid}>
         <img style={styles.image} src={'/images/intro.png'} alt="intro" />
       </Grid>
     )
@@ -52,13 +51,13 @@ export default function Authentication() {
     const logoView = renderLogo();
     const authFormView = renderAuthForm();
 
-    return(
-      <Grid item lg={7} xs={12} 
-      sx={styles.formGrid}>
+    return (
+      <Grid item lg={7} xs={12}
+        sx={styles.formGrid}>
         <Box sx={styles.formGridContainer}>
           {logoView}
-          <AuthTypeContext.Provider value={{setAuthType}}>
-             {authFormView}
+          <AuthTypeContext.Provider value={{ setAuthType }}>
+            {authFormView}
           </AuthTypeContext.Provider>
         </Box>
       </Grid>
@@ -71,7 +70,7 @@ export default function Authentication() {
   return (
     <Grid container>
       {imageGridView}
-      {formGridView}    
+      {formGridView}
     </Grid>
   )
 }

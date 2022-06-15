@@ -6,7 +6,7 @@ import React from 'react'
 import Logo from '../../constants/icons/Logo'
 import PlusIcon from '../../constants/icons/PlusIcon'
 import PersonIcon from '../../constants/icons/PersonIcon'
-import { styles } from './Styles.js'
+import { styles } from './StylesNavbar.js'
 
 export default function Navbar() {
 
