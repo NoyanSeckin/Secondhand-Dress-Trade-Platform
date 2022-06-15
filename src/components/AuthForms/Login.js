@@ -8,7 +8,7 @@ import UserContext from '../../contexts/UserContext';
 import { setAuthCookieAndContext } from './Utils';
 import Form from './Form';
 
- export default function Login({ setAuthType }) {
+ export default function Login() {
   
   const [ isAlert, setIsAlert ] = useState(false);
 
@@ -17,7 +17,6 @@ import Form from './Form';
   const {setUserAuth} = useContext(UserContext);
 
   async function loginUser(email, password){
-
     axios.post('https://bootcamp.akbolat.net/auth/local', {
       identifier: email,
       password: password
@@ -34,17 +33,17 @@ import Form from './Form';
   }
 
   const loginForm = {
-    type: 'login',
     header: 'Giriş Yap',
     intro: 'Fırsatlardan yararlanmak için giriş yap!',
     btnText: 'Giriş Yap',
     accountInfo: 'Hesabın yok mu?',
     action: 'Üye Ol',
+    changeTo: 'register',
   }
   
   return (
     <>
-      <Form authForm={loginForm} submitAction={loginUser} setAuthType={setAuthType} isAlert={isAlert} setIsAlert={setIsAlert}/>
+      <Form authForm={loginForm} submitAction={loginUser} isAlert={isAlert} setIsAlert={setIsAlert}/>
     </>
   )
 }

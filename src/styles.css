@@ -60,20 +60,6 @@ input[type=number] {
 body{
 	font-family: 'Nunito', 'sans-serif';
 }
-.form-container {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	background: #FFF; 
-	box-shadow: 0px 3px 12px #1E36480A; 
-	border-radius: 8px;
-	width: 100%; 
-	padding: 5rem 2.5rem;
-}
-
-.form-container-mobile{
-	padding: 2rem 2.3rem;
-}
 
 .intro-logo{
 	width: 224px;
@@ -367,3 +353,4 @@ form textarea:focus{
 .swiper-wrapper{
 	gap: 1.45rem;
 }
+

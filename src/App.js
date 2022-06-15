@@ -9,7 +9,7 @@ import  {globalTheme}  from './theme/GlobalTheme';
 import UserToken from './contexts/UserContext'
 import ProductContext from "./contexts/ProductContext";
 import Home from './pages/Home'
-import Authentication from './pages/Authentication'
+import Authentication from './pages/Authentication/Authentication'
 import Detail from './pages/Detail'
 import Account from './pages/Account'
 import AddProduct from "./pages/AddProduct";

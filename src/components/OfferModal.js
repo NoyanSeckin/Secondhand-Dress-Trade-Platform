@@ -64,7 +64,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
           onClick={()=> handleCheckbox(ratio)}>
           <Box sx={{ml: 1}}>
            {activeCheckbox === ratio ? <ConfirmIcon/> 
-           : <img src={require('../images/ellipse-outline.png')} alt="small-ellipse" />} 
+           : <img src={'/images/ellipse-outline.png'} alt="small-ellipse" />} 
           </Box>
          <Typography sx={{
            color: activeCheckbox === ratio ? 'primary.main' : '#525252',

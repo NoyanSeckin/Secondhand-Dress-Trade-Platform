@@ -2,7 +2,7 @@ import {Outlet} from 'react-router'
 
 import React, {useContext} from 'react'
 import UserContext from '../contexts/UserContext'
-import Authentication from '../pages/Authentication';
+import Authentication from '../pages/Authentication/Authentication';
 
 export default function ProtectedRoutes() {
   const {userAuth} = useContext(UserContext);

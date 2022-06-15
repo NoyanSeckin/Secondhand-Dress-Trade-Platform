@@ -119,7 +119,7 @@ export default function Home() {
         pt: {xs: 10, lg: 12}, 
         px: {xs: 1, xl: 3}
         }}>
-        <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={require('../images/main-header.png')} alt="" />
+        <img className={width > 400 ? 'main-header' : 'main-header-mobile'} src={'/images/main-header.png'} alt="" />
         <Box sx={{position: 'relative'}}>
           <Box sx={{display: 'flex',  width: '103.5%', mt: 2.5}}>
             {width > mobileScreen ? 

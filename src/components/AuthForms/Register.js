@@ -6,7 +6,7 @@ import UserContext from '../../contexts/UserContext';
 import { setAuthCookieAndContext } from './Utils';
 import Form from './Form';
 
- export default function Login({ setAuthType }) {
+ export default function Login() {
   
   const [ isAlert, setIsAlert ] = useState(false);
 
@@ -26,16 +26,17 @@ import Form from './Form';
    }
 
    const registerForm = {
-      header: 'Üye OI',
-      intro: 'Fırsatlardan yararlanmak için üye ol!',
-      btnText: 'Üye OI',
-      accountInfo: 'Hesabın var mı? ',
-      action: 'Giriş yap'
+     header: 'Üye OI',
+     intro: 'Fırsatlardan yararlanmak için üye ol!',
+     btnText: 'Üye OI',
+     accountInfo: 'Hesabın var mı? ',
+     action: 'Giriş yap',
+     changeTo: 'login',
   }
   
   return (
     <>
-      <Form authForm={registerForm} submitAction={registerUser} setAuthType={setAuthType} isAlert={isAlert} setIsAlert={setIsAlert}/>
+      <Form authForm={registerForm} submitAction={registerUser}  isAlert={isAlert} setIsAlert={setIsAlert}/>
     </>
   )
 }
