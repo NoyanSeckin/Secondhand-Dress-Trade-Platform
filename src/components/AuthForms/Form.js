@@ -60,6 +60,7 @@ const Form = ({ authForm, submitAction, isAlert, setIsAlert }) => {
 
         return (
             <Formik
+            
                 initialValues={{
                     email: '',
                     password: '',
@@ -70,9 +71,7 @@ const Form = ({ authForm, submitAction, isAlert, setIsAlert }) => {
                 }
 
                 onSubmit={(values) => {
-                    console.log('submit');
                     submitAction(values.email, values.password)
-
                 }}
             >
                 {({ values, errors, handleSubmit, dirty, handleChange }) => (

@@ -4,7 +4,7 @@ import {useDropzone} from 'react-dropzone';
 
 import React, {useEffect, useState} from 'react';
 import CloudIcon from '../constants/icons/CloudIcon'
-import ProgressBar from '../components/ProgressBar'
+import ProgressBar from './ProgressBar'
 
 export default function DropzoneComp({setSelectedFile, setSelectedFileError}) {
   const [loader, setLoader] = useState(true);
