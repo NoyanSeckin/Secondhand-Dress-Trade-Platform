@@ -28,7 +28,7 @@ import Form from './Form';
       }
   )
   .catch(
-      () => setIsAlert(true)
+      (err) => {setIsAlert(true); console.log(err.message);}
   )
   }
 
@@ -39,6 +39,7 @@ import Form from './Form';
     accountInfo: 'Hesabın yok mu?',
     action: 'Üye Ol',
     changeTo: 'register',
+    errorMessage: 'Emailiniz veya şifreniz yanlış',
   }
   
   return (

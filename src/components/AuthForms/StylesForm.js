@@ -58,6 +58,12 @@ export const styles = {
          '&:hover': {
             cursor: 'pointer'
          }
+    },
+
+    errorMessageSpan: {
+        color: '#F77474',
+        fontSize: '14px',
+        marginTop: '-10px'
     }
 
 }

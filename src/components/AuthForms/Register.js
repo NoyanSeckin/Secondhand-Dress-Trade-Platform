@@ -32,6 +32,7 @@ import Form from './Form';
      accountInfo: 'Hesabın var mı? ',
      action: 'Giriş yap',
      changeTo: 'login',
+     errorMessage: 'Bu email kullanımda'
   }
   
   return (

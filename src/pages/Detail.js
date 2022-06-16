@@ -294,7 +294,7 @@ export default function Detail() {
      
       <OfferModal isOfferModal={isOfferModal} setIsOfferModal={setIsOfferModal} product={product} userAuth={userAuth} setOffer={setOffer} setOfferError={setOfferError} offerError={offerError} screen={width} mobileScreen={mobileScreen}/>
 
-      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
+      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} alertText='Satın Alındı'/>
     </Box>
   )
 }

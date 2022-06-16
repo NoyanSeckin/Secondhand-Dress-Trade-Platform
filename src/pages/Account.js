@@ -190,7 +190,7 @@ export default function Account() {
       </Container>
       <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={boughtProductId} setIsProductBought={setIsProductBought}
       token={userAuth.token}/>
-      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} screen={width}/>
+      <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} alertText='Satın Alındı'/>
     </Box>
   )
 }
