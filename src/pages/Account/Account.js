@@ -3,13 +3,13 @@ import axios from 'axios'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import React, { useState, useContext, useEffect } from 'react'
-import UserContext from '../contexts/UserContext'
-import MobileContext from "../contexts/MobileContext"; 
+import UserContext from '../../contexts/UserContext'
+import MobileContext from "../../contexts/MobileContext"; 
 
-import AccountCard from '../components/AccountCard.js'
-import AccountIcon from '../constants/icons/AccountIcon'
-import BuyModal from '../components/BuyModal'
-import Alert from '../components/Alert/Alert'
+import AccountCard from '../../components/AccountCard.js'
+import AccountIcon from '../../constants/icons/AccountIcon'
+import BuyModal from '../../components/BuyModal/BuyModal'
+import Alert from '../../components/Alert/Alert'
 
 export default function Account() {
   const {userAuth} = useContext(UserContext);

@@ -10,8 +10,8 @@ import UserToken from './contexts/UserContext'
 import ProductContext from "./contexts/ProductContext";
 import Home from './pages/Home'
 import Authentication from './pages/Authentication/Authentication'
-import Detail from './pages/Detail'
-import Account from './pages/Account'
+import Detail from './pages/Detail/Detail'
+import Account from './pages/Account/Account'
 import AddProduct from "./pages/AddProduct";
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import MobileContext from "./contexts/MobileContext";
@@ -47,7 +47,6 @@ function App() {
       }
 
   }
-
 
   const navbarView = renderNavbar();
   

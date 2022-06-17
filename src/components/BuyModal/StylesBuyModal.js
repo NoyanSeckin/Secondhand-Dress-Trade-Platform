@@ -33,14 +33,12 @@ export const styles = {
     },
 
     cancelButton: {
-        ...this.button,
         color: 'primary',
         background: '#f0f8ff',
         mr: 1
     },
 
     proceedButton: {
-        ...this.button,
         color: '#fff',
         bgcolor: 'primary.main',
         '&:hover': {

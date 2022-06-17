@@ -2,11 +2,14 @@ import {createTheme} from '@mui/material/styles'
 
 export const globalTheme = createTheme({
   palette: {
-    primary: {main: '#4B9CE2'},
+    primary: {
+        main: '#4B9CE2'
+    },
     danger: '#F77474',
     orange: '#FAAD60',
     green: '#46AF32',
     textColor: '#525252',
+    lightBg: ' #F2F2F2'
   },
   components:{
     MuiButton: {

@@ -58,8 +58,8 @@ export default function BuyModal({ isBuyModal, setIsBuyModal, productId, setProd
             <Typography id="transition-modal-description" sx={styles.modalText}>
               Satın AImak istiyor musunuz?
             </Typography>
-            <Button sx={styles.cancelButton} onClick={handleClose}>Vazgeç</Button>
-            <Button onClick={buyProduct} sx={styles.proceedButton}>Satın AI</Button>
+            <Button sx={{...styles.button, ...styles.cancelButton}} onClick={handleClose}>Vazgeç</Button>
+            <Button onClick={buyProduct} sx={{...styles.button, ...styles.proceedButton}}>Satın AI</Button>
           </Box>
         </Fade>
       </Modal>
