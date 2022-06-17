@@ -156,8 +156,10 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
       console.log(response.data)
       if(response.data.product.isOfferable){
         setOffer({id: response.data.id, price: response.data.offerPrice});
+        console.log('set offer calisti');
       }else{
         setOfferError('Bu ürün teklif kabul etmiyor')
+        console.log('else calisti');
       }
     }).catch((err)=> console.log(err.message))
     

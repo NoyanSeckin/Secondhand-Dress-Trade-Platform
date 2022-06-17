@@ -28,6 +28,10 @@ export default function Detail() {
     const alternativeText = 'Belirtilmemiş';
 
     useEffect(() => {
+        console.log(offer)
+    }, [offer]);
+
+    useEffect(() => {
         // scroll to the top of page
         document.body.scrollTop = 0; // For Safari
         document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
@@ -64,7 +68,7 @@ export default function Detail() {
                     </Grid>
                     <Grid item xs={12} lg={6}
                         sx={styles.gridItemWithText}>
-                        {renderName(name)}
+                        {renderTitle(name)}
                         {width > mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(productPrice, offerPrice)}
                         {width < mobileScreen ? renderItemDetails(brand, color, condition) : renderPriceAndOffer(productPrice, offerPrice)}
                         {renderIsSold(isSold)}
@@ -81,37 +85,25 @@ export default function Detail() {
         return(
             <Box sx={{ display: 'flex' }}>
                 <Typography variant='h6'
-                    sx={{
-                        color: '#B1B1B1',
-                        mr: 0.4,
-                        fontSize: { xs: '12px', xl: '1.125rem' },
-                        alignSelf: { xs: 'center', xl: 'start' }
-                    }}>
+                    sx={styles.offerText}>
                     Verilen Teklif:
                 </Typography>
                 <Typography variant='h6'
-                    sx={{
-                        color: 'textColor',
-                        fontWeight: 'bold',
-                        fontSize: { xs: '15px', xl: '1.125rem' }
-                    }}>
+                    sx={styles.offerPriceText}>
                     {offer?.price} TL
                 </Typography>
             </Box>
         )
     }
 
-    function renderGivenOffer(offerPrice) {
-        // 
-        if (offerPrice) {
+    function renderGivenOffer() {
+
+        if (offer?.price) {
+            const offerView = renderOffer()
             return (
                 <Box sx={{ display: 'flex' }}>
                     <Box sx={styles.givenOfferContainer}>
-                        {offerError ?
-                            <Typography variant='h6'>{offerError}</Typography>
-                            : 
-                            renderOffer(offerPrice)
-                        }
+                        {offerView}
                     </Box>
                 </Box>
             )
@@ -160,35 +152,26 @@ export default function Detail() {
         }} src={image} alt="" />
     }
 
-    function renderName(name) {
+    function renderTitle(name) {
         return <Typography variant='h3'
-            sx={{
-                mt: 1.5,
-                fontSize: { xs: '18px', xl: '2.125rem' }
-            }}>
+            sx={styles.title}>
             {name}
         </Typography>
     }
 
     function renderItemDetails(brand, color, condition) {
-        const details = { [brand]: 'Marka', [color]: 'Renk', [condition]: 'Kullanım Durumu' };
+        
+        const detailTitles = { [brand]: 'Marka', [color]: 'Renk', [condition]: 'Kullanım Durumu' };
+        
         const detailsArray = [brand, color, condition];
+        
         return (
-            <Box sx={{
-                mt: { xs: 0, xl: 2 },
-                width: { xs: '100%', lg: '50%' },
-                display: 'flex',
-                flexDirection: 'column',
-                gap: { xs: 0.6, xl: 2 }
-            }}>
+            <Box sx={styles.detailsContainer}>
                 {detailsArray.map((detail, index) => {
                     return (
-                        <Box key={index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <Typography sx={{
-                                fontWeight: '700',
-                                fontSize: { xs: '15px', lg: '16px' }
-                            }}>
-                                {details[detail]}:
+                        <Box key={index} sx={styles.detailContainer}>
+                            <Typography sx={styles.detailText}>
+                                {detailTitles[detail]}:
                             </Typography>
                             <Typography sx={{ width: '55%' }}>
                                 {detail || alternativeText}
@@ -218,6 +201,17 @@ export default function Detail() {
                 {renderGivenOffer()}
             </Box>
         )
+    }
+
+    function renderButtonText() {
+        
+        let buttonText;
+        if(offer?.price){
+            buttonText = 'Teklifi Geri Çek';
+        }
+        else if (!product.isOfferable){
+            // buttonText = ''
+        }
     }
 
     function renderBtns(isSold, offer) {
@@ -255,8 +249,8 @@ export default function Detail() {
                             lg: offer ? 7 : 10.5
                         },
                     }}
-                        onClick={() => { offer.price ? withdrawOffer() : setIsOfferModal(true) }}>
-                        {offer.price ? 'Teklifi Geri Çek' : 'Teklif Ver'}
+                        onClick={() => { offer?.price ? withdrawOffer() : setIsOfferModal(true) }}>
+                        {offer?.price ? 'Teklifi Geri Çek' : 'Teklif Ver'}
                     </Button>
                 </Box>
             )
