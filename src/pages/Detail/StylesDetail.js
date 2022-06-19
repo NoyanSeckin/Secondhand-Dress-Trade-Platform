@@ -31,6 +31,8 @@ export const styles = {
     },
 
     gridItemWithText: {
+        display: 'flex',
+        flexDirection: 'column',
         pl: { 
             xs: 1, 
             xl: 5 
@@ -38,6 +40,7 @@ export const styles = {
     },
 
     title: {
+        order: 1,
         mt: 1.5,
         fontSize: { 
             xs: '18px', 
@@ -48,6 +51,9 @@ export const styles = {
     detailsContainer: {
         display: 'flex',
         flexDirection: 'column',
+        order: {
+            xs: 3, md: 2
+        },
         gap: {
             xs: 0.6, 
             xl: 2 
@@ -162,6 +168,7 @@ export const styles = {
     },
 
     priceContainer: {
+        order: {xs: 2, md: 3},
         display: { 
             xs: 'flex', 
             lg: 'block' 
@@ -195,6 +202,7 @@ export const styles = {
     buttonsContainer: {
         background: { xs: '#fff', sm: 'none' },
         bottom: 0,
+        order: 4,
         left: { 
             xs: '-24px', 
             sm: 0 
@@ -239,6 +247,33 @@ export const styles = {
         '&:hover': {
             bgcolor: 'primary.light'
         }
+    },
+
+    descriptionTitle: {
+        fontWeight: '700',
+        fontSize: { 
+            xs: '15px', 
+            lg: '20px' 
+        },
+        mt: { 
+            xs: 0.6, 
+            lg: 2.5 
+        },
+        mb: 0.5,
+    },
+
+    descriptionText: {
+        color: '#555555',
+        fontSize: '15px',
+        mr: 6,
+        mb: { 
+            xs: 2, 
+            lg: 0 
+        },
+        pr: { 
+            xs: 0, 
+            lg: 18 
+        },
     }
 
 }

@@ -354,10 +354,13 @@ form textarea:focus{
 	gap: 1.45rem;
 }
 
-
-
 @media screen and (max-width: 400px){
+    
     .detail-img{
         height: 362px !important;
+    }
+
+    .offer-input{
+        width: 95%;
     }
 }

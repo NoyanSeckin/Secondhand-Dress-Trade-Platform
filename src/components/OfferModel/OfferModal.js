@@ -1,56 +1,38 @@
 import React, { useState } from 'react';
+
 import {Backdrop, Box, Button, Container, Fade, Modal, Typography} from '@mui/material'
+
 import axios from 'axios'
 
-import CloseIcon  from '../constants/icons/CloseIcon';
-import ConfirmIcon from '../constants/icons/ConfirmIcon';
-const style = {
-  position: 'absolute',
-  bgcolor: '#fff',
-  borderRadius: '10px',
-  boxShadow: '0px 3px 12px #1E36482E',
-  display: 'flex',
-  flexDirection: 'column',
-};
+import {styles} from './StylesOfferModal'
+import CloseIcon  from '../../constants/icons/CloseIcon';
+import ConfirmIcon from '../../constants/icons/ConfirmIcon';
 
-const desktopStyle = {
-  ...style, 
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '480px',
-  padding: '1.5rem 1rem',
-  gap: '1rem'
-
-}
-
-const mobileStyle = {
-  ...style,
-  width: '95%',
-  marginLeft: '10px',
-  marginTop: '10px',
-  gap: '0.5rem',
-  padding: '1rem'
-}
-export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setOffer, setOfferError, screen, mobileScreen}) {
+export default function OfferModal({isOfferModal, setIsOfferModal, product, userAuth ,setOffer, setOfferError}) {
   const handleClose = () => setIsOfferModal(false);
   
   const [activeCheckbox, setActiveCheckbox] = useState(null);
-  const [givenOffer, setGivenOffer] = useState('')
+  const [givenOffer, setGivenOffer] = useState('');
+
   function handleCheckbox(ratio){
     setGivenOffer((Number(product.price) * (ratio / 100)).toFixed(2));
+
     setActiveCheckbox(ratio);
   }
 
   function renderCheckboxes(){
+
     const ratios = [20, 30, 40];
+
     const ratioLetters = {
       20: 'si',
       30: 'u',
       40: 'ı',
     }
+    
     return ratios.map((ratio, index) => {
-      return(
+      
+        return(
         <Box key={index} 
         sx={{
           border: '1px solid #E0E0E0',
@@ -77,6 +59,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
     })
   }
   function renderHeaderAndCloseIcon(){
+    
     return(
       <Box sx={{display: 'flex', justifyContent: 'space-between'}}>
       <Typography sx={{
@@ -98,12 +81,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
         mb: {xs: 1, lg: 0}
         }}>
         <Box sx={{display: 'flex', width: '50%'}}>
-          <img src={image} alt=""
-          style={{
-            borderRadius: '8px',
-            height: `${screen < mobileScreen ? '36px' : '50px'}`, 
-            width: `${screen < mobileScreen ? '37px' : '50px'}`, 
-            }} />
+          <img src={image} alt="" style={styles.img}/>
           <Typography sx={{
             ml: 1, 
             color: '#555555', 
@@ -123,10 +101,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
   function renderOfferInput(){
     return(
       <div className='offer-wrapper'>
-       <input style={{
-         width: `${screen < mobileScreen && '95%'}`,
-        }} 
-       type="number" placeholder='Teklif Belirle' className='offer-input' value={givenOffer} onChange={(e)=> setGivenOffer(e.target.value)} />
+       <input className='offer-input' type="number" placeholder='Teklif Belirle' value={givenOffer} onChange={(e)=> setGivenOffer(e.target.value)} />
       </div>
     )
   }
@@ -181,7 +156,7 @@ export default function OfferModal({isOfferModal, setIsOfferModal, product, user
         }}
       >
         <Fade in={isOfferModal}>
-          <Container sx={screen < mobileScreen ? mobileStyle : desktopStyle}>
+          <Container sx={styles.container}>
             {renderHeaderAndCloseIcon()}
             {renderNameImgAndPrice(`https://bootcamp.akbolat.net${product.image?.url}`, product.price)}
             {renderCheckboxes()}
