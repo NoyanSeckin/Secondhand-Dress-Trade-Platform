@@ -27,24 +27,24 @@ export default function Detail() {
     const [isProductBought, setIsProductBought] = useState(false);
     const alternativeText = 'Belirtilmemiş';
 
-    useEffect(() => {
-        console.log(offer)
-    }, [offer]);
+    // useEffect(() => {
+    //     console.log(product)
+    // }, []);
 
-    useEffect(() => {
-        // scroll to the top of page
-        document.body.scrollTop = 0; // For Safari
-        document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+    // useEffect(() => {
+    //     // scroll to the top of page
+    //     document.body.scrollTop = 0; // For Safari
+    //     document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
 
-        // use local storage to avoid data crash on refresh
-        const isSessionItem = sessionStorage.getItem('product-detail')
-        if (product.id) {
-            sessionStorage.setItem('product-detail', JSON.stringify(product))
-        } else if (isSessionItem && !product.id) {
-            setProduct(JSON.parse(isSessionItem))
-        }
+    //     // use local storage to avoid data crash on refresh
+    //     const isSessionItem = sessionStorage.getItem('product-detail')
+    //     if (product.id) {
+    //         sessionStorage.setItem('product-detail', JSON.stringify(product))
+    //     } else if (isSessionItem && !product.id) {
+    //         setProduct(JSON.parse(isSessionItem))
+    //     }
 
-    }, [])
+    // }, [])
 
     async function withdrawOffer() {
         
@@ -203,18 +203,44 @@ export default function Detail() {
         )
     }
 
-    function renderButtonText() {
+    function renderOfferBtn() {
         
         let buttonText;
-        if(offer?.price){
+        let buttonOnClick;
+
+        if(!product.isOfferable){
+            buttonText = 'Teklif Verilemez';
+        }
+        else if (offer?.price){
             buttonText = 'Teklifi Geri Çek';
+            buttonOnClick = withdrawOffer;
         }
-        else if (!product.isOfferable){
-            // buttonText = ''
+        else {
+            buttonText = 'Teklif Ver';
+            buttonOnClick = () => setIsOfferModal(true);
         }
+
+        return(
+            <Button disabled={!product.isOfferable} sx={{
+                background: '#F0F8FF',
+                borderRadius: '8px',
+                color: 'primary.main',
+                fontSize: { xs: '18px', lg: '20px' },
+                px: {
+                    xs: offer ? 3.15 : 6.15,
+                    lg: offer ? 7 : 10.5
+                },
+            }}
+                onClick={buttonOnClick}>
+                    {buttonText}
+            </Button>
+        )
     }
 
     function renderBtns(isSold, offer) {
+
+        const offerBtnView = renderOfferBtn();
+
         if (!isSold) {
             return (
                 <Box sx={{
@@ -239,19 +265,7 @@ export default function Detail() {
                         onClick={() => setIsBuyModal(true)}>
                         Satın AI
                     </Button>
-                    <Button sx={{
-                        background: '#F0F8FF',
-                        borderRadius: '8px',
-                        color: 'primary.main',
-                        fontSize: { xs: '18px', lg: '20px' },
-                        px: {
-                            xs: offer ? 3.15 : 6.15,
-                            lg: offer ? 7 : 10.5
-                        },
-                    }}
-                        onClick={() => { offer?.price ? withdrawOffer() : setIsOfferModal(true) }}>
-                        {offer?.price ? 'Teklifi Geri Çek' : 'Teklif Ver'}
-                    </Button>
+                    {offerBtnView}
                 </Box>
             )
         }

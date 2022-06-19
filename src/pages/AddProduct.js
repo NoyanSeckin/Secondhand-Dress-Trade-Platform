@@ -144,6 +144,7 @@ export default function AddProduct() {
           }
           onSubmit={(values, {resetForm}) => {
             // check if user selected image
+            // console.log(values)
             if(selectedFile.path){
                 postProduct(values);
                 // resetForm();
