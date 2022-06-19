@@ -113,28 +113,9 @@ export default function Detail() {
     function renderIsSold(isSold) {
         if (isSold) {
             return (
-                <Box sx={{
-                    display: 'flex',
-                    background: { xs: '#fff', sm: 'none' },
-                    bottom: 0,
-                    left: { xs: '0', sm: 0 },
-                    mb: { xs: 0.6, sm: 0 },
-                    pt: { xs: 1, sm: 0 },
-                    pb: { xs: 0.7, sm: 0 },
-                    position: { xs: 'fixed', sm: 'relative' },
-                    width: { xs: '100%', sm: '100%' },
-
-                }}>
+                <Box sx={styles.soldContainer}>
                     <Typography variant='h6'
-                        sx={{
-                            color: '#FAAD60',
-                            fontWeight: '600',
-                            borderRadius: '8px',
-                            background: '#FFF0E2',
-                            px: { xs: 10.5, sm: 3 },
-                            py: 1,
-                            mx: { xs: 'auto', sm: 0 }
-                        }}>
+                        sx={styles.soldText}>
                             Bu Ürün Satışta Değil
                     </Typography>
                 </Box>
@@ -143,20 +124,20 @@ export default function Detail() {
     }
 
     function renderItemImage(image) {
-        return <img style={{
-            borderRadius: '8px',
-            width: '100%',
-            maxHeight: '737px',
-            maxWidth: '700px',
-            height: `${width < mobileScreen ? '362px' : 'auto'}`,
-        }} src={image} alt="" />
+
+        return(
+            <img className='detail-img' style={styles.image} src={image} alt="" />
+        )
     }
 
     function renderTitle(name) {
-        return <Typography variant='h3'
+
+        return(
+            <Typography variant='h3'
             sx={styles.title}>
-            {name}
+                {name}
         </Typography>
+        )
     }
 
     function renderItemDetails(brand, color, condition) {
@@ -184,21 +165,15 @@ export default function Detail() {
     }
 
     function renderPriceAndOffer(productPrice) {
+
+        const givenOfferView = renderGivenOffer();
+
         return (
-            <Box sx={{
-                my: { xs: 1, xl: 2.5 },
-                display: { xs: 'flex', xl: 'block' },
-                justifyContent: 'space-between',
-                maxWidth: { sm: '285px', lg: '250px' }
-            }}>
-                <Typography
-                    sx={{
-                        fontWeight: '700',
-                        fontSize: { xs: '20px', xl: '25px' }
-                    }}>
+            <Box sx={styles.priceContainer}>
+                <Typography sx={styles.priceText}>
                     {productPrice} TL
                 </Typography>
-                {renderGivenOffer()}
+                {givenOfferView}
             </Box>
         )
     }
@@ -221,15 +196,13 @@ export default function Detail() {
         }
 
         return(
-            <Button disabled={!product.isOfferable} sx={{
-                background: '#F0F8FF',
-                borderRadius: '8px',
-                color: 'primary.main',
-                fontSize: { xs: '18px', lg: '20px' },
+            <Button disabled={!product.isOfferable} 
+            sx={{
+                ...styles.offerButton, 
                 px: {
-                    xs: offer ? 3.15 : 6.15,
-                    lg: offer ? 7 : 10.5
-                },
+                    xs: offer?.price ? 3.15 : 6.15,
+                    lg: offer?.price ? 7 : 10.5
+                }
             }}
                 onClick={buttonOnClick}>
                     {buttonText}
@@ -237,31 +210,14 @@ export default function Detail() {
         )
     }
 
-    function renderBtns(isSold, offer) {
+    function renderBtns(isSold) {
 
         const offerBtnView = renderOfferBtn();
 
         if (!isSold) {
             return (
-                <Box sx={{
-                    background: { xs: '#fff', sm: 'none' },
-                    bottom: 0,
-                    left: { xs: '-24px', sm: 0 },
-                    mb: { xs: 0.6, sm: 0 },
-                    py: { xs: 1, sm: 0 },
-                    position: { xs: 'fixed', sm: 'relative' },
-                    width: { xs: '110%', sm: '100%' },
-                }}>
-                    <Button variant='contained' sx={{
-                        background: '#4B9CE2',
-                        borderRadius: '8px',
-                        color: '#fff',
-                        fontWeight: 700,
-                        fontSize: { xs: '18px', lg: '20px' },
-                        mr: 1,
-                        ml: { xs: 5, sm: 0, lg: 0 },
-                        px: { xs: 6.15, lg: 10.5 },
-                    }}
+                <Box sx={styles.buttonsContainer}>
+                    <Button variant='contained' sx={styles.buyButton}
                         onClick={() => setIsBuyModal(true)}>
                         Satın AI
                     </Button>

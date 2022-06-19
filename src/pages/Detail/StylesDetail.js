@@ -13,6 +13,14 @@ export const styles = {
         } 
     },
 
+    image: {
+        borderRadius: '8px',
+        width: '100%',
+        maxHeight: '737px',
+        maxWidth: '700px',
+        height: 'auto',
+    },
+
     gridContainer: {
         bgcolor: '#fff',
         borderRadius: '8px',
@@ -107,7 +115,130 @@ export const styles = {
         }
     },
 
-    
+    soldContainer: {
+        display: 'flex',
+        background: { 
+            xs: '#fff', 
+            sm: 'none' 
+        },
+        bottom: 0,
+        left: { 
+            xs: '0', 
+            sm: 0 
+        },
+        mb: { 
+            xs: 0.6, 
+            sm: 0 
+        },
+        pt: { 
+            xs: 1, 
+            sm: 0 
+        },
+        pb: { 
+            xs: 0.7, 
+            sm: 0 
+        },
+        position: { 
+            xs: 'fixed', 
+            sm: 'relative' 
+        },
+        width: '100%'
+    },
 
+    soldText: {
+        bgcolor: '#FFF0E2',
+        color: '#FAAD60',
+        fontWeight: '600',
+        borderRadius: '8px',
+        px: { 
+            xs: 10.5, 
+            sm: 3 
+        },
+        py: 1,
+        mx: { 
+            xs: 'auto', 
+            sm: 0 
+        }
+    },
+
+    priceContainer: {
+        display: { 
+            xs: 'flex', 
+            lg: 'block' 
+        },
+        justifyContent: 'space-between',
+        maxWidth: { 
+            sm: '285px', 
+            lg: '250px' 
+        },
+        my: { 
+            xs: 1, 
+            xl: 2.5 
+        }
+    },
+
+    priceText: {
+        fontWeight: '700',
+        fontSize: { 
+            xs: '20px', 
+            xl: '25px' 
+        }
+    },
+
+    offerButton: {
+        background: '#F0F8FF',
+        borderRadius: '8px',
+        color: 'primary.main',
+        fontSize: { xs: '18px', lg: '20px' },
+    },
+
+    buttonsContainer: {
+        background: { xs: '#fff', sm: 'none' },
+        bottom: 0,
+        left: { 
+            xs: '-24px', 
+            sm: 0 
+        },
+        mb: { 
+            xs: 0.6, 
+            sm: 0 
+        },
+        py: { 
+            xs: 1, 
+            sm: 0 
+        },
+        position: { 
+            xs: 'fixed', 
+            sm: 'relative' 
+        },
+        width: { 
+            xs: '110%', 
+            sm: '100%' 
+        },
+    }, 
+
+    buyButton: {
+        bgcolor: 'primary.main',
+        borderRadius: '8px',
+        color: '#fff',
+        fontWeight: 700,
+        fontSize: { 
+            xs: '18px', 
+            lg: '20px' 
+        },
+        mr: 1,
+        ml: { 
+            xs: 5, 
+            sm: 0, 
+            lg: 0 
+        },
+        px: { 
+            xs: 6.15, 
+            lg: 10.5 
+        },
+        '&:hover': {
+            bgcolor: 'primary.light'
+        }
+    }
 
 }
