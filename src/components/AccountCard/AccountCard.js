@@ -8,7 +8,7 @@ import { styles } from './StylesAccountCard'
 import UserContext from '../../contexts/UserContext'
 import MobileContext from '../../contexts/MobileContext'
 
-export default function CardItem({ activePage, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal, offerInfos }) {
+export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal, offerInfos }) {
 
     const { userAuth } = useContext(UserContext);
     const mobileScreen = useContext(MobileContext)
@@ -22,12 +22,11 @@ export default function CardItem({ activePage, setUpdatedItemId, setUpdatedItemO
             headers: {
                 Authorization: `Bearer ${userAuth.token}`
             }
-        }).then(response => {
-            setUpdatedItemOfferId(response.data.id)
-            setUpdatedItemId(response.data.product.id)
-
-            console.log(response.data)
-        }).catch(err => console.log(err))
+        })
+        .then(response => {
+            setItemInfos(prevInfos => ({ ...prevInfos, itemId: response.data.product.id, offerId: response.data.id }))
+        })
+        .catch(err => console.log(err))
 
     }
 

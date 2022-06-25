@@ -18,13 +18,15 @@ export default function Account() {
 
     const [activePage, setActivePage] = useState('Teklif Aldıklarım');
     const [userProducts, setUserProducts] = useState([]);
-    const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
-    const [updatedItemId, setUpdatedItemId] = useState();
-    const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
     const [sentOffers, setSentOffers] = useState([]);
+    const [itemInfos, setItemInfos] = useState({});
+    const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
+    const [updatedItemId, setUpdatedItemId] = useState("");
+    const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
+    const [isProductBought, setIsProductBought] = useState(false);
     const [boughtProductId, setBoughtProductId] = useState();
     const [isBuyModal, setIsBuyModal] = useState(false);
-    const [isProductBought, setIsProductBought] = useState(false);
+
     // fetch data 
     useEffect(() => {
         if (activePage === 'Teklif Aldıklarım') {
@@ -37,13 +39,17 @@ export default function Account() {
 
     // update userProducts on change to avoid api request
     useEffect(() => {
-        if (updatedItemOfferId) {
+
+        if (itemInfos.offerId) {
+
             const filteredArray = [];
+
             userProducts.forEach(product => {
-                if (product.id === updatedItemId) {
+
+                if (product.id === itemInfos.itemId) {
 
                     product.offers.forEach(offer => {
-                        if (offer.id === updatedItemOfferId) {
+                        if (offer.id === itemInfos.offerId) {
                             offer.isStatus = isAcceptOrReject;
                             filteredArray.push(product);
                         }
@@ -53,7 +59,7 @@ export default function Account() {
             setUserProducts(filteredArray);
         }
     }
-        , [updatedItemOfferId])
+        , [itemInfos.offerId])
 
     //  update sentOffers array to avoid api request
     useEffect(() => {
@@ -84,16 +90,20 @@ export default function Account() {
         const cards = userProducts?.map(product => (
 
             product.offers?.map((offer, index) => {
+                const imageUrl = width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url;
+
+                const image = `https://bootcamp.akbolat.net${imageUrl}`;
+
                 const offerInfos = {
                     name: product.name,
-                    image: `https://bootcamp.akbolat.net${width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url}`,
+                    image,
                     offerPrice: offer?.offerPrice,
                     offerId: offer?.id,
                     status: offer?.isStatus,
                 }
                 return (
                     <AccountCard key={index} offerInfos={offerInfos}
-                    
+                    setItemInfos={setItemInfos}
                         activePage={activePage} 
                         setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject}
                     />
