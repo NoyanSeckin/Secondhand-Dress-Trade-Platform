@@ -7,7 +7,7 @@ import React, {useState, useEffect, useContext} from 'react'
 import SelectInput from '../components/SelectInput';
 import Switch from '../components/Switch'
 import UserContext from '../contexts/UserContext'
-import DropzoneComp from '../components/DropzoneComp';
+import DropzoneComp from '../components/Dropzone/Dropzone';
 
 export default function AddProduct() {
   const {userAuth} = useContext(UserContext);

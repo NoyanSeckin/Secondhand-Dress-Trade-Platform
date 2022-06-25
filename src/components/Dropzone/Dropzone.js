@@ -1,10 +1,11 @@
+import React, {useEffect, useState} from 'react';
+
 import {Typography, Box} from '@mui/material'
 import CloseIcon from '@mui/icons-material/Close';
 import {useDropzone} from 'react-dropzone';
 
-import React, {useEffect, useState} from 'react';
-import CloudIcon from '../constants/icons/CloudIcon'
-import ProgressBar from './ProgressBar'
+import CloudIcon from '../../constants/icons/CloudIcon'
+import ProgressBar from '../ProgressBar/ProgressBar'
 
 export default function DropzoneComp({setSelectedFile, setSelectedFileError}) {
   const [loader, setLoader] = useState(true);

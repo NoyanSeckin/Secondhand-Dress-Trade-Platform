@@ -13,8 +13,9 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
     const { userAuth } = useContext(UserContext);
     const mobileScreen = useContext(MobileContext)
     const [width] = useWindowSize({ fps: 60 });
+    
+    
     // update users recieved offers
-
     async function updateOfferStatus(bool) {
 
         const id = offerInfos.offerId;
