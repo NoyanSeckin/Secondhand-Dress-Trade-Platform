@@ -92,9 +92,9 @@ export default function Account() {
                     status: offer?.isStatus,
                 }
                 return (
-                    <AccountCard key={index} offerInfos={offerInfos} name={product.name}
-                        image={`https://bootcamp.akbolat.net${width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url}`}
-                        offer={offer.offerPrice} activePage={activePage} offerId={offer.id} status={offer?.isStatus}
+                    <AccountCard key={index} offerInfos={offerInfos}
+                    
+                        activePage={activePage} 
                         setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject}
                     />
                 )
@@ -120,11 +120,12 @@ export default function Account() {
                 offerPrice: offer?.offerPrice,
                 status: offer?.isStatus,
                 productId: offer?.product?.id,
+                isSold: offer?.product?.isSold,
             }
             return (
-                <AccountCard key={index} offerInfos={offerInfos} name={offer?.product?.name} image={`https://bootcamp.akbolat.net${offer?.product?.image?.url}`} offerPrice={offer?.offerPrice} activePage={activePage} offerStatus={offer?.isStatus}
-                    productId={offer?.product?.id} setBoughtProductId={setBoughtProductId}
-                    isSold={offer?.product?.isSold} setIsBuyModal={setIsBuyModal} />
+                <AccountCard key={index} offerInfos={offerInfos} activePage={activePage} 
+                    setBoughtProductId={setBoughtProductId}
+                    setIsBuyModal={setIsBuyModal} />
             )
         })
         return accountCards;

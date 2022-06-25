@@ -7,7 +7,7 @@ import axios from 'axios'
 import { styles } from './StylesDetail';
 import ProductContext from '../../contexts/ProductContext'
 import BuyModal from '../../components/BuyModal/BuyModal'
-import OfferModal from '../../components/OfferModel/OfferModal'
+import OfferModal from '../../components/OfferModal/OfferModal'
 import UserContext from '../../contexts/UserContext'
 import Alert from '../../components/Alert/Alert'
 

@@ -4,11 +4,11 @@ import { Box, Typography, Button } from '@mui/material'
 import axios from 'axios'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import {styles} from './StylesAccountCard'
+import { styles } from './StylesAccountCard'
 import UserContext from '../../contexts/UserContext'
 import MobileContext from '../../contexts/MobileContext'
 
-export default function CardItem({ activePage,  offerId, status, isSold, offerStatus, productId, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal, offerInfos }) {
+export default function CardItem({ activePage, setUpdatedItemId, setUpdatedItemOfferId, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal, offerInfos }) {
 
     const { userAuth } = useContext(UserContext);
     const mobileScreen = useContext(MobileContext)
@@ -31,12 +31,12 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
 
     }
 
-    function handlePurchase(productId) {
+    const handlePurchase = () => {
         setIsBuyModal(true);
-        setBoughtProductId(productId);
+        setBoughtProductId(offerInfos.productId);
     }
 
-    function renderCardName() {
+    const renderCardName = () => {
         let cardName = offerInfos.name;
 
         // if name lenght is long, add ... dots after 23 chars
@@ -60,35 +60,33 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
 
         return (
             <img src={offerInfos.image} alt=""
-                style={{
-                    borderRadius: '8px',
-                    width: '75px',
-                    height: '84px',
-                }} />
+                style={styles.image} />
         )
     }
 
     const renderPrice = () => {
 
+        const price = parseFloat(offerInfos.offerPrice).toFixed(2);
+
         return (
             <>
                 <Typography sx={{
+                    ...styles.priceText,
                     color: '#B1B1B1',
-                    fontSize: { xs: '15px', lg: '16px' }
                 }}>
                     AIınan Teklif:
                 </Typography>
                 <Typography sx={{
+                    ...styles.priceText,
                     fontWeight: '700',
-                    fontSize: { xs: '15px', lg: '16px' }
                 }}>
-                    {parseFloat(offerInfos.offerPrice).toFixed(2)} TL
+                    {price} TL
                 </Typography>
             </>
         )
     }
 
-    function renderCardNameImageOffer() {
+    function renderCardNameImagePrice() {
 
         const imageView = renderCardImage();
         const nameView = renderCardName();
@@ -99,21 +97,55 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
                 {imageView}
                 <Box>
                     {nameView}
-                    <Box sx={{
-                        background: '#F2F2F2',
-                        borderRadius: '8px',
-                        display: 'flex',
-                        gap: 1,
-                        pl: 1.3,
-                        pr: { xs: 7.1, lg: 7 },
-                        py: 1,
-                        mt: 0.8,
-                    }}>
+                    <Box sx={styles.priceContainer}>
                         {priceView}
                     </Box>
                 </Box>
             </Box>
         )
+    }
+
+    const checkOfferStatus = () => {
+
+        const offerStatus = offerInfos.status;
+        let text = '';
+        let textColor = '';
+
+        // if offer approved
+        if (offerStatus) {
+            text = 'Onaylandı';
+            textColor = 'primary.main';
+        }
+        // if offer not responded yet
+        else if (offerStatus === null) {
+            text = 'Beklemede';
+            textColor = 'orange';
+        }
+        // if offer rejected
+        else if (!offerStatus) {
+            text = 'Reddedildi';
+            textColor = 'danger';
+        }
+
+        return { text, textColor };
+    }
+
+    const renderOfferStatus = () => {
+
+        const { text, textColor } = checkOfferStatus();
+
+        return (
+            <Typography variant='h6'
+                sx={{ ...styles.offerStatus, color: textColor }}>
+                {text}
+            </Typography>
+        )
+    }
+
+    const handleApprove = () => {
+        const id = offerInfos.offerId;
+        setIsAcceptOrReject(true);
+        updateOfferStatus(id, true);
     }
 
     function renderRecievedOfferBtnsAndText() {
@@ -128,18 +160,10 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
                     alignSelf: { xs: 'end', lg: 'center' }
                 }}>
                     <Button variant='contained'
-                        onClick={() => {
-                            setIsAcceptOrReject(true);
-                            updateOfferStatus(id, true);
-                        }}
+                        onClick={handleApprove}
                         sx={{
-                            color: '#fff',
-                            fontSize: '15px',
-                            py: 0.3,
-                            px: { xs: 3.85, lg: 2 },
-                            mr: 1.5,
-                            borderRadius: '8px',
-                            '&:hover': { background: '#4B9CE2' }
+                            ...styles.approveButton,
+                            px: { xs: 3.85 }
                         }}>
                         Onayla
                     </Button>
@@ -149,126 +173,57 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
                         updateOfferStatus(id, false);
                     }}
                         variant='contained'
-                        sx={{
-                            background: '#F77474',
-                            color: '#fff',
-                            fontSize: '15px',
-                            py: 0.3,
-                            px: { xs: 3.85, lg: 2 },
-                            borderRadius: '8px',
-                            '&:hover': { background: '#F77474' }
-                        }}>Reddet</Button>
+                        sx={styles.rejectButton}>Reddet</Button>
                 </Box>
             )
-        } else if (status) {
-            return renderOfferStatusText('OnayIandı', 'primary.main')
-
-        } else if (!status) {
-            return renderOfferStatusText('Reddedildi', 'danger')
+        }
+        else {
+            const statusView = renderOfferStatus();
+            return statusView;
         }
 
     }
 
-    function renderOfferStatusText(text, color) {
-        return (
-            <Typography variant='h6'
-                sx={{
-                    alignSelf: { xs: 'end', lg: 'center' },
-                    color: color,
-                    fontSize: { xs: '15px', xl: '1.125rem' },
-                    mr: { xs: 2.3, lg: 0 }
-                }}>{text}</Typography>
-        )
-    }
+    function renderSentOffersBtnAndStatus() {
 
-    const renderOfferStatus = () => {
+        const status = offerInfos.status;
+        const productId = offerInfos.productId;
+        const isSold = offerInfos.isSold;
 
-        const offerStatus = offerInfos.status;
-        let text = '';
-        let textColor = '';
-
-        // if offer approved
-        if(offerStatus){
-            text = 'Onaylandı';
-            textColor = 'primary.main';
-        }
-        // if offer not responded yet
-        else if(offerStatus === null){
-            text = 'Beklemede';
-            textColor = 'orange';
-        }
-        // if offer rejected
-        else if(!offerStatus){
-            text = 'Reddedildi';
-            textColor = 'danger';
-        }
-        
-        return (
-            <Typography variant='h6'
-                sx={{
-                    alignSelf: { xs: 'end', lg: 'center' },
-                    color: textColor,
-                    fontSize: { xs: '15px', xl: '1.125rem' },
-                    mr: { xs: 2.3, lg: 0 }
-                }}>
-                    {text}
-                </Typography>
-        )
-    }
-
-    function renderSentOffersBtnAndStatus(offerStatus, isSold, productId) {
-
+        let buttonView;
         const statusView = renderOfferStatus();
 
-       
-            return (
-                <Box sx={{
-                    alignSelf: { xs: 'end', lg: 'center' },
-                    display: 'flex',
-                }}>
-                    {!isSold && offerStatus &&
-                        <Button variant='contained'
-                            onClick={() => handlePurchase(productId)}
-                            sx={{
-                                color: '#fff',
-                                fontSize: '15px',
-                                py: 0.3,
-                                px: { xs: 4.2, lg: 2 },
-                                mr: 3.5,
-                                borderRadius: '8px',
-                                '&:hover': { background: '#4B9CE2' }
-                            }}>
-                            Satın AI
-                        </Button>}
-                        {statusView}
-                </Box>
-            )
-        
-    }
-
-    function renderUserProducts(offerId, status) {
-
+        if (status && !isSold) {
+            buttonView = (
+                <Button variant='contained'
+                    onClick={() => handlePurchase(productId)}
+                    sx={{
+                        ...styles.approveButton,
+                        mr: 3.5
+                    }}>
+                    Satın AI
+                </Button>)
+        }
         return (
-            <Box sx={styles.offerContainer}>
-                {renderCardNameImageOffer()}
-                {renderRecievedOfferBtnsAndText()}
+            <Box sx={{
+                alignSelf: { xs: 'end', lg: 'center' },
+                display: 'flex',
+            }}>
+                {buttonView}
+                {statusView}
             </Box>
         )
+
     }
 
-    function renderSentOffers(offerStatus, isSold, productId) {
-        return (
-            <Box sx={styles.offerContainer}>
-                {renderCardNameImageOffer()}
-                {renderSentOffersBtnAndStatus(offerStatus, isSold, productId)}
-            </Box>
-        )
-    }
+    const cardNameImagePriceView = renderCardNameImagePrice();
+
+    const buttonsView = activePage === 'Teklif Aldıklarım' ? renderRecievedOfferBtnsAndText() : renderSentOffersBtnAndStatus();
 
     return (
-        <div>{activePage === 'Teklif Aldıklarım' ?
-            renderUserProducts(offerId, status)
-            : renderSentOffers(offerStatus, isSold, productId)}
-        </div>
+        <Box sx={styles.offerContainer}>
+            {cardNameImagePriceView}
+            {buttonsView}
+        </Box>
     )
 }
