@@ -118,7 +118,7 @@ export default function Account() {
                 name: offer?.product?.name,
                 image: `https://bootcamp.akbolat.net${offer?.product?.image?.url}`,
                 offerPrice: offer?.offerPrice,
-                offerStatus: offer?.isStatus,
+                status: offer?.isStatus,
                 productId: offer?.product?.id,
             }
             return (
@@ -151,7 +151,7 @@ export default function Account() {
         )
     }
 
-    function renderOfferNavs() {
+    function renderNavs() {
         const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
         return (
             <Box sx={{
@@ -208,7 +208,7 @@ export default function Account() {
                     px: { xs: 1, lg: 3 },
                     pb: { xs: 1.5, lg: 18 }
                 }}>
-                    {renderOfferNavs()}
+                    {renderNavs()}
                     {renderPage()}
                 </Box>
             </Container>

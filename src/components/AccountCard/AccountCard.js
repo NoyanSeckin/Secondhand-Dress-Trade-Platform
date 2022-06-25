@@ -181,14 +181,52 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
         )
     }
 
+    const renderOfferStatus = () => {
+
+        const offerStatus = offerInfos.status;
+        let text = '';
+        let textColor = '';
+
+        // if offer approved
+        if(offerStatus){
+            text = 'Onaylandı';
+            textColor = 'primary.main';
+        }
+        // if offer not responded yet
+        else if(offerStatus === null){
+            text = 'Beklemede';
+            textColor = 'orange';
+        }
+        // if offer rejected
+        else if(!offerStatus){
+            text = 'Reddedildi';
+            textColor = 'danger';
+        }
+        
+        return (
+            <Typography variant='h6'
+                sx={{
+                    alignSelf: { xs: 'end', lg: 'center' },
+                    color: textColor,
+                    fontSize: { xs: '15px', xl: '1.125rem' },
+                    mr: { xs: 2.3, lg: 0 }
+                }}>
+                    {text}
+                </Typography>
+        )
+    }
+
     function renderSentOffersBtnAndStatus(offerStatus, isSold, productId) {
-        if (offerStatus) {
+
+        const statusView = renderOfferStatus();
+
+       
             return (
                 <Box sx={{
                     alignSelf: { xs: 'end', lg: 'center' },
                     display: 'flex',
                 }}>
-                    {!isSold &&
+                    {!isSold && offerStatus &&
                         <Button variant='contained'
                             onClick={() => handlePurchase(productId)}
                             sx={{
@@ -202,16 +240,10 @@ export default function CardItem({ activePage,  offerId, status, isSold, offerSt
                             }}>
                             Satın AI
                         </Button>}
-                    {renderOfferStatusText('OnayIandı', 'primary.main')}
+                        {statusView}
                 </Box>
             )
-        } else if (offerStatus === null) {
-            return renderOfferStatusText('Beklemede', 'orange')
-        }
-        else if (!offerStatus) {
-            return renderOfferStatusText('Reddedildi', 'danger')
-        }
-
+        
     }
 
     function renderUserProducts(offerId, status) {
