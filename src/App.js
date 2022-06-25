@@ -12,7 +12,7 @@ import Home from './pages/Home'
 import Authentication from './pages/Authentication/Authentication'
 import Detail from './pages/Detail/Detail'
 import Account from './pages/Account/Account'
-import AddProduct from "./pages/AddProduct";
+import AddProduct from "./pages/AddProduct/AddProduct";
 import ProtectedRoutes from './routes/ProtectedRoutes'
 import MobileContext from "./contexts/MobileContext";
 import Navbar from "./components/Navbar/Navbar";
@@ -36,7 +36,12 @@ function App() {
   }, [])
   
   function renderIndexElement(){
-    return userAuth.token ? <Home/> :  <Authentication/>
+    return (
+        userAuth.token ? 
+        <Home/> 
+        : 
+         <Authentication/>
+    )
   }
 
   // display navbar except auth page
@@ -49,6 +54,7 @@ function App() {
   }
 
   const navbarView = renderNavbar();
+  const indexElement = renderIndexElement();
   
   return (
   <div className="App">
@@ -58,7 +64,7 @@ function App() {
        <ThemeProvider theme={globalTheme}>
             {navbarView}
             <Routes>
-              <Route  path="/" element={renderIndexElement()}/> 
+              <Route  path="/" element={indexElement}/> 
               <Route index path="/home" element={<Home/>}/>
               <Route path="*" element={<Home/>}/>
               <Route path="/detail" element={<Detail/>}/>
