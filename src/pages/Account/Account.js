@@ -6,45 +6,85 @@ import React, { useState, useContext, useEffect } from 'react'
 import UserContext from '../../contexts/UserContext'
 import MobileContext from "../../contexts/MobileContext";
 
+import { styles } from './StylesAccount';
 import AccountCard from '../../components/AccountCard/AccountCard.js'
 import AccountIcon from '../../constants/icons/AccountIcon'
 import BuyModal from '../../components/BuyModal/BuyModal'
 import Alert from '../../components/Alert/Alert'
 
 export default function Account() {
+
     const { userAuth } = useContext(UserContext);
     const [width] = useWindowSize({ fps: 60 });
     const mobileScreen = useContext(MobileContext);
 
     const [activePage, setActivePage] = useState('Teklif Aldıklarım');
-    const [userProducts, setUserProducts] = useState([]);
+
+    const [recievedOffers, setRecievedOffers] = useState([]);
+
     const [sentOffers, setSentOffers] = useState([]);
+
+    // used for getting product and offer ids 
     const [itemInfos, setItemInfos] = useState({});
-    const [updatedItemOfferId, setUpdatedItemOfferId] = useState();
-    const [updatedItemId, setUpdatedItemId] = useState("");
+
     const [isAcceptOrReject, setIsAcceptOrReject] = useState(false);
     const [isProductBought, setIsProductBought] = useState(false);
-    const [boughtProductId, setBoughtProductId] = useState();
+
     const [isBuyModal, setIsBuyModal] = useState(false);
 
     // fetch data 
     useEffect(() => {
-        if (activePage === 'Teklif Aldıklarım') {
-            getUserProducts();
-            console.log(userProducts)
-        } else if (activePage === 'Teklif Verdiklerim') {
-            getSentOffers();
-        }
-    }, [activePage])
 
-    // update userProducts on change to avoid api request
+        if (activePage === 'Teklif Aldıklarım') {
+
+            async function fetchRecievedOffers() {
+
+                const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
+
+                axios.get(
+                    address,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${userAuth.token}`
+                        }
+                    })
+                    .then(response => setRecievedOffers(response.data))
+                    .catch(err => console.log(err))
+            }
+
+            fetchRecievedOffers();
+        }
+        else if (activePage === 'Teklif Verdiklerim') {
+
+            async function fetchSentOffers() {
+
+                const address = `https://bootcamp.akbolat.net/offers?users_permissions_user=${userAuth.id}`;
+
+                axios.get(
+                    address,
+                    {
+                        headers: {
+                            Authorization: `Bearer ${userAuth.token}`
+                        }
+                    }
+                )
+                    .then(response => setSentOffers(response.data))
+                    .catch(err => console.log(err))
+            }
+
+            fetchSentOffers();
+        }
+
+    }, [activePage, userAuth.id, userAuth.token])
+
+    // update recievedOffers on change to avoid api request
     useEffect(() => {
 
         if (itemInfos.offerId) {
 
             const filteredArray = [];
 
-            userProducts.forEach(product => {
+            recievedOffers.forEach(product => {
 
                 if (product.id === itemInfos.itemId) {
 
@@ -56,38 +96,33 @@ export default function Account() {
                     })
                 } else filteredArray.push(product);
             })
-            setUserProducts(filteredArray);
+            setRecievedOffers(filteredArray);
         }
-    }
-        , [itemInfos.offerId])
+    }, [itemInfos.offerId])
 
     //  update sentOffers array to avoid api request
     useEffect(() => {
 
         if (isProductBought) {
+
             let filteredArray = [];
             sentOffers.forEach(offer => {
-                if (offer?.product?.id === boughtProductId) {
+
+                if (offer?.product?.id === itemInfos.boughtProductId) {
                     offer.product.isSold = true;
                     filteredArray.push(offer);
-                } else filteredArray.push(offer);
+                }
+                else filteredArray.push(offer);
             })
             setSentOffers(filteredArray);
-            console.log('product bought effect calisti')
         }
     }, [isProductBought])
 
-    async function getUserProducts() {
-        const address = `https://bootcamp.akbolat.net/products?users_permissions_user=${userAuth.id}`;
-        await axios.get(address, {
-            headers: {
-                Authorization: `Bearer ${userAuth.token}`
-            }
-        }).then(response => setUserProducts(response.data)).catch(err => console.log(err))
-    }
 
-    function renderUserProducts() {
-        const cards = userProducts?.map(product => (
+
+    function renderRecievedOffers() {
+
+        const cards = recievedOffers?.map(product => (
 
             product.offers?.map((offer, index) => {
                 const imageUrl = width > mobileScreen ? product.image?.url : product?.image?.formats?.thumbnail?.url;
@@ -103,27 +138,23 @@ export default function Account() {
                 }
                 return (
                     <AccountCard key={index} offerInfos={offerInfos}
-                    setItemInfos={setItemInfos}
-                        activePage={activePage} 
-                        setUpdatedItemOfferId={setUpdatedItemOfferId} setUpdatedItemId={setUpdatedItemId} setIsAcceptOrReject={setIsAcceptOrReject}
+                        setItemInfos={setItemInfos}
+                        activePage={activePage}
+                        setIsAcceptOrReject={setIsAcceptOrReject}
                     />
                 )
             })
         ))
+
         return cards;
     }
 
-    async function getSentOffers() {
-        const address = `https://bootcamp.akbolat.net/offers?users_permissions_user=${userAuth.id}`;
-        await axios.get(address, {
-            headers: {
-                Authorization: `Bearer ${userAuth.token}`
-            }
-        }).then(response => setSentOffers(response.data)).catch(err => console.log(err))
-    }
 
-    function renderSentOffers() {
+
+    const renderSentOffers = () => {
+
         const accountCards = sentOffers.map((offer, index) => {
+
             const offerInfos = {
                 name: offer?.product?.name,
                 image: `https://bootcamp.akbolat.net${offer?.product?.image?.url}`,
@@ -132,100 +163,103 @@ export default function Account() {
                 productId: offer?.product?.id,
                 isSold: offer?.product?.isSold,
             }
+
             return (
-                <AccountCard key={index} offerInfos={offerInfos} activePage={activePage} 
-                    setBoughtProductId={setBoughtProductId}
-                    setIsBuyModal={setIsBuyModal} />
+                <AccountCard key={index} offerInfos={offerInfos} activePage={activePage}
+                    setIsBuyModal={setIsBuyModal}
+                    setItemInfos={setItemInfos} />
             )
         })
+
         return accountCards;
     }
 
-    function renderAccountCard(email) {
+    function renderEmail(email) {
+
         return (
-            <Box sx={{
-                background: '#fff',
-                borderRadius: '8px',
-                display: 'flex',
-                gap: 1,
-                pl: 3,
-                py: 2
-            }}>
+            <Box sx={styles.emailContainer}>
                 <AccountIcon />
-                <Typography sx={{
-                    alignSelf: 'center',
-                    color: '#525252',
-                    fontWeight: '700',
-                    fontSize: '15px'
-                }}>{email}</Typography>
+                <Typography sx={styles.emailText}>
+                    {email}
+                </Typography>
             </Box>
         )
     }
 
     function renderNavs() {
-        const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
-        return (
-            <Box sx={{
-                display: 'flex',
-                gap: { xs: 5, lg: 3 },
-                justifyContent: { xs: 'center', lg: 'start' },
-                pt: 2,
-                position: 'relative'
-            }}> {navs.map(nav => {
-                return (
-                    <Typography key={nav} className={nav === activePage && 'active-nav'} onClick={() => setActivePage(nav)}
-                        sx={{
-                            color: '#B1B1B1',
-                            fontSize: { xs: '15px', lg: '16px' },
-                            fontWeight: nav === activePage && '700',
-                            '&:hover': { cursor: 'pointer' }
-                        }}>
-                        {nav}
-                    </Typography>
-                )
-            })}
-                <hr style={{
-                    padding: width > mobileScreen ? '0 1.46rem' : '0 1rem',
-                    left: width > mobileScreen ? '-24px' : '-10px',
-                    width: width > mobileScreen ? '100%' : '96%'
-                }} className='account-hr' />
-            </Box>)
-    }
 
-    function renderPage() {
+        const navs = ['Teklif Aldıklarım', 'Teklif Verdiklerim']
+
+        const navEls = navs.map(nav => {
+            return (
+                <Typography key={nav} className={nav === activePage && 'active-nav'} onClick={() => setActivePage(nav)}
+                    sx={{
+                        ...styles.navText,
+                        fontWeight: nav === activePage && '700',
+                    }}>
+                    {nav}
+                </Typography>
+            )
+        })
+
         return (
-            <Box sx={{ display: 'flex', flexDirection: 'column-reverse' }}>
-                {activePage === 'Teklif Aldıklarım' ? renderUserProducts() : renderSentOffers()}
+            <Box sx={styles.navContainer}>
+                {navEls}
+                <hr className='account-hr' />
             </Box>
         )
     }
 
-    return (
-        <Box sx={{
-            background: '#F2F2F2',
-            minHeight: '120vh',
-            pb: { xs: 4, lg: 10 }
-        }}>
-            <Container maxWidth="xl"
-                sx={{
-                    pt: { xs: 10, lg: 12 },
-                    px: { xs: 1.2, lg: 0 }
-                }}>
-                {renderAccountCard(userAuth.email)}
-                <Box sx={{
-                    background: '#fff',
-                    borderRadius: '8px',
-                    mt: 1.5,
-                    px: { xs: 1, lg: 3 },
-                    pb: { xs: 1.5, lg: 18 }
-                }}>
-                    {renderNavs()}
-                    {renderPage()}
-                </Box>
-            </Container>
-            <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={boughtProductId} setIsProductBought={setIsProductBought}
+    function renderPage() {
+
+        const pageView = activePage === 'Teklif Aldıklarım' ? renderRecievedOffers() : renderSentOffers()
+
+        return (
+            <Box sx={styles.columnReverse}>
+                {pageView}
+            </Box>
+        )
+    }
+
+    const renderBuyModal = () => {
+
+        return (
+            <BuyModal isBuyModal={isBuyModal} setIsBuyModal={setIsBuyModal} productId={itemInfos?.boughtProductId} setIsProductBought={setIsProductBought}
                 token={userAuth.token} />
+        )
+    }
+
+    const renderAlert = () => {
+
+        return (
             <Alert isAlert={isProductBought} setIsAlert={setIsProductBought} alertText='Satın Alındı' />
+        )
+    }
+
+    const emailView = renderEmail(userAuth.email);
+    const navsView = renderNavs();
+    const pageView = renderPage();
+    const buyModalView = renderBuyModal();
+    const alertView = renderAlert();
+
+    return (
+        <Box sx={styles.boxContainer}>
+
+            <Container maxWidth="xl"
+                sx={styles.container}>
+
+                {emailView}
+
+                <Box sx={styles.pageContainer}>
+                    {navsView}
+                    {pageView}
+                </Box>
+
+            </Container>
+
+            {buyModalView}
+            {alertView}
+
         </Box>
     )
 }

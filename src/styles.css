@@ -363,4 +363,11 @@ form textarea:focus{
     .offer-input{
         width: 95%;
     }
+
+    .account-hr{
+        padding: 0 1rem;
+        left: -10px;
+        width: 96%;
+        
+    }
 }

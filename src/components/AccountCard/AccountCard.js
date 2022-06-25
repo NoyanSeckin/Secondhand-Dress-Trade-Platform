@@ -8,17 +8,24 @@ import { styles } from './StylesAccountCard'
 import UserContext from '../../contexts/UserContext'
 import MobileContext from '../../contexts/MobileContext'
 
-export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject, setBoughtProductId, setIsBuyModal, offerInfos }) {
+export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject, setIsBuyModal, offerInfos }) {
 
     const { userAuth } = useContext(UserContext);
     const mobileScreen = useContext(MobileContext)
     const [width] = useWindowSize({ fps: 60 });
     // update users recieved offers
-    async function updateOfferStatus(id, bool) {
 
+    async function updateOfferStatus(bool) {
+
+        const id = offerInfos.offerId;
         const address = `https://bootcamp.akbolat.net/offers/${id}`
 
-        await axios.put(address, { isStatus: bool }, {
+        await axios.put(
+            address, 
+            { 
+                isStatus: bool 
+            }, 
+            {
             headers: {
                 Authorization: `Bearer ${userAuth.token}`
             }
@@ -32,7 +39,8 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
 
     const handlePurchase = () => {
         setIsBuyModal(true);
-        setBoughtProductId(offerInfos.productId);
+        setItemInfos(prevInfos => ({...prevInfos, boughtProductId: offerInfos.productId}))
+
     }
 
     const renderCardName = () => {
@@ -142,15 +150,18 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
     }
 
     const handleApprove = () => {
-        const id = offerInfos.offerId;
         setIsAcceptOrReject(true);
-        updateOfferStatus(id, true);
+        updateOfferStatus(true);
+    }
+
+    const handleReject = () => {
+        setIsAcceptOrReject(false);
+        updateOfferStatus(false);
     }
 
     function renderRecievedOfferBtnsAndText() {
 
         const status = offerInfos.status;
-        const id = offerInfos.offerId;
 
         if (status === null) {
 
@@ -167,12 +178,10 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
                         Onayla
                     </Button>
 
-                    <Button onClick={() => {
-                        setIsAcceptOrReject(false);
-                        updateOfferStatus(id, false);
-                    }}
+                    <Button onClick={handleReject}
                         variant='contained'
-                        sx={styles.rejectButton}>Reddet</Button>
+                        sx={styles.rejectButton}>Reddet
+                    </Button>
                 </Box>
             )
         }
@@ -186,7 +195,6 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
     function renderSentOffersBtnAndStatus() {
 
         const status = offerInfos.status;
-        const productId = offerInfos.productId;
         const isSold = offerInfos.isSold;
 
         let buttonView;
@@ -195,7 +203,7 @@ export default function CardItem({ activePage, setItemInfos, setIsAcceptOrReject
         if (status && !isSold) {
             buttonView = (
                 <Button variant='contained'
-                    onClick={() => handlePurchase(productId)}
+                    onClick={handlePurchase}
                     sx={{
                         ...styles.approveButton,
                         mr: 3.5
