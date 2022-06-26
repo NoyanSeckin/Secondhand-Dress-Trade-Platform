@@ -8,7 +8,7 @@ import './styles.css'
 import  {globalTheme}  from './theme/GlobalTheme';
 import UserToken from './contexts/UserContext'
 import ProductContext from "./contexts/ProductContext";
-import Home from './pages/Home'
+import Home from './pages/Home/Home'
 import Authentication from './pages/Authentication/Authentication'
 import Detail from './pages/Detail/Detail'
 import Account from './pages/Account/Account'
