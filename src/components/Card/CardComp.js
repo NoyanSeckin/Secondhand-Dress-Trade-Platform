@@ -6,7 +6,7 @@ import { styles } from './StylesCard'
 
 export default function CardComp({ brand, color, price, image }) {
 
-  function renderCard(brand, color, price, image){
+  function renderCard(){
 
     return(
       <Card elevation={0} sx={styles.card}>
@@ -40,7 +40,7 @@ export default function CardComp({ brand, color, price, image }) {
     )
   }
 
-  const cardView = renderCard(brand, color, price, image);
+  const cardView = renderCard();
 
   return (
     <>
