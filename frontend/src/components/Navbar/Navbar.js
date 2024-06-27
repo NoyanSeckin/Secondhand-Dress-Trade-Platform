@@ -1,9 +1,9 @@
 import { AppBar, Container, Button, Box, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import React from 'react'
-import Logo from '../../constants/icons/Logo'
-import PlusIcon from '../../constants/icons/PlusIcon'
-import PersonIcon from '../../constants/icons/PersonIcon'
+import Logo from '../../constants/icons/Logo.js'
+import PlusIcon from '../../constants/icons/PlusIcon.js'
+import PersonIcon from '../../constants/icons/PersonIcon.js'
 import { styles } from './StylesNavbar.js'
 
 export default function Navbar() {
