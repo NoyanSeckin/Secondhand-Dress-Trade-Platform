@@ -4,14 +4,14 @@ import { Container, Box, Typography } from '@mui/material'
 import axios from 'axios'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
-import UserContext from '../../contexts/UserContext'
-import MobileContext from "../../contexts/MobileContext";
+import UserContext from '../../contexts/UserContext.js'
+import MobileContext from "../../contexts/MobileContext.js";
 
-import { styles } from './StylesAccount';
+import { styles } from './StylesAccount.js';
 import AccountCard from '../../components/AccountCard/AccountCard.js'
-import AccountIcon from '../../constants/icons/AccountIcon'
-import BuyModal from '../../components/BuyModal/BuyModal'
-import Alert from '../../components/Alert/Alert'
+import AccountIcon from '../../constants/icons/AccountIcon.js'
+import BuyModal from '../../components/BuyModal/BuyModal.js'
+import Alert from '../../components/Alert/Alert.js'
 
 export default function Account() {
 
