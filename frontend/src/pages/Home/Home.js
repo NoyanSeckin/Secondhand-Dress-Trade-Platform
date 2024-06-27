@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom'
 import { useWindowSize } from "@react-hook/window-size/throttled";
 
 import { styles } from './StylesHome'
-import CardComp from '../../components/Card/CardComp'
+import {ProductCard} from '../../components/product-card/ProductCard'
 import ProductContext from '../../contexts/ProductContext'
 import MobileContext from "../../contexts/MobileContext";
 import VirtualSlide from '../../components/VirtualSlide'
@@ -97,7 +97,7 @@ export default function Home() {
             category.products.map((product, index) => (
                 
                 <div onClick={() => directToDetailPage(product)}>
-                    <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product?.image?.url}`} />
+                    <ProductCard key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product?.image?.url}`} />
                 </div>
             )
             )
@@ -110,7 +110,7 @@ export default function Home() {
 
         return displayAllProducts?.map((product, index) => (
             <div onClick={() => directToDetailPage(product)}>
-                <CardComp key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`} />
+                <ProductCard key={index} brand={product.brand} color={product.color} price={product.price} image={`https://bootcamp.akbolat.net${product.image?.url}`} />
             </div>
         ))
     }
