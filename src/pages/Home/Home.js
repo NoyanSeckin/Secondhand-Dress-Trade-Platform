@@ -36,20 +36,14 @@ export default function Home() {
     }, [selectedCategory]);
 
     async function getAllProducts() {
-        const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=30&_start=${categoryStartCounter}`);
+        // const response = await axios.get(`https://bootcamp.akbolat.net/products?_limit=30&_start=${categoryStartCounter}`);
+        try {
+          const response = await axios.get('/api/product/all');
 
-        // avoid setting duplicate products
-        let existingProductIds = displayAllProducts?.map(product => product.id)
-        let uniqueItems = [];
-
-        response.data.forEach(product => {
-            if (!existingProductIds.includes(product.id)) {
-                uniqueItems.push(product)
-            }
-        })
-        
-        setDisplayAllProducts(displayAllProducts?.concat(uniqueItems))
-        setCategoryStartCounter(categoryStartCounter + 1);
+          setDisplayAllProducts(response.data)
+        } catch (error) {
+          console.log(error.message)
+        }
     }
 
     const getCategories = useCallback(async (count) => {

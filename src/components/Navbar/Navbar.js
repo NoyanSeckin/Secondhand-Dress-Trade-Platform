@@ -1,7 +1,5 @@
 import { AppBar, Container, Button, Box, Typography } from '@mui/material'
-
 import { Link } from 'react-router-dom'
-
 import React from 'react'
 import Logo from '../../constants/icons/Logo'
 import PlusIcon from '../../constants/icons/PlusIcon'

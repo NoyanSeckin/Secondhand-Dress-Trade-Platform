@@ -14,9 +14,8 @@ import Form from './Form';
 
   async function registerUser(email, password){
 
-    axios.post('https://bootcamp.akbolat.net/auth/local/register',{
+    axios.post('/api/auth/register',{
         username: email,
-        email,
         password
       })
       .then((response)=> {

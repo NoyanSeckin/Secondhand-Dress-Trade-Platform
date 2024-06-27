@@ -47,7 +47,7 @@ function App() {
   // display navbar except auth page
   function renderNavbar(){
 
-      if(location.pathname !== '/'){
+      if(location.pathname !== '/auth'){
         return <Navbar/>
       }
 

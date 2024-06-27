@@ -17,8 +17,8 @@ import Form from './Form';
   const {setUserAuth} = useContext(UserContext);
 
   async function loginUser(email, password){
-    axios.post('https://bootcamp.akbolat.net/auth/local', {
-      identifier: email,
+    axios.post('/api/auth/login', {
+      username: email,
       password: password
     })
     .then(
