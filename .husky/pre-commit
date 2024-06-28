@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+. "$(dirname "$0")/_/husky.sh"
+
+set +e
+
+npx lint-staged
+eslintStatus=$?
+
+if [ $eslintStatus -ne 0 ]; then
+  exit 1  # Exit with error status
+else
+  exit 0  # Exit with success status
+fi
