@@ -16,6 +16,7 @@ const Form = ({ authForm, submitAction, isAlert, setIsAlert }) => {
     const renderForgotPassword = () => {
 
         if (authForm.changeTo === 'register') {
+          
 
             return (
                 <Typography sx={styles.forgotPassword}>
