@@ -9,7 +9,9 @@
     "allowJs": true,
     "moduleResolution": "node",
     "esModuleInterop": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "rootDir": "src",
+    "baseUrl": "./src/",
   },
   "include": ["src"],
   "exclude": ["node_modules"]
