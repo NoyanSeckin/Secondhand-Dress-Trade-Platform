@@ -7,13 +7,19 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { styles } from './StylesBuyModal';
 
-export const BuyModal = ({ isBuyModal, onClose, onBuyProduct }) => {
+interface BuyModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onBuyProduct: () => void;
+}
+
+export const BuyModal = ({ isOpen, onClose, onBuyProduct }: BuyModalProps) => {
   return (
     <Box>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        open={isBuyModal}
+        open={isOpen}
         onClose={onClose}
         closeAfterTransition
         disableAutoFocus
@@ -23,7 +29,7 @@ export const BuyModal = ({ isBuyModal, onClose, onBuyProduct }) => {
           style: { opacity: 0.7, background: '#4B9CE2' },
         }}
       >
-        <Fade in={isBuyModal}>
+        <Fade in={isOpen}>
           <Box sx={styles.modalStyle}>
             <Typography id="transition-modal-title" variant="h5" sx={styles.modalTitle}>
               Satın AI

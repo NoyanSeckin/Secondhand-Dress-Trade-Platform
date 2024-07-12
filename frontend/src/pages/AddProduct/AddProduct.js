@@ -10,7 +10,6 @@ import Switch from '../../components/Switch';
 import DropzoneComp from '../../components/Dropzone/Dropzone';
 
 export default function AddProduct() {
-
   const { userAuth } = useContext(UserContext);
 
   const [apiColors, setApiColors] = useState([]);
@@ -19,7 +18,7 @@ export default function AddProduct() {
   const [categories, setCategories] = useState([]);
 
   const [selectedFile, setSelectedFile] = useState({});
-  const [selectedFileError, setSelectedFileError] = useState('')
+  const [selectedFileError, setSelectedFileError] = useState('');
 
   async function fetchApiValue(extension, setState) {
     const response = await axios.get(`api/product/${extension}`);
@@ -28,68 +27,77 @@ export default function AddProduct() {
   }
 
   useEffect(() => {
-    fetchApiValue('colors', setApiColors)
-    fetchApiValue('brands', setBrands)
-    fetchApiValue('conditions', setUsingStatuses)
-    fetchApiValue('categories', setCategories)
-  }, [])
+    fetchApiValue('colors', setApiColors);
+    fetchApiValue('brands', setBrands);
+    fetchApiValue('conditions', setUsingStatuses);
+    fetchApiValue('categories', setCategories);
+  }, []);
 
   const inputInfos = {
     name: {
       label: 'Ürün Adı',
-      placeholder: 'Örnek: Iphone 12 Pro Max'
+      placeholder: 'Örnek: Iphone 12 Pro Max',
     },
     description: {
       label: 'Açıklama',
       placeholder: 'Ürün açıkIaması girin',
     },
     category: {
-      label: 'Kategori', placeholder: 'Kategori seç'
+      label: 'Kategori',
+      placeholder: 'Kategori seç',
     },
     brand: {
       label: 'Marka',
-      placeholder: 'Marka seç'
+      placeholder: 'Marka seç',
     },
     color: {
       label: 'Renk',
-      placeholder: 'Renk seç'
+      placeholder: 'Renk seç',
     },
     status: {
-      label: 'Kullanım Durumu', placeholder: 'Kullanım durumu seç'
+      label: 'Kullanım Durumu',
+      placeholder: 'Kullanım durumu seç',
     },
     price: {
       label: 'Fiyat',
-      placeholder: 'Bir fiyat girin'
-    }
-  }
+      placeholder: 'Bir fiyat girin',
+    },
+  };
 
   // input func to render inputs
   function renderInput(value, error, handleChange, valueName) {
-
     const rowsCount = valueName === 'description' ? '3' : '1';
     const errorClass = error && 'form-error';
 
     return (
       <Box sx={styles.inputContainer}>
-        <label htmlFor={valueName}>
-          {inputInfos[valueName].label}
-        </label>
-        <textarea className={errorClass} id={valueName} type='text' value={value} onChange={handleChange} rows={rowsCount}
+        <label htmlFor={valueName}>{inputInfos[valueName].label}</label>
+        <textarea
+          className={errorClass}
+          id={valueName}
+          type="text"
+          value={value}
+          onChange={handleChange}
+          rows={rowsCount}
         />
-        <Typography sx={styles.errorText}>
-          {error}
-        </Typography>
+        <Typography sx={styles.errorText}>{error}</Typography>
       </Box>
-    )
+    );
   }
 
   function renderSelectOption(values, placeholder, id, label, handleChange, error) {
-
     return (
       <Box sx={styles.selectContainer}>
-        <SelectInput error={error} values={values} placeholder={placeholder} handleChange={handleChange} id={id} label={label} />
+        <SelectInput
+          error={error}
+          values={values}
+          placeholder={placeholder}
+          handleChange={handleChange}
+          id={id}
+          label={label}
+        />
       </Box>
-    )
+    );
   }
 
   // function categoryToNumber(category) {
@@ -97,15 +105,12 @@ export default function AddProduct() {
   // }
 
   const postProduct = async (userData) => {
-
     // const form = new FormData();
 
     // const postObject = { ...userData, category: categoryToNumber(userData.category), isSold: false, users_permissions_user: userAuth.id }
 
-
     // form.append('data', JSON.stringify(postObject));
     // form.append('files.image', selectedFile)
-
 
     try {
       await axios.post(
@@ -114,27 +119,20 @@ export default function AddProduct() {
           ...userData,
           price: Number(userData.price),
         },
-        // {
-        //   headers: {
-        //     Authorization: `Bearer ${userAuth.token}`
-        //   },
-        // }
-      )
+        {
+          headers: {
+            Authorization: userAuth.token,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
     }
-    catch (error) {
-      console.log(error)
-    }
-  }
+  };
 
   function renderSelectedFileError() {
-
     if (selectedFileError) {
-
-      return (
-        <Typography sx={{ color: 'danger' }}>
-          {selectedFileError}
-        </Typography>
-      )
+      return <Typography sx={{ color: 'danger' }}>{selectedFileError}</Typography>;
     }
   }
 
@@ -143,9 +141,9 @@ export default function AddProduct() {
     description: '',
     price: '',
     isOfferable: false,
-  }
+  };
 
-  const requiredText = 'Bu alan zorunludur.'
+  const requiredText = 'Bu alan zorunludur.';
 
   const validationSchema = {
     name: Yup.string().max(100, 'Maksimum 100 karakter giriniz.').required(requiredText),
@@ -155,123 +153,130 @@ export default function AddProduct() {
     brand: Yup.string(),
     condition: Yup.string().required(requiredText),
     price: Yup.number('0-9 Arasında Bir Rakam Girin').required(),
-    isOfferable: Yup.boolean()
+    isOfferable: Yup.boolean(),
   };
 
   const renderForm = () => {
-
     return (
       <Formik
         initialValues={initialFormValues}
-        validationSchema={
-          Yup.object(validationSchema)
-        }
+        validationSchema={Yup.object(validationSchema)}
         onSubmit={(values, { resetForm }) => {
           // check if user selected image
           // if (selectedFile.path) {
-            postProduct(values);
-            // resetForm();
-            // setSelectedFile({})
+          postProduct(values);
+          // resetForm();
+          // setSelectedFile({})
           // }
         }}
       >
         {({ values, errors, handleSubmit, handleChange }) => (
-
           <form onSubmit={handleSubmit}>
             <Box sx={styles.formContainer}>
-
               {renderInput(values.name, errors.name, handleChange, 'name')}
 
               {renderInput(values.description, errors.description, handleChange, 'description')}
 
               <Box sx={styles.selectOptionsContainer}>
-
-                {renderSelectOption(categories, inputInfos.category.placeholder, 'category', 'Kategori', handleChange, errors.category)}
+                {renderSelectOption(
+                  categories,
+                  inputInfos.category.placeholder,
+                  'category',
+                  'Kategori',
+                  handleChange,
+                  errors.category
+                )}
 
                 {renderSelectOption(brands, inputInfos.brand.placeholder, 'brand', 'Marka', handleChange, errors.brand)}
 
-                {renderSelectOption(apiColors, inputInfos.color.placeholder, 'color', 'Renk', handleChange, errors.color)}
+                {renderSelectOption(
+                  apiColors,
+                  inputInfos.color.placeholder,
+                  'color',
+                  'Renk',
+                  handleChange,
+                  errors.color
+                )}
 
-                {renderSelectOption(usingStatuses, inputInfos.status.placeholder, 'condition', 'Kullanım Durumu', handleChange, errors.status)}
-
+                {renderSelectOption(
+                  usingStatuses,
+                  inputInfos.status.placeholder,
+                  'condition',
+                  'Kullanım Durumu',
+                  handleChange,
+                  errors.status
+                )}
               </Box>
 
               <Box sx={styles.priceAndOfferContainer}>
-
-                <div className='price-wrapper'>
-
-                  <label htmlFor="price" style={{ marginBottom: '10px' }}>{inputInfos.price.label}
+                <div className="price-wrapper">
+                  <label htmlFor="price" style={{ marginBottom: '10px' }}>
+                    {inputInfos.price.label}
                   </label>
 
-                  <input className={'price-input'} type="text" value={values.price} id='price' onChange={handleChange} placeholder={inputInfos.price.placeholder}
-                    style={{ marginBottom: 0 }} />
+                  <input
+                    className={'price-input'}
+                    type="text"
+                    value={values.price}
+                    id="price"
+                    onChange={handleChange}
+                    placeholder={inputInfos.price.placeholder}
+                    style={{ marginBottom: 0 }}
+                  />
 
-                  {errors.price &&
-                    <Typography sx={styles.priceError}>
-                      0-9 Arasında Bir Rakam Girin
-                    </Typography>
-                  }
-
+                  {errors.price && <Typography sx={styles.priceError}>0-9 Arasında Bir Rakam Girin</Typography>}
                 </div>
 
                 <Box sx={styles.switchContainer}>
-
                   <label style={styles.switchLabel} htmlFor="isOfferable">
                     Teklif Opsiyonu
                   </label>
 
-                  <Switch handleChange={handleChange} id='isOfferable' />
-
+                  <Switch handleChange={handleChange} id="isOfferable" />
                 </Box>
-
               </Box>
 
-              <Button type='submit' variant='contained' sx={styles.submitButton}>
+              <Button type="submit" variant="contained" sx={styles.submitButton}>
                 Kaydet
               </Button>
-
             </Box>
           </form>
         )}
       </Formik>
-    )
-  }
+    );
+  };
 
   const renderFormGrid = () => {
-
     const formView = renderForm();
 
     return (
       <Grid item xs={12} lg={6.5} sx={styles.detailsGridItem}>
-
-        <Typography variant='h5' sx={styles.detailsHeader}>
+        <Typography variant="h5" sx={styles.detailsHeader}>
           Ürün DetayIarı
         </Typography>
 
         {formView}
-
       </Grid>
-    )
-  }
+    );
+  };
 
   const renderDropzoneGrid = () => {
-
     return (
-      <Grid item xs={12} lg={5}
-        sx={styles.dropzoneGridItem}>
-
-        <Typography variant='h5'
-          sx={styles.dropzoneTitle}>
+      <Grid item xs={12} lg={5} sx={styles.dropzoneGridItem}>
+        <Typography variant="h5" sx={styles.dropzoneTitle}>
           Ürün GörseIi
         </Typography>
 
-        <DropzoneComp selectedFile={selectedFile} setSelectedFile={setSelectedFile} setSelectedFileError={setSelectedFileError} />
+        <DropzoneComp
+          selectedFile={selectedFile}
+          setSelectedFile={setSelectedFile}
+          setSelectedFileError={setSelectedFileError}
+        />
 
         {renderSelectedFileError()}
-
       </Grid>
-    )
-  }
+    );
+  };
 
   const formView = renderFormGrid();
   const dropzoneView = renderDropzoneGrid();
@@ -279,15 +284,11 @@ export default function AddProduct() {
   return (
     <Box sx={styles.boxContainer}>
       <Container maxWidth="xl" sx={styles.container}>
-
         <Grid container sx={styles.gridContainer}>
-
           {formView}
           {dropzoneView}
-
         </Grid>
-
       </Container>
     </Box>
-  )
+  );
 }

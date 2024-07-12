@@ -3,7 +3,7 @@ import { Container, Box, Typography } from '@mui/material';
 import UserContext from '../../contexts/UserContext.js';
 import { styles } from './StylesAccount.js';
 import AccountIcon from '../../constants/icons/AccountIcon.js';
-import { BuyModal } from 'components/BuyModal/BuyModal.js';
+import { BuyModal } from 'components/buy-modal/BuyModal';
 import Alert from '../../components/Alert/Alert.js';
 
 const Account = () => {

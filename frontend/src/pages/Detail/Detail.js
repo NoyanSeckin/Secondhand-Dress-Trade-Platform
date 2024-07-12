@@ -6,7 +6,7 @@ import ProductContext from 'contexts/ProductContext';
 import OfferModal from 'components/OfferModal/OfferModal';
 import UserContext from 'contexts/UserContext';
 import Alert from 'components/Alert/Alert';
-import { BuyModal } from 'components/BuyModal/BuyModal';
+import { BuyModal } from 'components/buy-modal/BuyModal';
 
 export default function Detail() {
   const { product, setProduct } = useContext(ProductContext);
