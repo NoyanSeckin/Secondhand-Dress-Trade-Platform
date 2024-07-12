@@ -4,7 +4,7 @@ import React from 'react';
 import Logo from 'constants/icons/Logo.js';
 import PlusIcon from 'constants/icons/PlusIcon.js';
 import PersonIcon from 'constants/icons/PersonIcon.js';
-import { styles } from './StylesNavbar.js';
+import { styles } from 'components/navbar/StylesNavbar';
 
 export const Navbar = () => {
   return (

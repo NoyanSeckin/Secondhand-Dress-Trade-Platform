@@ -15,7 +15,7 @@ import Account from './pages/Account/Account';
 import AddProduct from './pages/AddProduct/AddProduct';
 import ProtectedRoutes from './routes/ProtectedRoutes';
 import MobileContext from './contexts/MobileContext';
-import { Navbar } from 'components/Navbar/Navbar';
+import { Navbar } from 'components/navbar/Navbar';
 
 function App() {
   let location = useLocation();
