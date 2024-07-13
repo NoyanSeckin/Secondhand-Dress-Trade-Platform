@@ -8,7 +8,7 @@ import './styles.css';
 import { globalTheme } from './theme/GlobalTheme';
 import UserToken from './contexts/UserContext';
 import ProductContext from './contexts/ProductContext';
-import Home from './pages/Home/Home';
+import Home from './pages/home/Home';
 import Authentication from './pages/Authentication/Authentication';
 import Detail from './pages/Detail/Detail';
 import Account from './pages/Account/Account';
@@ -60,7 +60,7 @@ function App() {
               {navbarView}
               <Routes>
                 <Route path="/" element={indexElement} />
-                <Route index path="/home" element={<Home />} />
+                <Route index path="/category/:categoryId" element={<Home />} />
                 <Route path="*" element={<Home />} />
                 <Route path="/detail" element={<Detail />} />
                 <Route element={<ProtectedRoutes />}>
